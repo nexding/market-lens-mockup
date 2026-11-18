@@ -746,8 +746,15 @@
         glHost = M.el('div', 'mm-gl'); loading = M.el('div', 'mm-loading', 'Loading the globe…'); host.appendChild(glHost); host.appendChild(loading);
         ['pointerdown', 'pointermove', 'wheel', 'keydown'].forEach(function (ev) { host.addEventListener(ev, input, { passive: true }); });
         ro = new ResizeObserver(resize); ro.observe(host);
-        var probe = document.createElement('canvas').getContext('webgl2');
-        (probe ? loadLibs() : Promise.reject(new Error('this browser has no WebGL 2'))).then(init).catch(function (e) { if (!dead) core.fail(e && e.message || 'unknown error'); });
+        /* three.js needs WebGL 2. Nearly every current browser has it, so when it is missing the usual cause is a setting:
+           graphics acceleration switched off, or a privacy shield blocking WebGL. Say which case it is and where to look */
+        var gl2 = document.createElement('canvas').getContext('webgl2'), why = null, hint = '';
+        if (gl2) { var lose = gl2.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext(); }
+        else {
+          why = document.createElement('canvas').getContext('webgl') ? 'this browser is only offering the older WebGL 1' : 'WebGL is switched off or blocked in this browser';
+          hint = 'In Brave, Chrome or Edge: open Settings, then System, switch on “Use graphics acceleration when available” and relaunch. In Brave, also try lowering Shields for this site.';
+        }
+        (why ? Promise.reject(new Error(why)) : loadLibs()).then(init).catch(function (e) { if (!dead) core.fail(e && e.message || 'unknown error', hint); });
       },
       kick: function () { wake(); },
       zoomBy: zoomBy,

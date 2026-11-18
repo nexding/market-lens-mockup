@@ -656,7 +656,7 @@
     overLink: function (l, x, y) { hover = null; hoverLink = l; tipNode = null; showTip(linkTip(l), x, y); },
     tipAt: function (x, y, seen) { placeTip(x, y); tip.classList.toggle('on', !!seen); },
     fold: function (n) { if (n.outs.length) { n.collapsed = !n.collapsed; refold(); if (sel === n) openPanel(n); } },
-    fail: function (why) { R.destroy(); R = null; host.textContent = ''; note('The globe view could not start (' + why + '). Showing the flat map instead.'); begin('flat'); }
+    fail: function (why, hint) { R.destroy(); R = null; host.textContent = ''; note('The globe view could not start (' + why + '). Showing the flat map instead.' + (hint ? ' ' + hint : '')); begin('flat'); }
   };
   [['nodes', function () { return nodes; }], ['links', function () { return links; }], ['byId', function () { return byId; }], ['hover', function () { return hover; }],
     ['hoverLink', function () { return hoverLink; }], ['tipNode', function () { return tipNode; }], ['sel', function () { return sel; }], ['focusId', function () { return focusId; }], ['hasFocus', function () { return hasFocus; }],

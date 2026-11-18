@@ -14,7 +14,7 @@
 .mm-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 500 12px/16px var(--mm-mono); letter-spacing: 0.04em; color: var(--text-3); pointer-events: none; transition: opacity var(--d-slow); }
 .mm-loading.off { opacity: 0; }
 
-.mm-note { position: absolute; z-index: 6; left: 50%; top: 68px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); box-shadow: var(--shadow-3); background: var(--surface-2); }
+.mm-note { position: absolute; z-index: 6; left: 50%; top: 68px; transform: translateX(-50%); width: max-content; max-width: min(760px, calc(100% - 32px)); box-shadow: var(--shadow-3); background: var(--surface-2); }
 .mm-note .btn { flex: none; }
 
 .mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
