@@ -6,7 +6,7 @@
   M.shell('Mind Maps');
 
   /* R is the active renderer, flat or globe. Both offer: start, kick, zoomBy, fit, intro, flyTo, reveal, exportBlob, repaint, setParallax, rebuild, destroy */
-  var host = $('#map'), stage = $('#main'), R = null;
+  var host = $('#map'), stage = $('#main'), R = null, FLAT_LABEL = host.getAttribute('aria-label');
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function dateOf(d) { var t = new Date(2026, 10, 3 + Math.floor(d)); return t.getDate() + ' ' + MON[t.getMonth()] + ' ' + t.getFullYear(); }
   var TYPE = {
@@ -181,6 +181,26 @@
     var shown = nodes.filter(function (n) { return n.al > 0.5; }).length;
     $('#mm-fps').textContent = Math.min(120, Math.round(fps)) + ' fps · ' + shown + ' nodes · ' + links.length + ' links';
   }
+
+  /* ---------- tooltips ---------- */
+  var tipNode = null;   /* the node a tooltip is pinned to: hovered, focused from the keyboard, or tapped once on the globe */
+  function tierName(l) { var t = tier(l); return t === 'fact' ? 'confirmed fact' : t === 'spec' ? 'speculative' : 'model inference'; }
+  function linkTip(l) {
+    return '<b>' + esc(l.s.label) + ' → ' + esc(l.t.label) + '</b><br><span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'Raises' : 'Lowers') + '</span> · ' + band(l.conf) + ' confidence · ' + tierName(l) + '<br><span class="dim">' + esc(l.why) + '</span>';
+  }
+  /* the most confident link that is on show at this node, in either direction */
+  function strongest(n) { var best = null; n.ins.concat(n.outs).forEach(function (l) { if (l.al > 0.5 && l.dimT > 0.05 && (!best || l.conf > best.conf)) best = l; }); return best; }
+  function nodeTip(n) {
+    var l = strongest(n), h = '<b>' + esc(n.label) + '</b><br>' + TYPE[n.type].name + (n.place ? ' · ' + esc(n.place) : '') + (n.w ? ' · ' + n.w.toFixed(1) + '% of portfolio' : '');
+    if (!l) return h + '<br><span class="dim">No links shown</span>';
+    var out = l.s === n;
+    return h + '<br><span class="dim">Strongest link:</span> ' + (out ? '→ ' : '← ') + esc((out ? l.t : l.s).label) + '<br><span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'Raises' : 'Lowers') + '</span> · ' + band(l.conf) + ' (' + l.conf.toFixed(2) + ') · ' + tierName(l);
+  }
+  function placeTip(x, y) { tip.style.left = Math.max(8, Math.min(stage.clientWidth - 280, x + 14)) + 'px'; tip.style.top = Math.max(8, Math.min(stage.clientHeight - 110, y + 14)) + 'px'; }
+  function showTip(html, x, y) { tip.innerHTML = html; placeTip(x, y); tip.classList.add('on'); }
+  function hideTip() { tip.classList.remove('on'); tipNode = null; }
+  /* pin a node's tooltip to it; the globe renderer keeps it in place as the view turns */
+  function pin(n) { tipNode = n; tip.innerHTML = nodeTip(n); }
 
   /* ====================================================================
      Flat renderer: the 2D Canvas map with spring physics
@@ -400,7 +420,7 @@
         if (n !== hover || l !== hoverLink) { hover = n; hoverLink = l; }
         cv.classList.toggle('pointing', !!(n || l));
         if (l) {
-          tip.innerHTML = '<b>' + esc(l.s.label) + ' → ' + esc(l.t.label) + '</b><br><span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'Raises' : 'Lowers') + '</span> · ' + band(l.conf) + ' confidence · ' + (l.basis === 'fact' ? 'confirmed fact' : 'model inference') + '<br><span class="dim">' + esc(l.why) + '</span>';
+          tip.innerHTML = linkTip(l);
           tip.style.left = Math.min(W - 280, p.x + 14) + 'px'; tip.style.top = Math.min(H - 110, p.y + 14) + 'px'; tip.classList.add('on');
         } else tip.classList.remove('on');
       }
@@ -452,44 +472,85 @@
     f_oil: [['Brent jumps 8% in two sessions on supply fears', 17], ['Analysts split on how long the premium lasts', 5]],
     c_shel: [['Shell says Gulf cargoes rerouted, guidance unchanged', 7]], c_cost: [['Retailers warn of higher landed costs if freight stays elevated', 6]]
   };
-  function lkRow(l, other, arrow) {
-    return '<div class="lk"><span>' + arrow + ' <b>' + esc(other.label) + '</b> <span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'raises' : 'lowers') + '</span></span>' +
+  var TIERS = [['fact', 'Confirmed fact', 'CONFIRMED FACT'], ['inference', 'Model inference', 'MODEL INFERENCE'], ['spec', 'Speculative', 'SPECULATIVE']];
+  /* one link as seen from node n. The last line is the implied direction that goes into the prediction ledger: it is always about the link's target */
+  function lkRow(l, n, badge) {
+    var out = l.s === n, other = out ? l.t : l.s;
+    return '<div class="lk"><span>' + (out ? '→' : '←') + ' <b>' + esc(other.label) + '</b> <span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'raises' : 'lowers') + '</span></span>' +
       '<span class="conf"><i style="--c:' + Math.round(l.conf * 100) + '%"></i>' + band(l.conf) + '</span>' +
-      '<span class="src"><span class="badge badge-x">' + (l.basis === 'fact' ? 'CONFIRMED FACT' : 'MODEL INFERENCE') + '</span> ' + esc(l.why) + ' · ' + l.src + (l.src > 1 ? ' sources' : ' source') + '</span></div>';
+      '<span class="src"><span class="badge badge-x">' + badge + '</span> ' + esc(l.why) + ' · ' + l.src + (l.src > 1 ? ' sources' : ' source') + '</span>' +
+      '<span class="led">Ledger: ' + esc(l.t.label.replace(' ↑', '')) + (l.sign > 0 ? ' rises ↑' : ' falls ↓') + ' · ' + band(l.conf) + ' (' + l.conf.toFixed(2) + ')</span></div>';
   }
-  function openPanel(n) {
+  function tierSections(n) {
+    var all = n.ins.concat(n.outs);
+    return (all.length ? '<p class="label led-key">← a cause of this node · → an effect of it. Each ledger line is the implied direction that is scored later.</p>' : '') + TIERS.map(function (T) {
+      var ls = all.filter(function (l) { return tier(l) === T[0]; }).sort(function (a, b) { return b.conf - a.conf; });
+      return ls.length ? '<section><div class="micro">' + T[1] + ' (' + ls.length + ')</div>' + ls.map(function (l) { return lkRow(l, n, T[2]); }).join('') + '</section>' : '';
+    }).join('');
+  }
+  function openPanel(n, focusIn) {
     var p = $('#mm-panel'), ty = TYPE[n.type], st = STORY[n.id] || [[n.label.replace(' ↑', '') + ': what moved and why', 3]];
     p.innerHTML = '<button class="iconbtn x" id="mm-x" aria-label="Close">' + M.icon('x') + '</button>' +
       '<span class="badge" style="border-color:' + COL[ty.c] + ';color:' + COL[ty.c] + '">' + ty.name + '</span>' +
-      '<h2 class="t2">' + esc(n.label) + '</h2><div class="label">First seen ' + dateOf(n.day) + (n.sym ? ' · ' + esc(n.sym) : '') + '</div>' +
+      '<h2 class="t2">' + esc(n.label) + '</h2><div class="label">First seen ' + dateOf(n.day) + (n.sym ? ' · ' + esc(n.sym) : '') + (n.place ? ' · ' + esc(n.place) : '') + '</div>' +
       (n.w ? '<section><div class="story"><b>' + n.w.toFixed(1) + '% of your portfolio</b> is in ' + esc(n.label) + '.<div class="meta">Exposure is worked out on this computer and never sent to a model.</div></div></section>' : '') +
       '<section><div class="micro">News (' + st.length + ')</div>' + st.map(function (s) { return '<div class="story">' + esc(s[0]) + '<div class="meta">' + s[1] + ' outlets, shown once · ' + dateOf(n.day) + '</div></div>'; }).join('') + '</section>' +
-      (n.ins.length ? '<section><div class="micro">Caused by</div>' + n.ins.map(function (l) { return lkRow(l, l.s, '←'); }).join('') + '</section>' : '') +
-      (n.outs.length ? '<section><div class="micro">Leads to</div>' + n.outs.map(function (l) { return lkRow(l, l.t, '→'); }).join('') + '</section>' : '') +
+      tierSections(n) +
       '<section style="display:flex;gap:8px;flex-wrap:wrap">' + (n.sym && M.I[n.sym] ? '<a class="btn btn-sm btn-primary" href="stock.html?s=' + encodeURIComponent(n.sym) + '">Open stock page</a>' : '') +
       (n.outs.length ? '<button class="btn btn-sm" id="mm-fold" type="button">' + (n.collapsed ? 'Unfold effects' : 'Fold effects') + '</button>' : '') + '</section>' +
       '<p class="label" style="margin-top:16px">Links are hypotheses, not facts. Sample data.</p>';
     p.classList.add('open');
     $('#mm-x').addEventListener('click', closePanel);
-    var f = $('#mm-fold'); if (f) f.addEventListener('click', function () { n.collapsed = !n.collapsed; refold(); openPanel(n); });
+    var f = $('#mm-fold'); if (f) f.addEventListener('click', function () { n.collapsed = !n.collapsed; refold(); openPanel(n, true); });
+    if (focusIn) $('#mm-x').focus();
   }
-  function closePanel() { $('#mm-panel').classList.remove('open'); sel = null; kick(); }
-  function choose(n) {
-    sel = n; focusId = n.id; R.flyTo(n); openPanel(n); say(n); kick();
+  /* closing hands the keyboard back to the map if it was inside the panel */
+  function closePanel() { var p = $('#mm-panel'), had = p.contains(document.activeElement); p.classList.remove('open'); sel = null; if (had) host.focus(); kick(); }
+  $('#mm-panel').addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+  function choose(n, focusIn) {
+    sel = n; focusId = n.id; hideTip(); R.flyTo(n); openPanel(n, focusIn); say(n); kick();
   }
-  function say(n) { $('#mm-live').textContent = TYPE[n.type].name + ': ' + n.label + '. ' + n.ins.length + ' causes, ' + n.outs.length + ' effects.' + (n.w ? ' ' + n.w.toFixed(1) + '% of portfolio.' : ''); }
+  function say(n, lead) { $('#mm-live').textContent = (lead ? lead + ' ' : '') + TYPE[n.type].name + ': ' + n.label + (n.place ? ', ' + n.place : '') + '. ' + n.ins.length + ' causes, ' + n.outs.length + ' effects.' + (n.w ? ' ' + n.w.toFixed(1) + '% of portfolio.' : ''); }
 
   /* ---------- keyboard ---------- */
   host.addEventListener('focus', function () { hasFocus = true; if (!focusId) focusId = nodes[0].id; say(byId[focusId]); kick(); });
-  host.addEventListener('blur', function () { hasFocus = false; kick(); });
+  host.addEventListener('blur', function () { hasFocus = false; if (tipNode && tipNode.id === focusId && hover === tipNode) { hideTip(); hover = null; } kick(); });
+  /* On the globe the arrow keys follow cause and effect, since screen position changes as it turns: Right goes to the most
+     confident effect, Left to the most confident cause, Up and Down step through the alternatives at that point in the chain */
+  var navVia = null;   /* the link the focus last moved along */
+  function stepGlobe(n, key) {
+    var shown = function (x) { return !x.hideTo && x.day <= tl && x.dimT > 0.05; }, byConf = function (a, b) { return b.conf - a.conf; }, ls, i;
+    if (key === 'ArrowRight' || key === 'ArrowLeft') {
+      var out = key === 'ArrowRight';
+      ls = (out ? n.outs : n.ins).filter(function (l) { return shown(out ? l.t : l.s); }).sort(byConf); if (!ls.length) return null;
+      navVia = ls[0]; return { n: out ? ls[0].t : ls[0].s, l: ls[0], lead: (out ? 'Effect' : 'Cause') + ' 1 of ' + ls.length + '.' };
+    }
+    var causes = n.ins.filter(function (l) { return shown(l.s); }).sort(byConf), via = navVia && (navVia.s === n || navVia.t === n) ? navVia : causes[0], step = key === 'ArrowDown' ? 1 : -1;
+    if (!causes.length) {
+      /* a node with no cause: step through the other starting events in date order */
+      ls = nodes.filter(function (x) { return !x.ins.length && shown(x); }).sort(function (a, b) { return a.day - b.day; }); i = ls.indexOf(n) + step;
+      return ls[i] ? { n: ls[i], lead: 'Event ' + (i + 1) + ' of ' + ls.length + '.' } : null;
+    }
+    var down = via.t === n, hub = down ? via.s : via.t;
+    ls = (down ? hub.outs : hub.ins).filter(function (l) { return shown(down ? l.t : l.s); }).sort(byConf); i = ls.indexOf(via) + step;
+    if (!ls[i]) return null;
+    navVia = ls[i]; return { n: down ? ls[i].t : ls[i].s, l: ls[i], lead: (down ? 'Effect ' : 'Cause ') + (i + 1) + ' of ' + ls.length + ' of ' + hub.label + '.' };
+  }
   host.addEventListener('keydown', function (e) {
     var n = byId[focusId] || nodes[0], to = null, vis = function (x) { return !x.hideTo && x.day <= tl; };
+    if (R.name === 'globe' && /^Arrow/.test(e.key)) {
+      e.preventDefault();
+      if (e.shiftKey) { R.rotateBy(e.key === 'ArrowLeft' ? -15 : e.key === 'ArrowRight' ? 15 : 0, e.key === 'ArrowUp' ? 15 : e.key === 'ArrowDown' ? -15 : 0); return; }
+      var st = stepGlobe(n, e.key);
+      if (st) { focusId = st.n.id; say(st.n, st.lead + (st.l ? ' ' + (st.l.sign > 0 ? 'Raises' : 'Lowers') + ', ' + band(st.l.conf) + ' ' + st.l.conf.toFixed(2) + ', ' + tierName(st.l) + '.' : '')); R.reveal(st.n); hover = st.n; hoverLink = null; pin(st.n); kick(); }
+      return;
+    }
     if (e.key === 'ArrowRight') to = n.outs.map(function (l) { return l.t; }).filter(vis).sort(function (a, b) { return Math.abs(a.ay - n.ay) - Math.abs(b.ay - n.ay); })[0];
     else if (e.key === 'ArrowLeft') to = n.ins.map(function (l) { return l.s; }).filter(vis)[0];
     else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { var col = nodes.filter(function (x) { return x.depth === n.depth && vis(x); }).sort(function (a, b) { return a.ay - b.ay; }), i = col.indexOf(n); to = col[i + (e.key === 'ArrowDown' ? 1 : -1)]; }
-    else if (e.key === 'Enter') { choose(n); e.preventDefault(); return; }
+    else if (e.key === 'Enter') { choose(n, true); e.preventDefault(); return; }
     else if (e.key === ' ') { if (n.outs.length) { n.collapsed = !n.collapsed; refold(); } e.preventDefault(); return; }
-    else if (e.key === 'Escape') { closePanel(); return; }
+    else if (e.key === 'Escape') { if (tipNode) { hideTip(); hover = null; kick(); } else closePanel(); return; }
     else if (e.key === '+' || e.key === '=') { R.zoomBy(1.25); return; }
     else if (e.key === '-') { R.zoomBy(1 / 1.25); return; }
     else if (e.key === '0') { R.fit(); return; }
@@ -541,12 +602,15 @@
     host: host, stage: stage, TYPE: TYPE, band: band, tier: tier, dateOf: dateOf, now: now, targets: targets, animate: animate, report: report,
     choose: choose, closePanel: closePanel, say: say,
     replay: function () { schedule(true); },
-    setHover: function (n, l) { hover = n; hoverLink = l; },
+    /* pointer results from the globe: a node (its tooltip stays pinned to it), a link (tooltip at the pointer) or nothing */
+    overNode: function (n) { if (n === hover && !hoverLink && tipNode === n) return; hover = n; hoverLink = null; if (n) pin(n); else hideTip(); },
+    overLink: function (l, x, y) { hover = null; hoverLink = l; tipNode = null; showTip(linkTip(l), x, y); },
+    tipAt: function (x, y, seen) { placeTip(x, y); tip.classList.toggle('on', !!seen); },
     fold: function (n) { if (n.outs.length) { n.collapsed = !n.collapsed; refold(); if (sel === n) openPanel(n); } },
     fail: function (why) { R.destroy(); R = null; host.textContent = ''; note('The globe view could not start (' + why + '). Showing the flat map instead.'); begin('flat'); }
   };
   [['nodes', function () { return nodes; }], ['links', function () { return links; }], ['byId', function () { return byId; }], ['hover', function () { return hover; }],
-    ['hoverLink', function () { return hoverLink; }], ['sel', function () { return sel; }], ['focusId', function () { return focusId; }], ['hasFocus', function () { return hasFocus; }],
+    ['hoverLink', function () { return hoverLink; }], ['tipNode', function () { return tipNode; }], ['sel', function () { return sel; }], ['focusId', function () { return focusId; }], ['hasFocus', function () { return hasFocus; }],
     ['tl', function () { return tl; }], ['playing', function () { return playing; }], ['particlesOn', function () { return particlesOn; }], ['parallax', function () { return parallax; }],
     ['focusHolding', function () { return focusHolding; }], ['growStart', function () { return growStart; }], ['dense', function () { return dense; }]
   ].forEach(function (g) { Object.defineProperty(core, g[0], { get: g[1] }); });
@@ -563,6 +627,7 @@
   function begin(view) {
     if (view === 'globe' && !M.mmGlobe) view = 'flat';
     stage.dataset.view = view;
+    host.setAttribute('aria-label', view !== 'globe' ? FLAT_LABEL : 'Event mind map on a globe. Right and Left arrow keys follow effects and causes, Up and Down step through alternatives, Shift with an arrow key turns the globe, Enter opens a node, Space folds it, Escape closes. A table of the same links is available from the toolbar.');
     R = view === 'globe' ? M.mmGlobe(core) : flatRenderer();
     refold(); targets();
     nodes.forEach(function (n) { n.dim = n.dimT; }); links.forEach(function (l) { l.dim = l.dimT; });

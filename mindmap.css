@@ -20,6 +20,18 @@
 .mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
 .mm-stage[data-view="globe"] .mm-credit { display: block; }
 
+/* side panel: the ledger line under each link, and the key above the tiers */
+.lk .led { grid-column: 1 / -1; font: 500 11px/16px var(--mm-mono); color: var(--text-2); }
+.mm-panel .led-key { margin-top: 18px; color: var(--text-3); }
+.mm-panel .led-key + section { margin-top: 10px; }
+
 @media (max-width: 767px) {
   .mm-credit { right: 12px; bottom: 2px; font-size: 9px; }
+  /* on a phone the globe view opens node details as a sheet from the bottom, so the globe stays in view above it */
+  .mm-stage[data-view="globe"] .mm-panel { top: auto; left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 52dvh; padding: 16px; transform: translateY(24px); }
+  .mm-stage[data-view="globe"] .mm-panel.open { transform: none; }
+  /* and the toolbar is one row that scrolls sideways, so it does not cover the globe */
+  .mm-stage[data-view="globe"] .mm-bar { top: 8px; left: 0; right: 0; padding: 0 8px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; pointer-events: auto; }
+  .mm-stage[data-view="globe"] .mm-bar::-webkit-scrollbar { display: none; }
+  .mm-stage[data-view="globe"] .mm-bar > * { flex: none; white-space: nowrap; }
 }

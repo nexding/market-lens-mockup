@@ -215,6 +215,7 @@
 
   M.mmGlobe = function (core) {
     var host = core.host, world = null, THREE = null, dead = false, ro = null;
+    var panel = core.stage.querySelector('#mm-panel');
     var glHost = null, loading = null, W = 0, H = 0;
     var coarse = window.matchMedia('(pointer: coarse)').matches;
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
@@ -223,6 +224,7 @@
     var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 } };
     var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1, mono = 'monospace';
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
+    var ptr = null, down = null, pick = false, offX = 0, offY = 0, shifted = false;
 
     /* ---------- the surface texture: night photograph or a land mask in token colours, with borders drawn in ---------- */
     function paintTexture() {
@@ -461,6 +463,16 @@
         octx.globalAlpha = a * (strong ? 1 : 0.86); octx.strokeText(n.lab, x, y);
         octx.fillStyle = strong ? COL['text-1'] : COL['text-2']; octx.fillText(n.lab, x, y);
       }
+      /* keyboard focus ring, and the count of effects folded into a node */
+      var focus = core.hasFocus ? core.byId[core.focusId] : null;
+      if (focus && focus.sv > 0.5 && focus.al > 0.5) { octx.globalAlpha = 1; octx.beginPath(); octx.arc(focus.sx, focus.sy, reach(focus) + 6, 0, 6.2832); octx.lineWidth = 2; octx.strokeStyle = COL.accent; octx.stroke(); }
+      octx.font = '600 10px Inter, system-ui, sans-serif'; octx.textAlign = 'center'; octx.textBaseline = 'middle';
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i]; if (!(n.collapsed && n.hidden) || n.sv < 0.5 || n.al < 0.5) continue;
+        var fx = n.sx + n.sr * 0.9 + 4, fy = n.sy - n.sr * 0.9 - 4;
+        octx.globalAlpha = n.al * n.dim; octx.beginPath(); octx.arc(fx, fy, 9, 0, 6.2832); octx.fillStyle = COL.accent; octx.fill();
+        octx.fillStyle = COL.dark ? COL.canvas : COL['surface-1']; octx.fillText('+' + n.hidden, fx, fy + 0.5);
+      }
       octx.globalAlpha = 1;
     }
     /* the point a share t of the way along a link, as arc() in the shaders */
@@ -486,6 +498,64 @@
         octx.fillStyle = l.sign > 0 ? COL.gain : COL.loss; octx.fillText(l.sign > 0 ? '+' : '−', x, y + 0.5);
       }
       octx.globalAlpha = 1;
+    }
+
+    /* ---------- picking: nodes and links are found on screen, from the positions the overlay already works out.
+       A node or link that the Earth hides cannot be picked ---------- */
+    function reach(n) { var r = REACH[n.type]; return n.sr * r[0] + r[1]; }
+    function nodeAt(x, y, slack) {
+      var nodes = core.nodes, best = null, bd = 1e9, i, n, d;
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i]; if (n.sv < 0.5 || n.al < 0.5 || n.dim < 0.1 || n.hideTo) continue;
+        d = Math.hypot(n.sx - x, n.sy - y); if (d < reach(n) + slack && d < bd) { bd = d; best = n; }
+      }
+      return best;
+    }
+    function linkAt(x, y) {
+      var links = core.links, best = null, bd = 7, i, k, l;
+      if (links.length > 1500) return null;   /* too many to test on every move: nodes still pick */
+      for (i = 0; i < links.length; i++) {
+        l = links[i]; if (l.gp < 1 || l.al * l.dim < 0.1) continue;
+        var px = 0, py = 0, ph = true;
+        for (k = 0; k <= 12; k++) {
+          arcPoint(l, k / 12); var h = hidden(), cx = sc3[0], cy = sc3[1];
+          if (!h && !ph) {
+            var ex = cx - px, ey = cy - py, u = Math.max(0, Math.min(1, ((x - px) * ex + (y - py) * ey) / (ex * ex + ey * ey || 1))), d = Math.hypot(x - px - ex * u, y - py - ey * u);
+            if (d < bd) { bd = d; best = l; }
+          }
+          px = cx; py = cy; ph = h;
+        }
+      }
+      return best;
+    }
+    function xy(e) { var r = glHost.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, touch: e.pointerType === 'touch', t: performance.now() }; }
+    /* hover is worked out once a frame, not once per pointer event */
+    function hoverPick() {
+      pick = false;
+      if (!ptr || ptr.touch || interacting || flyTw) return;
+      var n = nodeAt(ptr.x, ptr.y, 8), l = n ? null : linkAt(ptr.x, ptr.y);
+      if (n) core.overNode(n); else if (l) core.overLink(l, ptr.x, ptr.y); else if (core.hover || core.hoverLink) core.overNode(null);
+      glHost.classList.toggle('pointing', !!(n || l));
+    }
+    function click(p) {
+      var n = nodeAt(p.x, p.y, p.touch ? 14 : 8), l = n ? null : linkAt(p.x, p.y);
+      if (p.touch) {
+        /* no hover on a touch screen: the first tap lights the chain and shows the tooltip, a second tap on the same node opens it */
+        if (n) { if (core.tipNode === n) core.choose(n); else core.overNode(n); }
+        else if (l) core.overLink(l, p.x, p.y);
+        else { core.overNode(null); core.closePanel(); }
+      }
+      else if (n) core.choose(n);
+      else if (!l) core.closePanel();
+    }
+    function listen() {
+      glHost.addEventListener('pointerdown', function (e) { down = xy(e); });
+      glHost.addEventListener('pointermove', function (e) { ptr = xy(e); pick = true; });
+      glHost.addEventListener('pointerup', function (e) { var p = xy(e); if (down && Math.hypot(p.x - down.x, p.y - down.y) < (p.touch ? 10 : 5) && p.t - down.t < 500) click(p); down = null; });
+      glHost.addEventListener('pointerleave', function (e) { if (e.pointerType === 'touch') return; ptr = null; glHost.classList.remove('pointing'); if (core.hover || core.hoverLink) core.overNode(null); });
+      glHost.addEventListener('dblclick', function (e) { var p = xy(e), n = nodeAt(p.x, p.y, 8); if (n) core.fold(n); });
+      /* two-finger gestures belong to the globe, not to the page */
+      ['gesturestart', 'gesturechange'].forEach(function (ev) { glHost.addEventListener(ev, function (e) { e.preventDefault(); }); });
     }
 
     /* ---------- theme: every colour comes from the tokens ---------- */
@@ -516,12 +586,20 @@
       U.uTime.value = (core.now() / 1000) % 3600;
       fanK *= U.uScale.value;   /* fan rings grow with the nodes */
       U.uRes.value = [W, H]; U.uFanK.value = fanK;
+      /* an open panel covers part of the stage: slide the view so the globe sits in what is left. Only the projection
+         shifts, the camera does not move, so picking and labels stay exact */
+      var sheet = core.sel && W <= 767 ? panel.offsetTop : 0, wantX = core.sel && W > 900 ? 190 : 0, wantY = sheet ? Math.max(0, H / 2 - (56 + sheet) / 2) : 0, k = M.rm() ? 1 : 1 - Math.exp(-dt * 8);
+      offX += (wantX - offX) * k; offY += (wantY - offY) * k;
+      if (Math.abs(offX) + Math.abs(offY) > 0.5) { cam.setViewOffset(W, H, offX, offY, W, H); shifted = true; }
+      else if (shifted) { cam.clearViewOffset(); shifted = false; }
+      if (pick && nodeMesh) hoverPick();
       core.targets(); core.animate(core.now(), dt);
       if (nodeMesh) syncGraph();
     }
     function after() {
       var ts = performance.now(), dt = ts - lastT; lastT = ts;
       if (nodeMesh) drawOverlay(ts, Math.min(0.05, dt / 1000));
+      var tn = core.tipNode; if (tn && nodeMesh) core.tipAt(tn.sx + reach(tn), tn.sy - 8, tn.sv > 0.5 && tn.al > 0.5);
       if (dt > 0 && dt < 500) fpsAvg += (1000 / dt - fpsAvg) * 0.08;
       if (ts - lastFps > 500) { lastFps = ts; core.report(fpsAvg); }
     }
@@ -559,7 +637,10 @@
       c.addEventListener('end', function () { interacting = false; resumeAt = performance.now() + 4000; input(); glHost.classList.remove('grabbing'); });
       world.pointOfView(home(), 0);
       lastInput = lastT = performance.now();
-      world.scene().onBeforeRender = before; world.scene().onAfterRender = after;
+      /* an error thrown inside globe.gl's render call would stop its loop for good: report it once and keep drawing */
+      var warned = false, guard = function (fn) { return function () { try { fn(); } catch (e) { if (!warned) { warned = true; console.error(e); } } }; };
+      world.scene().onBeforeRender = guard(before); world.scene().onAfterRender = guard(after);
+      listen();
       core.replay();   /* the map grows in once there is a globe to grow on */
       if (/[?&]debug=1\b/.test(location.search)) window.__mm = { world: world, core: core };   /* a handle for checks from the console */
     }
@@ -601,7 +682,22 @@
         if (!animated || !r0 || !isFinite(r0.lat)) { world.pointOfView(home(), 0); return; }
         world.pointOfView({ lat: r0.lat, lng: r0.lng, altitude: 1.4 }, 0); fly(home(), Math.max(1600, ms));
       },
-      flyTo: function () {}, reveal: function () {}, setParallax: function () {},
+      /* a chosen node comes to the middle, closer in; floating nodes are viewed from a little further out */
+      flyTo: function (n) {
+        if (!world) return;
+        var p = G.latlng(G.shown(n.geo, fanK)); input(); moved = true;
+        fly({ lat: p.lat, lng: p.lng, altitude: Math.min(world.pointOfView().altitude, n.geo.float ? 1.5 : 1.35) }, 900);
+      },
+      /* keyboard focus on a node that is behind the Earth or off the stage: turn to it, keeping the zoom */
+      reveal: function (n) {
+        if (!world || (n.sv > 0.5 && n.sx > 60 && n.sx < W - 60 && n.sy > 90 && n.sy < H - 110)) return;
+        var p = G.latlng(G.shown(n.geo, fanK)); input(); moved = true; fly({ lat: p.lat, lng: p.lng, altitude: world.pointOfView().altitude }, 600);
+      },
+      rotateBy: function (dLng, dLat) {
+        if (!world) return;
+        var p = world.pointOfView(); input(); moved = true; fly({ lat: Math.max(-85, Math.min(85, p.lat + dLat)), lng: p.lng + dLng, altitude: p.altitude }, 250);
+      },
+      setParallax: function () {},
       rebuild: function () { if (world) { dropGraph(); buildGraph(); } },
       exportBlob: function (cb) { if (!world) return; world.renderer().render(world.scene(), world.camera()); world.renderer().domElement.toBlob(cb); },
       repaint: applyTheme,
