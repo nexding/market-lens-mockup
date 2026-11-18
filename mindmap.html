@@ -15,66 +15,106 @@
 <body>
 
 <main class="mm-stage" id="main">
-  <div id="map" tabindex="0" data-keys role="application" aria-roledescription="event mind map" aria-label="Event mind map. Arrow keys move along links, Enter opens a node, Space folds it, Escape closes the panel. A table of the same links is available from the toolbar." aria-describedby="mm-live"></div>
-  <div class="sr" id="mm-live" aria-live="polite"></div>
-  <div class="band warn mm-note" id="mm-note" hidden></div>
+  <!-- top bar: what the map shows and how fresh it is, then the controls that act on it -->
+  <header class="mm-top">
+    <div class="mm-ttl">
+      <div class="mm-ttl-1"><b>Event mind map</b>&nbsp;<span class="dim" id="mm-scope">· whole portfolio · 3 to 14 Nov 2026</span></div>
+      <div class="mm-status" id="mm-status" aria-live="off"></div>
+    </div>
+    <div class="mm-ctl">
+      <div class="mm-group">
+        <select id="mm-focus" aria-label="Filter by holding"><option value="">All holdings</option></select>
+      </div>
+      <div class="mm-group" role="group" aria-label="View">
+        <button class="btn btn-sm" id="mm-fit" type="button" title="Fit to window" aria-label="Fit to window"></button>
+        <button class="btn btn-sm" id="mm-out" type="button" aria-label="Zoom out">−</button>
+        <button class="btn btn-sm" id="mm-in" type="button" aria-label="Zoom in">+</button>
+      </div>
+      <div class="mm-group" role="group" aria-label="Options">
+        <button class="btn btn-sm is-on" id="mm-part" type="button" aria-pressed="true">Particles</button>
+        <button class="btn btn-sm" id="mm-para" type="button" aria-pressed="false">Parallax</button>
+        <button class="btn btn-sm is-on" id="mm-rot" type="button" aria-pressed="true">Rotate</button>
+      </div>
+      <div class="mm-more">
+        <button class="btn btn-sm" id="mm-more" type="button" aria-expanded="false" aria-controls="mm-menu">More</button>
+        <div class="mm-menu" id="mm-menu" hidden>
+          <button class="btn btn-sm" id="mm-replay" type="button" title="Replay how the map grows"></button>
+          <button class="btn btn-sm" id="mm-tbl" type="button" aria-pressed="false"></button>
+          <button class="btn btn-sm" id="mm-png" type="button"></button>
+          <div class="mm-menu-sep" role="separator"></div>
+          <button class="btn btn-sm" id="mm-dense" type="button" aria-pressed="false" title="Adds invented second-order companies to test 60 nodes">60 nodes</button>
+          <button class="btn btn-sm" id="mm-stress" type="button" aria-pressed="false" title="Invented graph of 1,000 nodes and 3,000 links, to test the frame rate" hidden>1,000 nodes</button>
+        </div>
+      </div>
+      <div class="mm-fps" id="mm-fps" aria-hidden="true">60 fps</div>
+    </div>
+  </header>
 
-  <div class="mm-bar">
-    <div class="mm-group glass mm-title"><b>Event mind map</b>&nbsp;<span class="dim" id="mm-scope">· whole portfolio · 3 to 14 Nov 2026</span></div>
-    <div class="mm-group glass">
-      <select id="mm-focus" aria-label="Filter by holding"><option value="">All holdings</option></select>
+  <div class="mm-body">
+    <!-- the map area: the globe (or the flat map) and everything that floats over it -->
+    <div class="mm-area" id="mm-area">
+      <div id="map" tabindex="0" data-keys role="application" aria-roledescription="event mind map" aria-label="Event mind map. Arrow keys move along links, Enter opens a node, Space folds it, Escape closes the panel. A table of the same links is available from the toolbar." aria-describedby="mm-live"></div>
+      <div class="sr" id="mm-live" aria-live="polite"></div>
+
+      <div class="mm-layers glass">
+        <div class="tabs" id="mm-layers" role="tablist" aria-label="Layers">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-v="">Events</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="macro">Macro &amp; rates</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="earnings">Earnings</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="commod">Commodities &amp; energy</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="fx">FX</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="geo">Geopolitics</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-v="ledger">Predictions (ledger)</button>
+        </div>
+      </div>
+      <div class="band warn mm-note" id="mm-note" hidden></div>
+
+      <!-- the key: the legend grouped, folded away on request; the footnote stays below it -->
+      <section class="mm-key glass" id="mm-key" aria-labelledby="mm-key-b">
+        <button class="mm-key-h" id="mm-key-b" type="button" aria-expanded="true" aria-controls="mm-legend">Key</button>
+        <div class="mm-keylist" id="mm-legend">
+          <div class="micro">Nodes</div>
+          <ul>
+            <li><svg viewBox="0 0 34 12"><rect x="11" y="0.5" width="11" height="11" rx="3" fill="none" stroke="var(--data-1)" stroke-width="1.5"/></svg>Event</li>
+            <li><svg viewBox="0 0 34 12"><path d="M17 0.5 23 6l-6 5.5L11 6z" fill="none" stroke="var(--data-2)" stroke-width="1.5"/></svg>Factor</li>
+            <li><svg viewBox="0 0 34 12"><path d="M13.5 1h7l3.5 5-3.5 5h-7L10 6z" fill="none" stroke="var(--data-3)" stroke-width="1.5"/></svg>Sector</li>
+            <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="5" fill="none" stroke="var(--data-6)" stroke-width="1.5"/></svg>Company</li>
+            <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="3.2" fill="none" stroke="var(--data-4)" stroke-width="1.5"/><circle cx="17" cy="6" r="5.5" fill="none" stroke="var(--data-4)" stroke-width="1" opacity=".6"/></svg>Your holding</li>
+          </ul>
+          <div class="micro">Confidence</div>
+          <ul>
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Confirmed fact</li>
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>Model inference</li>
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/></svg>Speculative</li>
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M1 9h32" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".35"/></svg>Thicker is more confident</li>
+          </ul>
+          <div class="micro mm-globe-only">Direction</div>
+          <ul class="mm-globe-only">
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="var(--gain)" stroke-width="2.5" stroke-linecap="round"/></svg>Raises the next step</li>
+            <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="var(--loss)" stroke-width="2.5" stroke-linecap="round"/></svg>Lowers the next step</li>
+          </ul>
+        </div>
+        <p class="mm-cap">Links are hypotheses, not facts. Each implied direction is written to the prediction ledger and scored later. Sample data.</p>
+      </section>
+      <p class="mm-credit">Imagery: NASA Earth Observatory, Black Marble 2016. Borders: Natural Earth.</p>
+
+      <div class="mm-time glass">
+        <button class="btn btn-sm" id="mm-play" type="button" aria-label="Play the timeline"></button>
+        <input type="range" id="mm-slider" min="0" max="11" step="0.01" value="11" aria-label="Timeline: show the map as it stood on a date">
+        <span class="date" id="mm-date">14 Nov 2026</span>
+      </div>
+
+      <div class="mm-tip glass" id="mm-tip" role="tooltip"></div>
+      <aside class="mm-panel" id="mm-panel" aria-label="Node details"></aside>
+      <div class="mm-table glass" id="mm-table"></div>
     </div>
-    <div class="mm-group glass" role="group" aria-label="View">
-      <button class="btn btn-sm" id="mm-replay" type="button" title="Replay how the map grows"></button>
-      <button class="btn btn-sm" id="mm-fit" type="button" title="Fit to window" aria-label="Fit to window"></button>
-      <button class="btn btn-sm" id="mm-out" type="button" aria-label="Zoom out">−</button>
-      <button class="btn btn-sm" id="mm-in" type="button" aria-label="Zoom in">+</button>
-    </div>
-    <div class="mm-group glass" role="group" aria-label="Options">
-      <button class="btn btn-sm is-on" id="mm-part" type="button" aria-pressed="true">Particles</button>
-      <button class="btn btn-sm" id="mm-para" type="button" aria-pressed="false">Parallax</button>
-      <button class="btn btn-sm is-on" id="mm-rot" type="button" aria-pressed="true">Rotate</button>
-      <button class="btn btn-sm" id="mm-dense" type="button" aria-pressed="false" title="Adds invented second-order companies to test 60 nodes">60 nodes</button>
-      <button class="btn btn-sm" id="mm-stress" type="button" aria-pressed="false" title="Invented graph of 1,000 nodes and 3,000 links, to test the frame rate" hidden>1,000 nodes</button>
-      <button class="btn btn-sm" id="mm-tbl" type="button" aria-pressed="false"></button>
-      <button class="btn btn-sm" id="mm-leg" type="button" aria-pressed="false" aria-expanded="false" aria-controls="mm-legend">Legend</button>
-    </div>
-    <div class="mm-group glass">
-      <button class="btn btn-sm" id="mm-png" type="button"></button>
-    </div>
-    <div class="mm-group glass mm-fps" id="mm-fps" aria-hidden="true">60 fps</div>
   </div>
-
-  <ul class="mm-legend glass" id="mm-legend" aria-label="Legend">
-    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Confirmed fact</li>
-    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>Model inference</li>
-    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/></svg>Speculative</li>
-    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M1 9h32" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".35"/></svg>Thicker is more confident</li>
-    <li class="mm-globe-only"><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="var(--gain)" stroke-width="2.5" stroke-linecap="round"/></svg>Raises the next step</li>
-    <li class="mm-globe-only"><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="var(--loss)" stroke-width="2.5" stroke-linecap="round"/></svg>Lowers the next step</li>
-    <li><svg viewBox="0 0 34 12"><rect x="11" y="0.5" width="11" height="11" rx="3" fill="none" stroke="var(--data-1)" stroke-width="1.5"/></svg>Event</li>
-    <li><svg viewBox="0 0 34 12"><path d="M17 0.5 23 6l-6 5.5L11 6z" fill="none" stroke="var(--data-2)" stroke-width="1.5"/></svg>Factor</li>
-    <li><svg viewBox="0 0 34 12"><path d="M13.5 1h7l3.5 5-3.5 5h-7L10 6z" fill="none" stroke="var(--data-3)" stroke-width="1.5"/></svg>Sector</li>
-    <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="5" fill="none" stroke="var(--data-6)" stroke-width="1.5"/></svg>Company</li>
-    <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="3.2" fill="none" stroke="var(--data-4)" stroke-width="1.5"/><circle cx="17" cy="6" r="5.5" fill="none" stroke="var(--data-4)" stroke-width="1" opacity=".6"/></svg>Your holding</li>
-  </ul>
-  <p class="mm-cap">Links are hypotheses, not facts. Each implied direction is written to the prediction ledger and scored later. Sample data.</p>
-  <p class="mm-credit">Imagery: NASA Earth Observatory, Black Marble 2016. Borders: Natural Earth.</p>
-
-  <div class="mm-time glass">
-    <button class="btn btn-sm" id="mm-play" type="button" aria-label="Play the timeline"></button>
-    <input type="range" id="mm-slider" min="0" max="11" step="0.01" value="11" aria-label="Timeline: show the map as it stood on a date">
-    <span class="date" id="mm-date">14 Nov 2026</span>
-  </div>
-
-  <div class="mm-tip glass" id="mm-tip" role="tooltip"></div>
-  <aside class="mm-panel" id="mm-panel" aria-label="Node details"></aside>
-  <div class="mm-table glass" id="mm-table"></div>
 </main>
 
 <script src="mock.js"></script>
 <script src="mindmap-geo.js"></script>
 <script src="mindmap-globe.js"></script>
 <script src="mindmap.js"></script>
+<script src="mindmap-dash.js"></script>
 </body>
 </html>

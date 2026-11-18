@@ -13,18 +13,22 @@
     event: { r: 25, c: 'data-1', name: 'Event' }, factor: { r: 21, c: 'data-2', name: 'Factor' }, sector: { r: 23, c: 'data-3', name: 'Sector' },
     company: { r: 20, c: 'data-6', name: 'Company' }, holding: { r: 22, c: 'data-4', name: 'Your holding' }
   };
-  /* node rows: id, type, label, first day, options. Events, companies and holdings carry the place they are pinned to on the globe */
+  /* node rows: id, type, label, first day, options. Events, companies and holdings carry the place they are pinned to on the globe.
+     Optional fields for the dashboard: layer (the tabs a node belongs to), status and impact (events), headline, and sources as
+     [outlet, minutes ago]. Outlets are placeholders, never real names */
   var BASE_N = [
-    ['e1', 'event', 'Hormuz shipping disruption', 0, { lat: 26.57, lng: 56.25, place: 'Strait of Hormuz' }], ['f_oil', 'factor', 'Oil price ↑', 1], ['f_gold', 'factor', 'Gold ↑', 1], ['f_freight', 'factor', 'Freight and insurance ↑', 2],
-    ['s_def', 'sector', 'Defense', 2, { ab: 'DF' }], ['s_energy', 'sector', 'Integrated oil and gas', 2, { ab: 'OG' }], ['f_jet', 'factor', 'Jet fuel cost ↑', 2],
+    ['e1', 'event', 'Hormuz shipping disruption', 0, { lat: 26.57, lng: 56.25, place: 'Strait of Hormuz', layer: ['geo', 'commod'], status: 'active', impact: 0.82, headline: 'Tanker traffic through the Strait of Hormuz halts after drone strikes', sources: [['Wire service A', 12], ['Newspaper B', 26], ['Broadcaster C', 41], ['Shipping journal D', 63]] }], ['f_oil', 'factor', 'Oil price ↑', 1, { layer: ['commod'], headline: 'Brent jumps 8% in two sessions on supply fears', sources: [['Financial daily A', 22], ['Energy journal F', 70]] }], ['f_gold', 'factor', 'Gold ↑', 1, { layer: ['commod'] }], ['f_freight', 'factor', 'Freight and insurance ↑', 2, { layer: ['commod'] }],
+    ['s_def', 'sector', 'Defense', 2, { ab: 'DF', layer: ['geo'] }], ['s_energy', 'sector', 'Integrated oil and gas', 2, { ab: 'OG', layer: ['commod'] }], ['f_jet', 'factor', 'Jet fuel cost ↑', 2, { layer: ['commod'] }],
     ['s_ship', 'sector', 'Shipping', 3, { ab: 'SH' }], ['s_retail', 'sector', 'Retail', 4, { ab: 'RT' }], ['c_lmt', 'company', 'Lockheed Martin', 3, { sym: 'LMT', ab: 'LM', lat: 39.03, lng: -77.14, place: 'Bethesda, Maryland' }],
-    ['c_shel', 'holding', 'Shell', 3, { sym: 'SHEL.L', ab: 'SH', w: 13.4, lat: 51.50, lng: -0.12, place: 'London' }], ['s_air', 'sector', 'Airlines', 3, { ab: 'AL' }], ['c_maersk', 'company', 'Maersk', 4, { ab: 'MA', lat: 55.69, lng: 12.60, place: 'Copenhagen' }],
-    ['c_cost', 'holding', 'Costco', 5, { sym: 'COST', ab: 'CO', w: 9.2, lat: 47.55, lng: -122.05, place: 'Issaquah, Washington' }], ['c_iag', 'company', 'IAG', 4, { sym: 'IAG.L', ab: 'IA', lat: 51.49, lng: -0.49, place: 'Harmondsworth, London' }],
-    ['e2', 'event', 'Fed signals slower cuts', 6, { lat: 38.89, lng: -77.05, place: 'Federal Reserve, Washington DC' }], ['f_10y', 'factor', '10-year yield ↑', 6], ['f_usd', 'factor', 'US dollar ↑', 7],
-    ['s_tech', 'sector', 'Large-cap tech', 7, { ab: 'LT' }], ['s_hkfin', 'sector', 'Hong Kong insurers', 8, { ab: 'HI' }],
-    ['c_msft', 'holding', 'Microsoft', 8, { sym: 'MSFT', ab: 'MI', w: 12.5, lat: 47.64, lng: -122.13, place: 'Redmond, Washington' }], ['c_aia', 'holding', 'AIA Group', 9, { sym: '1299.HK', ab: 'AI', w: 6.6, lat: 22.28, lng: 114.16, place: 'Hong Kong' }],
-    ['e3', 'event', 'Chip export-control review', 9, { lat: 38.89, lng: -77.03, place: 'Commerce Department, Washington DC' }], ['c_tsm', 'company', 'TSMC', 9, { sym: 'TSM', ab: 'TS', lat: 24.77, lng: 121.01, place: 'Hsinchu, Taiwan' }],
-    ['c_nvda', 'holding', 'NVIDIA', 10, { sym: 'NVDA', ab: 'NV', w: 16.4, lat: 37.37, lng: -121.96, place: 'Santa Clara, California' }], ['c_aapl', 'holding', 'Apple', 10, { sym: 'AAPL', ab: 'AP', w: 15.0, lat: 37.33, lng: -122.01, place: 'Cupertino, California' }]
+    ['c_shel', 'holding', 'Shell', 3, { sym: 'SHEL.L', ab: 'SH', w: 13.4, lat: 51.50, lng: -0.12, place: 'London', layer: ['ledger'], headline: 'Shell says Gulf cargoes rerouted, guidance unchanged', sources: [['Wire service A', 88]] }], ['s_air', 'sector', 'Airlines', 3, { ab: 'AL' }], ['c_maersk', 'company', 'Maersk', 4, { ab: 'MA', lat: 55.69, lng: 12.60, place: 'Copenhagen' }],
+    ['c_cost', 'holding', 'Costco', 5, { sym: 'COST', ab: 'CO', w: 9.2, lat: 47.55, lng: -122.05, place: 'Issaquah, Washington', layer: ['ledger'], headline: 'Retailers warn of higher landed costs if freight stays elevated', sources: [['Newspaper B', 400]] }], ['c_iag', 'company', 'IAG', 4, { sym: 'IAG.L', ab: 'IA', lat: 51.49, lng: -0.49, place: 'Harmondsworth, London' }],
+    ['e2', 'event', 'Fed signals slower cuts', 6, { lat: 38.89, lng: -77.05, place: 'Federal Reserve, Washington DC', layer: ['macro'], status: 'fading', impact: 0.55, headline: 'Fed chair signals a slower pace of rate cuts', sources: [['Wire service B', 185], ['Financial daily A', 240], ['Broadcaster C', 310]] }], ['f_10y', 'factor', '10-year yield ↑', 6, { layer: ['macro'] }], ['f_usd', 'factor', 'US dollar ↑', 7, { layer: ['fx', 'macro'] }],
+    ['s_tech', 'sector', 'Large-cap tech', 7, { ab: 'LT' }], ['s_hkfin', 'sector', 'Hong Kong insurers', 8, { ab: 'HI', layer: ['fx'] }],
+    ['c_msft', 'holding', 'Microsoft', 8, { sym: 'MSFT', ab: 'MI', w: 12.5, lat: 47.64, lng: -122.13, place: 'Redmond, Washington', layer: ['ledger'] }], ['c_aia', 'holding', 'AIA Group', 9, { sym: '1299.HK', ab: 'AI', w: 6.6, lat: 22.28, lng: 114.16, place: 'Hong Kong', layer: ['ledger'] }],
+    ['e3', 'event', 'Chip export-control review', 9, { lat: 38.89, lng: -77.03, place: 'Commerce Department, Washington DC', layer: ['geo'], status: 'developing', impact: 0.40, headline: 'Commerce Department opens review of advanced-chip export rules', sources: [['Wire service A', 95], ['Trade journal E', 140]] }], ['c_tsm', 'company', 'TSMC', 9, { sym: 'TSM', ab: 'TS', lat: 24.77, lng: 121.01, place: 'Hsinchu, Taiwan' }],
+    ['c_nvda', 'holding', 'NVIDIA', 10, { sym: 'NVDA', ab: 'NV', w: 16.4, lat: 37.37, lng: -121.96, place: 'Santa Clara, California', layer: ['ledger'] }], ['c_aapl', 'holding', 'Apple', 10, { sym: 'AAPL', ab: 'AP', w: 15.0, lat: 37.33, lng: -122.01, place: 'Cupertino, California', layer: ['ledger'] }],
+    ['e4', 'event', 'OPEC+ extends output cuts', 5, { lat: 48.21, lng: 16.37, place: 'OPEC headquarters, Vienna', layer: ['commod'], status: 'priced', impact: 0.30, headline: 'OPEC+ extends voluntary output cuts by three months', sources: [['Wire service B', 520], ['Energy journal F', 610]] }],
+    ['e5', 'event', 'NVIDIA results beat, guidance raised', 10, { lat: 37.37, lng: -121.96, place: 'Santa Clara, California', layer: ['earnings'], status: 'developing', impact: 0.62, headline: 'NVIDIA beats on data-centre revenue and raises next-quarter guidance', sources: [['Wire service A', 34], ['Financial daily A', 47], ['Tech site G', 58]] }]
   ];
   var BASE_L = [
     ['e1', 'f_oil', 1, 0.86, 'fact', 'Measured: Brent rose 8% in the two sessions after the event', 5],
@@ -50,7 +54,10 @@
     ['s_hkfin', 'c_aia', -1, 0.30, 'inference', 'Sector membership and beta', 1],
     ['e3', 'c_tsm', -1, 0.26, 'inference', 'Model reading of three articles; the outcome of the review is unknown', 3],
     ['c_tsm', 'c_nvda', -1, 0.66, 'fact', 'Filing: TSMC named as primary foundry supplier in the 2025 10-K', 1],
-    ['c_tsm', 'c_aapl', -1, 0.61, 'fact', 'Filing: TSMC named as a sole-source supplier in the 2025 10-K', 1]
+    ['c_tsm', 'c_aapl', -1, 0.61, 'fact', 'Filing: TSMC named as a sole-source supplier in the 2025 10-K', 1],
+    ['e4', 'f_oil', 1, 0.48, 'inference', 'Curated matrix: an extension the market expected moves prices little. Held in 6 of 11 past meetings', 3],
+    ['e5', 'c_nvda', 1, 0.88, 'fact', 'Measured: shares up 6% after hours on the report', 4],
+    ['e5', 'c_tsm', 1, 0.52, 'inference', 'Supplier read-through: higher guidance implies more wafer orders. Held in 7 of 12 past reports', 2]
   ];
   var HUBS = [['New York', 40.71, -74.01], ['Chicago', 41.88, -87.63], ['Houston', 29.76, -95.37], ['Toronto', 43.65, -79.38], ['São Paulo', -23.55, -46.63], ['Mexico City', 19.43, -99.13],
     ['London', 51.51, -0.13], ['Paris', 48.86, 2.35], ['Frankfurt', 50.11, 8.68], ['Amsterdam', 52.37, 4.90], ['Zurich', 47.38, 8.54], ['Stockholm', 59.33, 18.07],
@@ -64,12 +71,13 @@
   /* the stress graph for the globe: 1,000 invented nodes and 3,000 invented links, the same on every load. Links only run
      from an earlier node to a later one, so there are no loops */
   function buildStress() {
-    var rnd = M.rng(99), ids = { event: [], factor: [], sector: [], company: [] }, seen = {};
+    var rnd = M.rng(99), extra = M.rng(98), ids = { event: [], factor: [], sector: [], company: [] }, seen = {}, LAY = ['macro', 'earnings', 'commod', 'fx', 'geo'], ST = ['developing', 'active', 'fading', 'priced'];
     [['event', 40, 'Event '], ['factor', 120, 'Factor '], ['sector', 140, 'Sector '], ['company', 700, 'Company ']].forEach(function (t) {
       for (var i = 0; i < t[1]; i++) {
         var id = t[0].charAt(0) + 'x' + i, o = {}, type = t[0];
         if (type === 'event' || type === 'company') { var hub = HUBS[Math.floor(rnd() * HUBS.length)]; o.lat = Math.max(-75, Math.min(75, hub[1] + (rnd() * 2 - 1) * 8)); o.lng = hub[2] + (rnd() * 2 - 1) * 8; o.place = 'Near ' + hub[0]; }
-        if (type === 'company' && i % 35 === 0) { type = 'holding'; o.w = +(1 + rnd() * 4).toFixed(1); }
+        if (type === 'company' && i % 35 === 0) { type = 'holding'; o.w = +(1 + rnd() * 4).toFixed(1); o.layer = ['ledger']; }
+        if (type === 'event') { o.layer = [LAY[Math.floor(extra() * LAY.length)]]; o.status = ST[Math.floor(extra() * ST.length)]; o.impact = +extra().toFixed(2); o.headline = 'Invented headline ' + (i + 1) + ' for the 1,000-node test'; o.sources = [['Wire service ' + 'ABCDEFGH'.charAt(Math.floor(extra() * 8)), Math.round(extra() * 1440)]]; }
         add(id, type, t[2] + (i + 1) + (type === 'factor' ? ' ↑' : ''), Math.floor(rnd() * 12), o); ids[t[0]].push(id);
       }
     });
@@ -102,7 +110,7 @@
   }
   function add(id, type, label, day, o) {
     o = o || {};
-    var n = { id: id, type: type, label: label, day: day, sym: o.sym, ab: o.ab, w: o.w, lat: o.lat, lng: o.lng, place: o.place, r: TYPE[type].r, x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0, ins: [], outs: [], born: -1e9, tlA: 1, hA: 1, dim: 1, collapsed: false, hideTo: null, hidden: 0 };
+    var n = { id: id, type: type, label: label, day: day, sym: o.sym, ab: o.ab, w: o.w, lat: o.lat, lng: o.lng, place: o.place, layer: o.layer || [], status: o.status, impact: o.impact, headline: o.headline, sources: o.sources, r: TYPE[type].r, x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0, ins: [], outs: [], born: -1e9, tlA: 1, hA: 1, dim: 1, collapsed: false, hideTo: null, hidden: 0 };
     nodes.push(n); byId[id] = n;
   }
   function link(s, t, sign, conf, basis, why, src) {
@@ -135,7 +143,22 @@
 
   /* ---------- state shared by both renderers ---------- */
   var hover = null, hoverLink = null, sel = null, focusId = null, hasFocus = false;
-  var tl = 11, playing = null, particlesOn = true, parallax = false, rotateOn = true, focusHolding = '';
+  var tl = 11, playing = null, particlesOn = true, parallax = false, rotateOn = true, focusHolding = '', layer = '', lsets = null;
+  var LAYERS = { macro: 'Macro & rates', earnings: 'Earnings', commod: 'Commodities & energy', fx: 'FX', geo: 'Geopolitics', ledger: 'Predictions (ledger)' };
+  /* a layer tab keeps the nodes tagged with that layer at full strength and the rest of their causal chains faint */
+  function layerSets() {
+    if (!layer) return null;
+    if (lsets && lsets.key === layer) return lsets;
+    var core0 = {}, near = {};
+    nodes.forEach(function (n) { if (n.layer.indexOf(layer) >= 0) { core0[n.id] = 1; var c = chain(n); for (var k in c) near[k] = 1; } });
+    return (lsets = { key: layer, core: core0, near: near });
+  }
+  /* other parts of the page follow the map's state through this event */
+  function notify(what) { document.dispatchEvent(new CustomEvent('mm:change', { detail: what })); }
+  function scope() {
+    var h = byId[focusHolding];
+    $('#mm-scope').textContent = '· ' + (layer ? LAYERS[layer] + ' · ' : '') + (h ? 'chains reaching ' + h.label : 'whole portfolio') + ' · 3 to 14 Nov 2026';
+  }
   var clock0 = performance.now(), growStart = 0, tip = $('#mm-tip');
   function now() { return performance.now() - clock0; }
   function kick() { if (R) R.kick(); }
@@ -182,9 +205,13 @@
     /* the chain that is lit: the hovered node's, or the hovered link, or on the globe the selected node's while its panel is open */
     var hset = hover ? chain(hover) : hoverLink ? (function () { var s = {}; s[hoverLink.s.id] = 1; s[hoverLink.t.id] = 1; return s; })() : sel && R && R.name === 'globe' ? chain(sel) : null;
     /* a holding filter keeps only the chains that reach that holding: the globe hides the rest, the flat map dims it */
-    var fset = focusHolding ? upstream(byId[focusHolding]) : null, off = R && R.name === 'globe' ? 0 : 0.14;
-    nodes.forEach(function (n) { n.dimT = (hset && !hset[n.id] ? 0.15 : 1) * (fset && !fset[n.id] ? off : 1); n.lit = !!(hset && hset[n.id]); });
-    links.forEach(function (l) { var on = (!hset || (hset[l.s.id] && hset[l.t.id])) && (!hoverLink || hoverLink === l); l.dimT = (on ? 1 : 0.12) * (fset && !(fset[l.s.id] && fset[l.t.id]) ? off : 1); l.lit = !!((hset || hoverLink) && on); });
+    var fset = focusHolding ? upstream(byId[focusHolding]) : null, off = R && R.name === 'globe' ? 0 : 0.14, ls = layerSets();
+    nodes.forEach(function (n) { n.dimT = (hset && !hset[n.id] ? 0.15 : 1) * (fset && !fset[n.id] ? off : 1) * (ls ? (ls.core[n.id] ? 1 : ls.near[n.id] ? 0.35 : off) : 1); n.lit = !!(hset && hset[n.id]); });
+    links.forEach(function (l) {
+      var on = (!hset || (hset[l.s.id] && hset[l.t.id])) && (!hoverLink || hoverLink === l);
+      l.dimT = (on ? 1 : 0.12) * (fset && !(fset[l.s.id] && fset[l.t.id]) ? off : 1) * (ls ? (ls.near[l.s.id] && ls.near[l.t.id] ? (ls.core[l.s.id] || ls.core[l.t.id] ? 1 : 0.35) : off) : 1);
+      l.lit = !!((hset || hoverLink) && on);
+    });
   }
 
   /* ---------- per-node and per-link animation state, advanced once a frame by the active renderer ---------- */
@@ -222,7 +249,7 @@
     var out = l.s === n;
     return h + '<br><span class="dim">Strongest link:</span> ' + (out ? '→ ' : '← ') + esc((out ? l.t : l.s).label) + '<br><span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? 'Raises' : 'Lowers') + '</span> · ' + band(l.conf) + ' (' + l.conf.toFixed(2) + ') · ' + tierName(l);
   }
-  function placeTip(x, y) { tip.style.left = Math.max(8, Math.min(stage.clientWidth - 280, x + 14)) + 'px'; tip.style.top = Math.max(8, Math.min(stage.clientHeight - 110, y + 14)) + 'px'; }
+  function placeTip(x, y) { tip.style.left = Math.max(8, Math.min(host.clientWidth - 280, x + 14)) + 'px'; tip.style.top = Math.max(8, Math.min(host.clientHeight - 110, y + 14)) + 'px'; }
   function showTip(html, x, y) { tip.innerHTML = html; placeTip(x, y); tip.classList.add('on'); }
   function hideTip() { tip.classList.remove('on'); tipNode = null; }
   /* pin a node's tooltip to it; the globe renderer keeps it in place as the view turns */
@@ -238,7 +265,7 @@
     var drag = null, panning = false, moved = false, last = { x: 0, y: 0 }, grab = { x: 0, y: 0 };
     var par = { x: 0, y: 0, tx: 0, ty: 0 }, asleep = true, sprites = {}, fpsAvg = 60, lastT = 0, raf = 0;
     function resize() {
-      W = stage.clientWidth; H = stage.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = host.clientWidth; H = host.clientHeight; DPR = Math.min(2, window.devicePixelRatio || 1);
       cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     }
     function fit(instant) {
@@ -481,7 +508,7 @@
     resize();
     return {
       name: 'flat', kick: kick, fit: fit, intro: intro, flyTo: flyTo, reveal: reveal,
-      start: function () { new ResizeObserver(function () { resize(); fit(now() - growStart > 3500); kick(); }).observe(stage); },
+      start: function () { new ResizeObserver(function () { resize(); fit(now() - growStart > 3500); kick(); }).observe(host); },
       zoomBy: function (f) { camT.k = Math.max(0.25, Math.min(2.5, camT.k * f)); kick(); },
       exportBlob: function (cb) { cv.toBlob(cb); },
       repaint: function () { sprites = {}; kick(); },
@@ -496,7 +523,9 @@
     e2: [['Fed chair signals a slower pace of rate cuts', 21], ['Futures price out one cut for the first half', 8]],
     e3: [['Commerce Department opens review of advanced-chip export rules', 11], ['Foundry customers asked to document end users', 4]],
     f_oil: [['Brent jumps 8% in two sessions on supply fears', 17], ['Analysts split on how long the premium lasts', 5]],
-    c_shel: [['Shell says Gulf cargoes rerouted, guidance unchanged', 7]], c_cost: [['Retailers warn of higher landed costs if freight stays elevated', 6]]
+    c_shel: [['Shell says Gulf cargoes rerouted, guidance unchanged', 7]], c_cost: [['Retailers warn of higher landed costs if freight stays elevated', 6]],
+    e4: [['OPEC+ extends voluntary output cuts by three months', 9], ['Most analysts had expected the extension', 4]],
+    e5: [['NVIDIA beats on data-centre revenue and raises next-quarter guidance', 18], ['Foundry suppliers rise in after-hours trading', 6]]
   };
   var TIERS = [['fact', 'Confirmed fact', 'CONFIRMED FACT'], ['inference', 'Model inference', 'MODEL INFERENCE'], ['spec', 'Speculative', 'SPECULATIVE']];
   /* one link as seen from node n. The last line is the implied direction that goes into the prediction ledger: it is always about the link's target */
@@ -591,11 +620,10 @@
   function toggleBtn(sel0, fn) { $(sel0).addEventListener('click', function () { var on = this.getAttribute('aria-pressed') !== 'true'; this.setAttribute('aria-pressed', on); this.classList.toggle('is-on', on); fn(on); kick(); }); }
   toggleBtn('#mm-part', function (on) { particlesOn = on; });
   toggleBtn('#mm-para', function (on) { parallax = on; R.setParallax(on); });
-  function regraph() { closePanel(); hideTip(); hover = hoverLink = null; focusId = null; navVia = null; build(); fillFocus(); fillTable(); setTl(11); refold(); R.rebuild(); schedule(true); }
+  function regraph() { closePanel(); hideTip(); hover = hoverLink = null; focusId = null; navVia = null; lsets = null; build(); fillFocus(); fillTable(); setTl(11); refold(); R.rebuild(); schedule(true); notify('graph'); }
   toggleBtn('#mm-dense', function (on) { dense = on; regraph(); });
   /* ?stress=1 adds a switch for the 1,000-node graph; it is a frame-rate test for the globe, so the flat map does not offer it */
   toggleBtn('#mm-stress', function (on) { stress = on; $('#mm-dense').disabled = on; regraph(); });
-  toggleBtn('#mm-leg', function (on) { stage.classList.toggle('leg-open', on); $('#mm-leg').setAttribute('aria-expanded', on); });
   toggleBtn('#mm-rot', function (on) { rotateOn = on; });
   toggleBtn('#mm-tbl', function (on) { $('#mm-table').classList.toggle('open', on); R.pause(on); });
   /* reduced motion switches these three off whatever they are set to: say so on the buttons */
@@ -613,19 +641,26 @@
   });
   function fillFocus() {
     var s = $('#mm-focus'); s.innerHTML = '<option value="">All holdings</option>' + nodes.filter(function (n) { return n.type === 'holding'; }).map(function (n) { return '<option value="' + n.id + '">' + esc(n.label) + '</option>'; }).join(''); focusHolding = '';
-    $('#mm-scope').textContent = '· whole portfolio · 3 to 14 Nov 2026';
+    scope();
   }
   $('#mm-focus').addEventListener('change', function () {
     focusHolding = this.value; var h = byId[focusHolding];
-    $('#mm-scope').textContent = '· ' + (h ? 'chains reaching ' + h.label : 'whole portfolio') + ' · 3 to 14 Nov 2026';
-    targets(); fillTable();
+    scope(); targets(); fillTable();
     if (sel && sel.dimT < 0.05) closePanel();
     $('#mm-live').textContent = h ? 'Showing ' + Object.keys(upstream(h)).length + ' nodes in chains that reach ' + h.label + '.' : 'Showing the whole portfolio.';
-    R.refit(); kick();
+    R.refit(); kick(); notify('filter');
   });
+  function setLayer(v) {
+    layer = v || ''; lsets = null;
+    scope(); targets(); fillTable();
+    if (sel && sel.dimT < 0.05) closePanel();
+    var ls = layerSets();
+    $('#mm-live').textContent = ls ? 'Showing the ' + LAYERS[layer] + ' layer: ' + Object.keys(ls.core).length + ' nodes and the chains they are part of.' : 'Showing every layer.';
+    R.refit(); kick(); notify('filter');
+  }
   function fillTable() {
     /* the table follows the holding filter, so it lists the same links the map shows */
-    var fset = focusHolding ? upstream(byId[focusHolding]) : null, rows = links.filter(function (l) { return !fset || (fset[l.s.id] && fset[l.t.id]); });
+    var fset = focusHolding ? upstream(byId[focusHolding]) : null, ls = layerSets(), rows = links.filter(function (l) { return (!fset || (fset[l.s.id] && fset[l.t.id])) && (!ls || (ls.near[l.s.id] && ls.near[l.t.id])); });
     $('#mm-table').innerHTML = '<table><thead><tr><th>Cause</th><th>Effect</th><th>Direction</th><th>Confidence</th><th>Basis</th><th>Evidence</th><th>Where</th><th>First seen</th></tr></thead><tbody>' +
       rows.map(function (l) {
         var t = tier(l), where = [l.s.place, l.t.place].filter(Boolean).join(' → ');
@@ -633,7 +668,7 @@
       }).join('') + '</tbody></table>';
   }
   var slider = $('#mm-slider');
-  function setTl(v) { tl = v; slider.value = v; $('#mm-date').textContent = dateOf(v); kick(); }
+  function setTl(v) { tl = v; slider.value = v; $('#mm-date').textContent = dateOf(v); kick(); notify('time'); }
   slider.addEventListener('input', function () { stopPlay(); setTl(+this.value); });
   function stopPlay() { if (playing) { playing.cancel(); playing = null; $('#mm-play').innerHTML = M.icon('play', 'ic-sm'); } }
   $('#mm-play').addEventListener('click', function () {
@@ -650,7 +685,7 @@
   /* ---------- what the globe renderer may read and call ---------- */
   var core = {
     host: host, stage: stage, TYPE: TYPE, band: band, tier: tier, dateOf: dateOf, now: now, targets: targets, animate: animate, report: report,
-    choose: choose, closePanel: closePanel, say: say,
+    choose: choose, closePanel: closePanel, say: say, chain: chain, upstream: upstream, setLayer: setLayer, LAYERS: LAYERS, STORY: STORY,
     replay: function () { schedule(true); },
     /* pointer results from the globe: a node (its tooltip stays pinned to it), a link (tooltip at the pointer) or nothing */
     overNode: function (n) { if (n === hover && !hoverLink && tipNode === n) return; hover = n; hoverLink = null; if (n) pin(n); else hideTip(); },
@@ -662,8 +697,10 @@
   [['nodes', function () { return nodes; }], ['links', function () { return links; }], ['byId', function () { return byId; }], ['hover', function () { return hover; }],
     ['hoverLink', function () { return hoverLink; }], ['tipNode', function () { return tipNode; }], ['sel', function () { return sel; }], ['focusId', function () { return focusId; }], ['hasFocus', function () { return hasFocus; }],
     ['tl', function () { return tl; }], ['playing', function () { return playing; }], ['particlesOn', function () { return particlesOn; }], ['parallax', function () { return parallax; }], ['rotateOn', function () { return rotateOn; }],
-    ['focusHolding', function () { return focusHolding; }], ['growStart', function () { return growStart; }], ['dense', function () { return dense; }]
+    ['focusHolding', function () { return focusHolding; }], ['growStart', function () { return growStart; }], ['dense', function () { return dense; }], ['layer', function () { return layer; }]
   ].forEach(function (g) { Object.defineProperty(core, g[0], { get: g[1] }); });
+
+  M.mmCore = core;   /* the dashboard around the map, mindmap-dash.js, works through this */
 
   function note(msg) {
     var el = $('#mm-note');

@@ -1,4 +1,5 @@
-/* Market Lens mockup: event mind map page. The shared .mm-* rules are in app.css; this file holds what the globe view adds. */
+/* Market Lens mockup: event mind map page. The shared .mm-* rules are in app.css; this file holds what the globe view and the
+   dashboard around the map add. */
 
 .mm-stage { --mm-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
 
@@ -20,19 +21,57 @@
 .mm-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 500 12px/16px var(--mm-mono); letter-spacing: 0.04em; color: var(--text-3); pointer-events: none; transition: opacity var(--d-slow); }
 .mm-loading.off { opacity: 0; }
 
-.mm-note { position: absolute; z-index: 6; left: 50%; top: 68px; transform: translateX(-50%); width: max-content; max-width: min(760px, calc(100% - 32px)); box-shadow: var(--shadow-3); background: var(--surface-2); }
+.mm-note { position: absolute; z-index: 6; left: 50%; top: 64px; transform: translateX(-50%); width: max-content; max-width: min(760px, calc(100% - 32px)); box-shadow: var(--shadow-3); background: var(--surface-2); }
 .mm-note .btn { flex: none; }
 
 .mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
 .mm-stage[data-view="globe"] .mm-credit { display: block; }
 
-/* the globe view has one more toggle: its toolbar buttons are a little tighter so everything still fits one row on a laptop */
-.mm-stage[data-view="globe"] .mm-group .btn-sm { padding-inline: 9px; }
+/* ---------- page layout: the top bar, then the map area ---------- */
+.mm-stage { display: flex; flex-direction: column; }
+.mm-top { flex: none; position: relative; z-index: 7; height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid var(--hairline); background: var(--surface-1); }
+.mm-ttl { flex: 1 1 auto; min-width: 0; }
+.mm-ttl-1 { font-size: 13px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-ttl-1 b { font-weight: 600; }
+.mm-status { font-size: 12px; line-height: 16px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-status .mk { display: inline-flex; align-items: center; gap: 6px; }
+.mm-status .mk i { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); }
+.mm-status .mk.open i { background: var(--gain); }
+.mm-ctl { flex: none; display: flex; align-items: center; gap: 8px; }
+.mm-top .mm-group { background: var(--surface-2); border-color: var(--hairline); box-shadow: none; }
+.mm-top .mm-group .btn-sm { padding-inline: 9px; }
+.mm-top .mm-fps { margin-left: 0; padding: 0 0 0 8px; min-width: 176px; text-align: right; }
+.mm-body { flex: 1 1 auto; min-height: 0; display: flex; position: relative; }
+.mm-area { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; }
 
-/* the Legend button is for phones, where the legend and the footnote are tucked away until asked for */
-#mm-leg { display: none; }
+/* More menu: placed by mindmap-dash.js under its button, above everything else */
+#mm-more { border: 1px solid var(--hairline); background: var(--surface-2); height: 36px; padding: 0 14px; border-radius: 12px; }
+#mm-more[aria-expanded="true"] { background: var(--surface-3); }
+.mm-menu { position: fixed; z-index: 40; min-width: 200px; padding: 6px; display: grid; gap: 2px; border-radius: 12px; border: 1px solid var(--hairline-strong); background: var(--surface-2); box-shadow: var(--shadow-3); }
+.mm-menu .btn { width: 100%; justify-content: flex-start; border-color: transparent; background: transparent; }
+.mm-menu .btn:hover { background: var(--surface-3); }
+.mm-menu-sep { height: 1px; margin: 4px 6px; background: var(--hairline); }
 
-/* legend rows that only apply to the globe, where links are coloured by their sign */
+/* layer tabs over the top left of the map */
+.mm-layers { position: absolute; z-index: 4; top: 12px; left: 16px; max-width: calc(100% - 32px); padding: 0 6px; border-radius: 12px; border: 1px solid var(--hairline-strong); box-shadow: var(--shadow-2); }
+.mm-layers .tab { height: 36px; padding: 0 10px; font-size: 12px; }
+.mm-layers .tab .ct { margin-left: 2px; font-size: 11px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+/* the key, bottom left: the legend in three groups, and the footnote that always stays */
+.mm-key { position: absolute; z-index: 3; left: 16px; bottom: 16px; width: 240px; padding: 8px; border-radius: 12px; border: 1px solid var(--hairline-strong); box-shadow: var(--shadow-2); }
+.mm-key-h { width: 100%; height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; border: 0; border-radius: 8px; background: none; color: var(--text-1); font: 600 11px/16px var(--font); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+.mm-key-h:hover { background: var(--surface-3); }
+.mm-key-h::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid var(--text-2); border-bottom: 1.5px solid var(--text-2); transform: translateY(-2px) rotate(45deg); transition: transform var(--d-fast); }
+.mm-key-h[aria-expanded="false"]::after { transform: translateY(1px) rotate(-135deg); }
+.mm-keylist { padding: 0 8px 4px; }
+.mm-keylist .micro { margin: 8px 0 4px; }
+.mm-keylist ul { display: grid; gap: 2px; }
+.mm-keylist li { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 20px; color: var(--text-2); }
+.mm-keylist svg { width: 34px; height: 12px; flex: none; }
+.mm-stage .mm-key .mm-cap { display: block; position: static; max-width: none; margin: 8px 8px 0; font-size: 11px; line-height: 15px; color: var(--text-3); }
+.mm-key.closed .mm-cap { margin-top: 4px; }
+
+/* key rows that only apply to the globe, where links are coloured by their sign */
 .mm-stage[data-view="flat"] .mm-globe-only { display: none; }
 
 /* the Rotate toggle belongs to the globe; a toggle that reduced motion has switched off looks it */
@@ -49,13 +88,14 @@
   /* on a phone the globe view opens node details as a sheet from the bottom, so the globe stays in view above it */
   .mm-stage[data-view="globe"] .mm-panel { top: auto; left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 52dvh; padding: 16px; transform: translateY(24px); }
   .mm-stage[data-view="globe"] .mm-panel.open { transform: none; }
-  /* and the toolbar is one row that scrolls sideways, so it does not cover the globe */
-  .mm-stage[data-view="globe"] .mm-bar { top: 8px; left: 0; right: 0; padding: 0 8px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; pointer-events: auto; }
-  .mm-stage[data-view="globe"] .mm-bar::-webkit-scrollbar { display: none; }
-  .mm-stage[data-view="globe"] .mm-bar > * { flex: none; white-space: nowrap; }
+  /* the top bar is a title line, then one row of controls that scrolls sideways */
+  .mm-top { height: auto; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }
+  .mm-ttl { flex: 1 1 100%; }
+  .mm-ctl { flex: 1 1 100%; overflow-x: auto; scrollbar-width: none; }
+  .mm-ctl::-webkit-scrollbar { display: none; }
+  .mm-ctl > * { flex: none; white-space: nowrap; }
+  .mm-layers { top: 8px; left: 8px; max-width: calc(100% - 16px); }
+  .mm-key { left: 8px; bottom: 84px; }
   /* the stage is as tall as the part of the screen the browser really leaves free */
   .mm-stage[data-view="globe"] { height: calc(100dvh - 101px - 56px - env(safe-area-inset-bottom, 0px)); }
-  .mm-stage[data-view="globe"] #mm-leg { display: inline-flex; }
-  .mm-stage[data-view="globe"].leg-open .mm-legend { display: grid; left: 8px; bottom: 132px; }
-  .mm-stage[data-view="globe"].leg-open .mm-cap { display: block; left: 8px; right: 8px; bottom: 80px; max-width: none; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--hairline-strong); color: var(--text-2); }
 }
