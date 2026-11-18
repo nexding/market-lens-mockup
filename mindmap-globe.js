@@ -4,7 +4,7 @@
    falls back to the flat map. All graph data is invented. */
 (function () {
   'use strict';
-  var M = window.ML, COL = M.COL;
+  var M = window.ML, COL = M.COL, G = M.mmGeo;
 
   var CDN = {
     globe: ['https://cdn.jsdelivr.net/npm/globe.gl@2.46.2/dist/globe.gl.min.js', 'https://unpkg.com/globe.gl@2.46.2/dist/globe.gl.min.js'],
@@ -14,7 +14,7 @@
     night: 'https://cdn.jsdelivr.net/npm/three-globe@2.45.6/example/img/earth-night.jpg',
     atlas: 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json'
   };
-  var LOAD_MS = 8000, HOME = { lat: 24, lng: 12, altitude: 2.4 }, ALT_MIN = 0.6, ALT_MAX = 5;
+  var LOAD_MS = 8000, HOME = { lat: 36, lng: 12, altitude: 2.5 }, ALT_MIN = 0.6, ALT_MAX = 5;
 
   /* ---------- loading ---------- */
   function script(urls, sri) {
@@ -56,6 +56,96 @@
     return { arcs: arcs, use: use, land: land };
   }
 
+  /* ---------- shaders. Sizes are in CSS pixels; uRes is the stage size in CSS pixels ---------- */
+  var GLSL = [
+    'const float R = 100.0;',
+    'uniform float uFanK;',
+    '/* a node that shares its place with others: turned off the shared centre along its fan (same formula as mmGeo.shown) */',
+    'vec3 fanned(vec3 base, vec3 fan) {',
+    '  float px = length(fan); if (px < 0.001) return base;',
+    '  return normalize(base + fan * (tan(clamp(px * uFanK, ' + G.FAN_LO + ', ' + G.FAN_HI + ')) / px));',
+    '}',
+    '/* 1 where the Earth does not stand between the camera and P */',
+    'float vis(vec3 P) {',
+    '  vec3 v = P - cameraPosition; float s = clamp(-dot(cameraPosition, v) / dot(v, v), 0.0, 1.0);',
+    '  return smoothstep(R * 0.992, R * 1.004, length(cameraPosition + v * s));',
+    '}'
+  ].join('\n');
+  /* nodes: one billboard per node. aMeta = altitude, shape (0 event, 1 factor, 2 sector, 3 company, 4 holding, 5 anchor dot), radius, hub strength.
+     aState = alpha, scale, lit, selected */
+  var NODE_VS = GLSL + [
+    'attribute vec3 aBase; attribute vec3 aFan; attribute vec3 aCol; attribute vec4 aMeta; attribute vec4 aState;',
+    'uniform vec2 uRes; uniform float uScale;',
+    'varying vec2 vP; varying vec3 vCol; varying vec4 vS; varying vec2 vK;',
+    'void main() {',
+    '  vec3 P = fanned(aBase, aFan) * R * (1.0 + aMeta.x);',
+    '  float a = aState.x * vis(P), r = aMeta.z * (aMeta.y > 4.5 ? 1.0 : uScale) * aState.y, ext = r * 3.6 + 3.0;',
+    '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0);',
+    '  c.xy += position.xy * ext * 2.0 / uRes * c.w;',
+    '  gl_Position = (a < 0.004 || r < 0.05) ? vec4(2.0, 2.0, 2.0, 1.0) : c;',
+    '  vP = position.xy * ext; vCol = aCol; vS = vec4(a, aState.z, aState.w, aMeta.w); vK = vec2(aMeta.y, r);',
+    '}'
+  ].join('\n');
+  var NODE_FS = [
+    'uniform vec3 uBg; uniform float uAdd;',
+    'varying vec2 vP; varying vec3 vCol; varying vec4 vS; varying vec2 vK;',
+    'float shape(vec2 p, float r, float k) {',
+    '  if (k < 0.5) { vec2 q = abs(p) - vec2(r * 0.6); return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r * 0.32; }',
+    '  if (k < 1.5) return (abs(p.x) + abs(p.y) - r * 1.3) * 0.7071;',
+    '  if (k < 2.5) { vec2 q = abs(p); return max(q.y, q.x * 0.866025 + q.y * 0.5) - r * 0.95; }',
+    '  return length(p) - r;',
+    '}',
+    'void main() {',
+    '  float k = vK.x, r = vK.y, d = shape(vP, r, k), hold = step(3.5, k) * step(k, 4.5), dotk = step(4.5, k);',
+    '  float sw = mix(1.5, 2.6, vS.z), inside = smoothstep(0.6, -0.6, d), edge = inside * smoothstep(-sw - 0.6, -sw + 0.6, d);',
+    '  float mark = k < 0.5 ? smoothstep(r * 0.24 + 0.6, r * 0.24 - 0.6, length(vP)) : 0.0;',
+    '  vec3 core = mix(mix(uBg, vCol, mix(0.2, 0.5, hold)), vCol, max(max(edge, mark), dotk));',
+    '  float ca = inside * mix(mix(0.9, 1.0, max(edge, mark)), 0.85, dotk);',
+    '  /* a holding carries a second ring; every node has a halo, stronger for holdings, hubs and a lit chain */',
+    '  float ring = hold * smoothstep(1.2, 0.3, abs(d - 4.0)) * 0.8;',
+    '  float glow = exp(-max(d, 0.0) / (r * 1.15 + 1.0)) * smoothstep(r * 3.6 + 3.0, r * 1.8, length(vP)) * (1.0 - dotk);',
+    '  glow *= (0.42 + 0.16 * hold + 0.2 * vS.w + 0.4 * vS.y) * mix(0.5, 1.0, uAdd);',
+    '  /* dark theme: the halo adds light. Light theme: it is laid over like the rest */',
+    '  vec4 o = vec4(vCol * glow, glow * (1.0 - uAdd));',
+    '  o = o * (1.0 - ring) + vec4(vCol * ring, ring);',
+    '  o = o * (1.0 - ca) + vec4(core * ca, ca);',
+    '  gl_FragColor = o * vS.x;',
+    '}'
+  ].join('\n');
+  /* ribbons: one strip per line, bent along the globe in the vertex shader. aH = altitude at the start, at the end, extra height
+     at the middle. aStyle = width, tier, confidence, kind. aState = alpha, how much of the length is drawn */
+  var RIB_VS = GLSL + [
+    'attribute vec3 aA; attribute vec3 aB; attribute vec3 aFanA; attribute vec3 aFanB; attribute vec3 aH; attribute vec4 aStyle; attribute vec3 aCol; attribute vec2 aState;',
+    'uniform vec2 uRes;',
+    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying vec4 vStyle; varying vec3 vCol;',
+    'vec3 at(vec3 a, vec3 b, float om, float t) {',
+    '  vec3 d = om < 0.0002 ? a : (sin((1.0 - t) * om) * a + sin(t * om) * b) / sin(om);',
+    '  return d * R * (1.0 + mix(aH.x, aH.y, t) + aH.z * sin(3.14159265 * t));',
+    '}',
+    'void main() {',
+    '  float t = position.x, e = t < 0.5 ? 0.02 : -0.02;',
+    '  vec3 a = fanned(aA, aFanA), b = fanned(aB, aFanB); float om = acos(clamp(dot(a, b), -1.0, 1.0));',
+    '  vec3 P = at(a, b, om, t);',
+    '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0), c2 = projectionMatrix * viewMatrix * vec4(at(a, b, om, t + e), 1.0);',
+    '  vec2 dir = (c2.xy / c2.w - c.xy / c.w) * uRes * sign(e);',
+    '  dir = length(dir) > 0.0001 ? normalize(dir) : vec2(1.0, 0.0);',
+    '  float hw = aStyle.x * 0.5 + 1.0;',
+    '  c.xy += vec2(-dir.y, dir.x) * position.y * hw * 2.0 / uRes * c.w;',
+    '  gl_Position = aState.x < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c;',
+    '  vAcross = position.y * hw; vHalf = aStyle.x * 0.5; vT = t; vA = aState.x * vis(P); vStyle = aStyle; vCol = aCol;',
+    '}'
+  ].join('\n');
+  var RIB_FS = [
+    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying vec4 vStyle; varying vec3 vCol;',
+    'void main() {',
+    '  float a = smoothstep(vHalf + 0.6, vHalf - 0.6, abs(vAcross)) * vA;',
+    '  gl_FragColor = vec4(vCol * a, a);',
+    '}'
+  ].join('\n');
+  var SEG = 32, SHAPE = { event: 0, factor: 1, sector: 2, company: 3, holding: 4 }, SIZE = { event: 9, factor: 7, sector: 8, company: 5, holding: 7 };
+  /* how far below a node's centre its label starts, in units of its radius plus pixels */
+  var DROP = { event: [0.95, 4], factor: [1.3, 4], sector: [0.95, 4], company: [1, 4], holding: [1, 9] }, RANK = { event: 0, holding: 1, factor: 2, sector: 3, company: 4 };
+
   M.mmGlobe = function (core) {
     var host = core.host, world = null, THREE = null, dead = false, ro = null;
     var glHost = null, loading = null, W = 0, H = 0;
@@ -63,6 +153,9 @@
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
     var interacting = false, moved = false, resumeAt = 0, lastInput = 0, zoomTw = null;
     var fpsAvg = 60, lastT = 0, lastFps = 0;
+    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] } };
+    var nodeMesh = null, ribMesh = null, NI = [], RI = [], over = null, octx = null, DPR = 1, mono = 'monospace';
+    var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
 
     /* ---------- the surface texture: night photograph or a land mask in token colours, with borders drawn in ---------- */
     function paintTexture() {
@@ -132,11 +225,137 @@
       world.scene().add(stars);
     }
 
+    /* ---------- the graph: one draw call for all nodes, one for all lines ---------- */
+    function instanced(base, count, attrs) {
+      var g = new THREE.InstancedBufferGeometry(); g.setAttribute('position', base.pos); g.setIndex(base.idx); g.instanceCount = count;
+      Object.keys(attrs).forEach(function (k) { var a = new THREE.InstancedBufferAttribute(new Float32Array(Math.max(1, count) * attrs[k]), attrs[k]); if (k === 'aState') a.setUsage(THREE.DynamicDrawUsage); g.setAttribute(k, a); });
+      return g;
+    }
+    function layer(geo, vs, fs, order) {
+      var m = new THREE.Mesh(geo, new THREE.ShaderMaterial({ uniforms: U, vertexShader: vs, fragmentShader: fs, transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false, side: THREE.DoubleSide }));
+      m.frustumCulled = false; m.renderOrder = order; world.scene().add(m); return m;
+    }
+    function put(attr, i, v) { attr.array.set(v, i * attr.itemSize); }
+    function buildGraph() {
+      var nodes = core.nodes, i, n, g;
+      G.place(nodes);
+      /* node instances: every node, then a small dot at the true place of each node that has been fanned out */
+      NI = nodes.map(function (n) { return { n: n, dot: false }; }).concat(nodes.filter(function (n) { return n.geo.fan; }).map(function (n) { return { n: n, dot: true }; }));
+      var quad = { pos: new THREE.BufferAttribute(new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0]), 3), idx: new THREE.BufferAttribute(new Uint16Array([0, 1, 2, 0, 2, 3]), 1) };
+      g = instanced(quad, NI.length, { aBase: 3, aFan: 3, aCol: 3, aMeta: 4, aState: 4 });
+      for (i = 0; i < NI.length; i++) {
+        n = NI[i].n;
+        if (NI[i].dot) { put(g.attributes.aBase, i, n.geo.home); put(g.attributes.aMeta, i, [G.SURFACE, 5, 1.6, 0]); }
+        else { put(g.attributes.aBase, i, n.geo.v); if (n.geo.fan) put(g.attributes.aFan, i, n.geo.fan); put(g.attributes.aMeta, i, [n.geo.alt, SHAPE[n.type], SIZE[n.type], Math.min(1, (n.ins.length + n.outs.length) / 6)]); }
+      }
+      nodeMesh = layer(g, NODE_VS, NODE_FS, 30);
+      /* line instances: a stem under each floating node, a tether from each fanned node back to its true place */
+      RI = nodes.filter(function (n) { return n.geo.float; }).map(function (n) { return { n: n, kind: 'stem' }; }).concat(nodes.filter(function (n) { return n.geo.fan; }).map(function (n) { return { n: n, kind: 'tether' }; }));
+      var sp = new Float32Array((SEG + 1) * 6), si = new Uint16Array(SEG * 6);
+      for (i = 0; i <= SEG; i++) { sp.set([i / SEG, -1, 0, i / SEG, 1, 0], i * 6); if (i < SEG) si.set([i * 2, i * 2 + 1, i * 2 + 2, i * 2 + 1, i * 2 + 3, i * 2 + 2], i * 6); }
+      g = instanced({ pos: new THREE.BufferAttribute(sp, 3), idx: new THREE.BufferAttribute(si, 1) }, RI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 3, aStyle: 4, aCol: 3, aState: 2 });
+      for (i = 0; i < RI.length; i++) {
+        n = RI[i].n; put(g.attributes.aStyle, i, [1, 0, 1, RI[i].kind === 'stem' ? 1 : 2]);
+        if (RI[i].kind === 'stem') { put(g.attributes.aA, i, n.geo.v); put(g.attributes.aB, i, n.geo.v); put(g.attributes.aH, i, [0.004, n.geo.alt, 0]); }
+        else { put(g.attributes.aA, i, n.geo.home); put(g.attributes.aB, i, n.geo.v); put(g.attributes.aFanB, i, n.geo.fan); put(g.attributes.aH, i, [0.005, 0.005, 0]); }
+      }
+      ribMesh = layer(g, RIB_VS, RIB_FS, 10);
+      octx.font = '500 10.5px ' + mono;
+      nodes.forEach(function (n) { n.lab = n.w ? n.label + ' · ' + n.w.toFixed(1) + '%' : n.label; n.labW = octx.measureText(n.lab).width; n.labA = 0; n.labT = 0; n.sv = 0; });
+      paintGraph(); lastLab = 0;
+    }
+    function dropGraph() {
+      [nodeMesh, ribMesh].forEach(function (m) { if (m) { world.scene().remove(m); m.geometry.dispose(); m.material.dispose(); } });
+      nodeMesh = ribMesh = null;
+    }
+    /* colours are per instance, so a theme or accent change refills them */
+    function paintGraph() {
+      if (!nodeMesh) return;
+      var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']);
+      NI.forEach(function (it, i) { put(a, i, it.dot ? quiet : rgb(COL[core.TYPE[it.n.type].c])); });
+      RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : quiet); });
+      a.needsUpdate = b.needsUpdate = true;
+    }
+    /* per-frame state from the shared animation: written every frame, uploaded only when something changed */
+    function write(attr, i, v) { var arr = attr.array, o = i * attr.itemSize, ch = false; for (var k = 0; k < v.length; k++) if (arr[o + k] !== (arr[o + k] = v[k])) ch = true; return ch; }
+    var tmp4 = [0, 0, 0, 0], tmp2 = [0, 1];
+    function syncGraph() {
+      var a = nodeMesh.geometry.attributes.aState, b = ribMesh.geometry.attributes.aState, i, n, ch = false, hover = core.hover, sel = core.sel;
+      for (i = 0; i < NI.length; i++) {
+        n = NI[i].n; tmp4[0] = Math.fround(n.al * n.dim * (NI[i].dot ? 0.9 : 1)); tmp4[1] = NI[i].dot ? 1 : Math.fround(n.sc * (0.6 + 0.4 * n.hA) * (n === hover ? 1.07 : 1)); tmp4[2] = n.lit || n === sel ? 1 : 0; tmp4[3] = n === sel ? 1 : 0;
+        if (write(a, i, tmp4)) ch = true;
+      }
+      if (ch) a.needsUpdate = true; ch = false;
+      for (i = 0; i < RI.length; i++) { n = RI[i].n; tmp2[0] = Math.fround(n.al * n.dim * Math.min(1, n.sc) * (RI[i].kind === 'stem' ? 0.34 : 0.5)); if (write(b, i, tmp2)) ch = true; }
+      if (ch) b.needsUpdate = true;
+    }
+
+    /* ---------- labels: a 2D canvas over the globe. Small, quiet, and thinned out by zoom level and importance ---------- */
+    var sc3 = [0, 0, 0, 0, 0, 0];
+    function toScreen(d, r) {
+      var x = d[0] * r, y = d[1] * r, z = d[2] * r, w = PV[3] * x + PV[7] * y + PV[11] * z + PV[15];
+      sc3[0] = ((PV[0] * x + PV[4] * y + PV[8] * z + PV[12]) / w * 0.5 + 0.5) * W; sc3[1] = (0.5 - (PV[1] * x + PV[5] * y + PV[9] * z + PV[13]) / w * 0.5) * H;
+      sc3[2] = w; sc3[3] = x; sc3[4] = y; sc3[5] = z;
+    }
+    function project(n) {
+      var r = 100 * (1 + n.geo.alt), c = world.camera().position;
+      toScreen(G.shown(n.geo, fanK), r); n.sx = sc3[0]; n.sy = sc3[1];
+      /* the same test as vis() in the shaders */
+      var vx = sc3[3] - c.x, vy = sc3[4] - c.y, vz = sc3[5] - c.z, s = Math.max(0, Math.min(1, -(c.x * vx + c.y * vy + c.z * vz) / (vx * vx + vy * vy + vz * vz)));
+      var q = (Math.hypot(c.x + vx * s, c.y + vy * s, c.z + vz * s) - 99.2) / 1.2; q = Math.max(0, Math.min(1, q));
+      n.sv = sc3[2] > 0 ? q * q * (3 - 2 * q) : 0; n.sr = SIZE[n.type] * U.uScale.value;
+      /* a fanned node carries its label on the side facing away from the shared centre: 0 below, 1 right, 2 above, 3 left */
+      n.side = 0;
+      if (n.geo.fan) { toScreen(n.geo.v, r); var dx = n.sx - sc3[0], dy = n.sy - sc3[1]; n.side = Math.abs(dx) >= Math.abs(dy) ? (dx > 0 ? 1 : 3) : (dy > 0 ? 0 : 2); }
+    }
+    var LH = 13, bx = [0, 0, 0, 0];
+    function labelBox(n) {
+      var dr = DROP[n.type], off = n.sr * dr[0] + dr[1];
+      bx[2] = n.labW; bx[3] = LH;
+      if (n.side === 1) { bx[0] = n.sx + off + 2; bx[1] = n.sy - LH / 2; }
+      else if (n.side === 3) { bx[0] = n.sx - off - 2 - n.labW; bx[1] = n.sy - LH / 2; }
+      else { bx[0] = n.sx - n.labW / 2; bx[1] = n.side === 2 ? n.sy - off - LH : n.sy + off; }
+      /* a label near the edge of the stage slides in so it is not cut off */
+      if (n.sx > 0 && n.sx < W) bx[0] = Math.max(4, Math.min(W - n.labW - 4, bx[0]));
+      return bx;
+    }
+    function chooseLabels() {
+      var nodes = core.nodes, hover = core.hover, sel = core.sel, focus = core.hasFocus ? core.focusId : null, cap = coarse ? 28 : 80, boxes = [], n, i, j;
+      var level = camAlt > 2.6 ? 1 : camAlt > 1.6 ? 3 : 4;   /* far: events and holdings. Middle: plus factors and sectors. Near: everything */
+      function forced(n) { return n === hover || n === sel || n.id === focus; }
+      var cand = nodes.filter(function (n) { n.labT = 0; return n.sv > 0.5 && n.al > 0.5 && n.dim > 0.5 && (RANK[n.type] <= level || n.lit || forced(n)); });
+      cand.sort(function (a, b) { return (forced(b) - forced(a)) || ((b.lit ? 1 : 0) - (a.lit ? 1 : 0)) || (RANK[a.type] - RANK[b.type]) || ((b.ins.length + b.outs.length) - (a.ins.length + a.outs.length)) || (a.id < b.id ? -1 : 1); });
+      for (i = 0; i < cand.length && boxes.length < cap; i++) {
+        n = cand[i]; var b = labelBox(n), box = [b[0] - 4, b[1] - 2, b[2] + 8, b[3] + 4], hit = false;
+        if (!forced(n)) for (j = 0; j < boxes.length && !hit; j++) hit = box[0] < boxes[j][0] + boxes[j][2] && boxes[j][0] < box[0] + box[2] && box[1] < boxes[j][1] + boxes[j][3] && boxes[j][1] < box[1] + box[3];
+        if (!hit) { boxes.push(box); n.labT = 1; }
+      }
+    }
+    function drawOverlay(ts, dt) {
+      var nodes = core.nodes, i, n, k = 1 - Math.exp(-dt * 12), hover = core.hover, sel = core.sel;
+      var cam = world.camera(), p = cam.projectionMatrix.elements, v = cam.matrixWorldInverse.elements, c, r;
+      for (c = 0; c < 4; c++) for (r = 0; r < 4; r++) PV[c * 4 + r] = p[r] * v[c * 4] + p[4 + r] * v[c * 4 + 1] + p[8 + r] * v[c * 4 + 2] + p[12 + r] * v[c * 4 + 3];
+      for (i = 0; i < nodes.length; i++) project(nodes[i]);
+      if (ts - lastLab > 100) { lastLab = ts; chooseLabels(); }
+      octx.setTransform(DPR, 0, 0, DPR, 0, 0); octx.clearRect(0, 0, W, H);
+      octx.font = '500 10.5px ' + mono; octx.textAlign = 'left'; octx.textBaseline = 'top'; octx.lineJoin = 'round'; octx.lineWidth = 3;
+      octx.strokeStyle = M.rgba(COL.canvas, COL.dark ? 0.8 : 0.9);
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i]; n.labA += (n.labT - n.labA) * (M.rm() ? 1 : k);
+        var a = n.labA * n.sv * n.al * n.dim; if (a < 0.02) continue;
+        var strong = n.lit || n === hover || n === sel, b = labelBox(n), x = Math.round(b[0]), y = Math.round(b[1]);
+        octx.globalAlpha = a * (strong ? 1 : 0.86); octx.strokeText(n.lab, x, y);
+        octx.fillStyle = strong ? COL['text-1'] : COL['text-2']; octx.fillText(n.lab, x, y);
+      }
+      octx.globalAlpha = 1;
+    }
+
     /* ---------- theme: every colour comes from the tokens ---------- */
     function applyTheme() {
       if (!world) return;
       world.backgroundColor(COL.canvas).atmosphereColor(COL.accent).showAtmosphere(COL.dark);
       stars.visible = COL.dark; stars.material.uniforms.uCol.value = rgb(COL['text-1']);
+      U.uAdd.value = COL.dark ? 1 : 0; U.uBg.value = rgb(COL.canvas); paintGraph();
       if (paintedDark !== COL.dark) paintTexture();
     }
 
@@ -149,10 +368,18 @@
       var ts = performance.now(), dt = Math.min(0.05, (ts - lastT) / 1000 || 0.016), c = world.controls();
       c.autoRotate = wantRotate(ts); c.enableDamping = !M.rm();
       stars.material.uniforms.uPx.value = world.renderer().getPixelRatio();
+      /* what the shaders need to know about the camera: how far out it is, and how much arc one pixel covers at the surface */
+      var cam = world.camera(), d = cam.position.length();
+      camAlt = d / 100 - 1; fanK = 2 * Math.tan(cam.fov * Math.PI / 360) * (d - 100) / (H * 100);
+      U.uScale.value = Math.max(0.75, Math.min(1.6, Math.pow(2 / camAlt, 0.35)));
+      fanK *= U.uScale.value;   /* fan rings grow with the nodes */
+      U.uRes.value = [W, H]; U.uFanK.value = fanK;
       core.targets(); core.animate(core.now(), dt);
+      if (nodeMesh) syncGraph();
     }
     function after() {
       var ts = performance.now(), dt = ts - lastT; lastT = ts;
+      if (nodeMesh) drawOverlay(ts, Math.min(0.05, dt / 1000));
       if (dt > 0 && dt < 500) fpsAvg += (1000 / dt - fpsAvg) * 0.08;
       if (ts - lastFps > 500) { lastFps = ts; core.report(fpsAvg); }
     }
@@ -166,6 +393,7 @@
       W = host.clientWidth; H = host.clientHeight;
       if (!world || !W || !H) return;
       world.width(W).height(H);
+      DPR = Math.min(2, window.devicePixelRatio || 1); over.width = Math.round(W * DPR); over.height = Math.round(H * DPR);
       if (!moved) world.pointOfView({ altitude: home().altitude }, 0);
     }
 
@@ -174,12 +402,14 @@
       THREE = three;
       world = new window.Globe(glHost, { waitForGlobeReady: false, animateIn: false, rendererConfig: { antialias: true, powerPreference: 'high-performance' } });
       world.enablePointerInteraction(false).showPointerCursor(false).atmosphereAltitude(0.18);
+      over = M.el('canvas', 'mm-over'); host.insertBefore(over, loading); octx = over.getContext('2d');
+      mono = getComputedStyle(core.stage).getPropertyValue('--mm-mono').trim() || 'monospace';
       resize();
       var gl = world.renderer().getContext(), cap = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), coarse ? 2048 : 4096);
       texCv = document.createElement('canvas'); texCv.width = cap; texCv.height = cap / 2;
       tex = new THREE.CanvasTexture(texCv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = Math.min(8, world.renderer().capabilities.getMaxAnisotropy());
       world.globeMaterial(new THREE.MeshBasicMaterial({ map: tex }));
-      makeStars(); paintTexture(); applyTheme(); loadSurface();
+      makeStars(); buildGraph(); paintTexture(); applyTheme(); loadSurface();
 
       var c = world.controls();
       c.minDistance = 100 * (1 + ALT_MIN); c.maxDistance = 100 * (1 + ALT_MAX); c.zoomToCursor = false; c.autoRotateSpeed = 0.35;
@@ -210,7 +440,8 @@
       kick: function () {},
       zoomBy: zoomBy,
       fit: function () { if (world) { input(); moved = false; world.pointOfView(home(), M.rm() ? 0 : 700); } },
-      intro: function () {}, flyTo: function () {}, reveal: function () {}, setParallax: function () {}, rebuild: function () {},
+      intro: function () {}, flyTo: function () {}, reveal: function () {}, setParallax: function () {},
+      rebuild: function () { if (world) { dropGraph(); buildGraph(); } },
       exportBlob: function (cb) { if (!world) return; world.renderer().render(world.scene(), world.camera()); world.renderer().domElement.toBlob(cb); },
       repaint: applyTheme,
       destroy: function () {

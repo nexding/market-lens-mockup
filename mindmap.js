@@ -13,17 +13,18 @@
     event: { r: 25, c: 'data-1', name: 'Event' }, factor: { r: 21, c: 'data-2', name: 'Factor' }, sector: { r: 23, c: 'data-3', name: 'Sector' },
     company: { r: 20, c: 'data-6', name: 'Company' }, holding: { r: 22, c: 'data-4', name: 'Your holding' }
   };
+  /* node rows: id, type, label, first day, options. Events, companies and holdings carry the place they are pinned to on the globe */
   var BASE_N = [
-    ['e1', 'event', 'Hormuz shipping disruption', 0], ['f_oil', 'factor', 'Oil price ↑', 1], ['f_gold', 'factor', 'Gold ↑', 1], ['f_freight', 'factor', 'Freight and insurance ↑', 2],
+    ['e1', 'event', 'Hormuz shipping disruption', 0, { lat: 26.57, lng: 56.25, place: 'Strait of Hormuz' }], ['f_oil', 'factor', 'Oil price ↑', 1], ['f_gold', 'factor', 'Gold ↑', 1], ['f_freight', 'factor', 'Freight and insurance ↑', 2],
     ['s_def', 'sector', 'Defense', 2, { ab: 'DF' }], ['s_energy', 'sector', 'Integrated oil and gas', 2, { ab: 'OG' }], ['f_jet', 'factor', 'Jet fuel cost ↑', 2],
-    ['s_ship', 'sector', 'Shipping', 3, { ab: 'SH' }], ['s_retail', 'sector', 'Retail', 4, { ab: 'RT' }], ['c_lmt', 'company', 'Lockheed Martin', 3, { sym: 'LMT', ab: 'LM' }],
-    ['c_shel', 'holding', 'Shell', 3, { sym: 'SHEL.L', ab: 'SH', w: 13.4 }], ['s_air', 'sector', 'Airlines', 3, { ab: 'AL' }], ['c_maersk', 'company', 'Maersk', 4, { ab: 'MA' }],
-    ['c_cost', 'holding', 'Costco', 5, { sym: 'COST', ab: 'CO', w: 9.2 }], ['c_iag', 'company', 'IAG', 4, { sym: 'IAG.L', ab: 'IA' }],
-    ['e2', 'event', 'Fed signals slower cuts', 6], ['f_10y', 'factor', '10-year yield ↑', 6], ['f_usd', 'factor', 'US dollar ↑', 7],
+    ['s_ship', 'sector', 'Shipping', 3, { ab: 'SH' }], ['s_retail', 'sector', 'Retail', 4, { ab: 'RT' }], ['c_lmt', 'company', 'Lockheed Martin', 3, { sym: 'LMT', ab: 'LM', lat: 39.03, lng: -77.14, place: 'Bethesda, Maryland' }],
+    ['c_shel', 'holding', 'Shell', 3, { sym: 'SHEL.L', ab: 'SH', w: 13.4, lat: 51.50, lng: -0.12, place: 'London' }], ['s_air', 'sector', 'Airlines', 3, { ab: 'AL' }], ['c_maersk', 'company', 'Maersk', 4, { ab: 'MA', lat: 55.69, lng: 12.60, place: 'Copenhagen' }],
+    ['c_cost', 'holding', 'Costco', 5, { sym: 'COST', ab: 'CO', w: 9.2, lat: 47.55, lng: -122.05, place: 'Issaquah, Washington' }], ['c_iag', 'company', 'IAG', 4, { sym: 'IAG.L', ab: 'IA', lat: 51.49, lng: -0.49, place: 'Harmondsworth, London' }],
+    ['e2', 'event', 'Fed signals slower cuts', 6, { lat: 38.89, lng: -77.05, place: 'Federal Reserve, Washington DC' }], ['f_10y', 'factor', '10-year yield ↑', 6], ['f_usd', 'factor', 'US dollar ↑', 7],
     ['s_tech', 'sector', 'Large-cap tech', 7, { ab: 'LT' }], ['s_hkfin', 'sector', 'Hong Kong insurers', 8, { ab: 'HI' }],
-    ['c_msft', 'holding', 'Microsoft', 8, { sym: 'MSFT', ab: 'MI', w: 12.5 }], ['c_aia', 'holding', 'AIA Group', 9, { sym: '1299.HK', ab: 'AI', w: 6.6 }],
-    ['e3', 'event', 'Chip export-control review', 9], ['c_tsm', 'company', 'TSMC', 9, { sym: 'TSM', ab: 'TS' }],
-    ['c_nvda', 'holding', 'NVIDIA', 10, { sym: 'NVDA', ab: 'NV', w: 16.4 }], ['c_aapl', 'holding', 'Apple', 10, { sym: 'AAPL', ab: 'AP', w: 15.0 }]
+    ['c_msft', 'holding', 'Microsoft', 8, { sym: 'MSFT', ab: 'MI', w: 12.5, lat: 47.64, lng: -122.13, place: 'Redmond, Washington' }], ['c_aia', 'holding', 'AIA Group', 9, { sym: '1299.HK', ab: 'AI', w: 6.6, lat: 22.28, lng: 114.16, place: 'Hong Kong' }],
+    ['e3', 'event', 'Chip export-control review', 9, { lat: 38.89, lng: -77.03, place: 'Commerce Department, Washington DC' }], ['c_tsm', 'company', 'TSMC', 9, { sym: 'TSM', ab: 'TS', lat: 24.77, lng: 121.01, place: 'Hsinchu, Taiwan' }],
+    ['c_nvda', 'holding', 'NVIDIA', 10, { sym: 'NVDA', ab: 'NV', w: 16.4, lat: 37.37, lng: -121.96, place: 'Santa Clara, California' }], ['c_aapl', 'holding', 'Apple', 10, { sym: 'AAPL', ab: 'AP', w: 15.0, lat: 37.33, lng: -122.01, place: 'Cupertino, California' }]
   ];
   var BASE_L = [
     ['e1', 'f_oil', 1, 0.86, 'fact', 'Measured: Brent rose 8% in the two sessions after the event', 5],
@@ -51,6 +52,10 @@
     ['c_tsm', 'c_nvda', -1, 0.66, 'fact', 'Filing: TSMC named as primary foundry supplier in the 2025 10-K', 1],
     ['c_tsm', 'c_aapl', -1, 0.61, 'fact', 'Filing: TSMC named as a sole-source supplier in the 2025 10-K', 1]
   ];
+  var HUBS = [['New York', 40.71, -74.01], ['Chicago', 41.88, -87.63], ['Houston', 29.76, -95.37], ['Toronto', 43.65, -79.38], ['São Paulo', -23.55, -46.63], ['Mexico City', 19.43, -99.13],
+    ['London', 51.51, -0.13], ['Paris', 48.86, 2.35], ['Frankfurt', 50.11, 8.68], ['Amsterdam', 52.37, 4.90], ['Zurich', 47.38, 8.54], ['Stockholm', 59.33, 18.07],
+    ['Dubai', 25.20, 55.27], ['Riyadh', 24.71, 46.68], ['Mumbai', 19.08, 72.88], ['Singapore', 1.35, 103.82], ['Hong Kong', 22.32, 114.17], ['Shanghai', 31.23, 121.47],
+    ['Shenzhen', 22.54, 114.06], ['Seoul', 37.57, 126.98], ['Tokyo', 35.68, 139.69], ['Taipei', 25.03, 121.57], ['Sydney', -33.87, 151.21], ['Johannesburg', -26.20, 28.05]];
   function band(c) { return c >= 0.7 ? 'Strong' : c >= 0.4 ? 'Moderate' : c >= 0.2 ? 'Weak' : 'Speculative'; }
   function tier(l) { return l.basis === 'fact' ? 'fact' : l.conf < 0.2 ? 'spec' : 'inference'; }
 
@@ -61,10 +66,12 @@
     BASE_N.forEach(function (r) { add(r[0], r[1], r[2], r[3], r[4]); });
     BASE_L.forEach(function (r) { link(r[0], r[1], r[2], r[3], r[4], r[5], r[6]); });
     if (dense) {
-      var rnd = M.rng(77), hosts = nodes.filter(function (n) { return n.type === 'sector' || n.type === 'company' || n.type === 'holding'; }).map(function (n) { return n.id; });
+      /* a second stream places the invented companies near financial centres, so the graph itself is the same as before */
+      var rnd = M.rng(77), geo = M.rng(78), hosts = nodes.filter(function (n) { return n.type === 'sector' || n.type === 'company' || n.type === 'holding'; }).map(function (n) { return n.id; });
       for (var i = 0; i < 36; i++) {
         var p = byId[hosts[Math.floor(rnd() * hosts.length)]], id = 'x' + i, ab = String.fromCharCode(65 + i % 26) + (1 + Math.floor(i / 26));
-        add(id, 'company', 'Related company ' + ab, Math.min(11, p.day + 1 + Math.floor(rnd() * 3)), { ab: ab });
+        var hub = HUBS[Math.floor(geo() * HUBS.length)];
+        add(id, 'company', 'Related company ' + ab, Math.min(11, p.day + 1 + Math.floor(rnd() * 3)), { ab: ab, lat: hub[1] + (geo() * 2 - 1) * 1.5, lng: hub[2] + (geo() * 2 - 1) * 1.5, place: hub[0] });
         link(p.id, id, rnd() < 0.5 ? 1 : -1, 0.1 + rnd() * 0.4, 'inference', 'Invented second-order link for the 60-node test', 1);
         if (rnd() < 0.3) hosts.push(id);
       }
@@ -73,7 +80,7 @@
   }
   function add(id, type, label, day, o) {
     o = o || {};
-    var n = { id: id, type: type, label: label, day: day, sym: o.sym, ab: o.ab, w: o.w, r: TYPE[type].r, x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0, ins: [], outs: [], born: -1e9, tlA: 1, hA: 1, dim: 1, collapsed: false, hideTo: null, hidden: 0 };
+    var n = { id: id, type: type, label: label, day: day, sym: o.sym, ab: o.ab, w: o.w, lat: o.lat, lng: o.lng, place: o.place, r: TYPE[type].r, x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0, ins: [], outs: [], born: -1e9, tlA: 1, hA: 1, dim: 1, collapsed: false, hideTo: null, hidden: 0 };
     nodes.push(n); byId[id] = n;
   }
   function link(s, t, sign, conf, basis, why, src) {
