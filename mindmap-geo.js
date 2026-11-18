@@ -57,7 +57,8 @@
     });
     /* keep shell nodes apart, without letting any of them wander far from where its links put it */
     fl.forEach(function (n) { n.geo.anchor = n.geo.v; });
-    for (r = 0; r < 200; r++) {
+    /* with hundreds of shell nodes the shells are simply full: a few passes spread them, and that is enough */
+    for (r = 0; r < (fl.length > 60 ? 12 : 200); r++) {
       var moved = false;
       for (i = 0; i < fl.length; i++) for (var j = i + 1; j < fl.length; j++) {
         var a = fl[i], b2 = fl[j], want = a.type === b2.type ? SEP_SAME : SEP_CROSS, d = angle(a.geo.v, b2.geo.v);

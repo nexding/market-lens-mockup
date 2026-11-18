@@ -104,7 +104,8 @@
     '  /* a holding carries a second ring; every node has a halo, stronger for holdings, hubs and a lit chain */',
     '  float ring = hold * smoothstep(1.2, 0.3, abs(d - 4.0)) * 0.8;',
     '  float glow = exp(-max(d, 0.0) / (r * 1.15 + 1.0)) * smoothstep(r * 3.6 + 3.0, r * 1.8, length(vP)) * (1.0 - dotk);',
-    '  glow *= (0.42 + 0.16 * hold + 0.2 * vS.w + 0.4 * vS.y) * mix(0.5, 1.0, uAdd);',
+    '  /* with no light to add on a pale page, a busy node shows it by a larger, denser halo */',
+    '  glow *= (0.42 + 0.16 * hold + 0.2 * vS.w + 0.4 * vS.y) * mix(0.45 + 0.75 * vS.w, 1.0, uAdd);',
     '  /* dark theme: the halo adds light. Light theme: it is laid over like the rest */',
     '  vec4 o = vec4(vCol * glow, glow * (1.0 - uAdd));',
     '  o = o * (1.0 - ring) + vec4(vCol * ring, ring);',
@@ -127,7 +128,7 @@
      kind (0 link, 1 stem, 2 tether). aState = alpha, how much of the length is drawn, lit */
   var RIB_VS = ARC + [
     'attribute vec4 aStyle; attribute vec3 aCol; attribute vec3 aState;',
-    'uniform vec2 uRes;',
+    'uniform vec2 uRes; uniform float uLite;',
     'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying float vLen; varying vec4 vStyle; varying vec3 vCol; varying vec2 vSt;',
     'void main() {',
     '  float t = position.x, e = t < 0.5 ? 0.02 : -0.02;',
@@ -135,14 +136,14 @@
     '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0), c2 = projectionMatrix * viewMatrix * vec4(arc(t + e), 1.0);',
     '  vec2 dir = (c2.xy / c2.w - c.xy / c.w) * uRes * sign(e);',
     '  dir = length(dir) > 0.0001 ? normalize(dir) : vec2(1.0, 0.0);',
-    '  float hw = aStyle.x * 0.5 + (aStyle.w < 0.5 ? 8.0 : 1.0);   /* links carry room for their glow */',
+    '  float hw = aStyle.x * 0.5 + (aStyle.w < 0.5 ? mix(8.0, 1.5, uLite) : 1.0);   /* links carry room for their glow */',
     '  c.xy += vec2(-dir.y, dir.x) * position.y * hw * 2.0 / uRes * c.w;',
     '  gl_Position = aState.x < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c;',
     '  vAcross = position.y * hw; vHalf = aStyle.x * 0.5; vT = t; vA = aState.x * vis(P); vLen = aH.w; vStyle = aStyle; vCol = aCol; vSt = aState.yz;',
     '}'
   ].join('\n');
   var RIB_FS = [
-    'uniform float uAdd; uniform vec3 uAccent; uniform vec3 uDash;',
+    'uniform float uAdd; uniform float uLite; uniform vec3 uAccent; uniform vec3 uDash;',
     'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying float vLen; varying vec4 vStyle; varying vec3 vCol; varying vec2 vSt;',
     '/* how much of a pixel a dash covers: u counts dashes along the line, on is the drawn share of each */',
     'float dash(float u, float on) { float x = fract(u); return clamp((on * 0.5 - abs(x - on * 0.5)) / max(fwidth(u), 0.0001) + 0.5, 0.0, 1.0); }',
@@ -155,9 +156,9 @@
     '    on = mix(dash(s / (uDash.x * k), share), dash(s / (uDash.y * k), share), uDash.z);',
     '  }',
     '  float grown = vSt.x >= 1.0 ? 1.0 : smoothstep(vSt.x, vSt.x - 0.03, vT);',
-    '  float along = on * grown * vA * mix(1.0, mix(0.6, 1.0, vT), link);   /* links brighten towards their target */',
+    '  float along = on * grown * vA * mix(1.0, mix(mix(0.82, 0.6, uAdd), 1.0, vT), link);   /* links brighten towards their target */',
     '  float a = smoothstep(vHalf + 0.6, vHalf - 0.6, abs(vAcross)) * along;',
-    '  float glow = link * exp(-max(abs(vAcross) - vHalf, 0.0) / 2.8) * (0.07 + 0.2 * vStyle.z + 0.25 * vSt.y) * along * uAdd;',
+    '  float glow = link * exp(-max(abs(vAcross) - vHalf, 0.0) / 2.8) * (0.07 + 0.2 * vStyle.z + 0.25 * vSt.y) * along * uAdd * (1.0 - uLite);',
     '  vec3 col = mix(vCol, uAccent, vSt.y);',
     '  /* dark theme: the core mostly adds light and the glow adds the accent, so lines that meet build up. Light theme: plain ink */',
     '  gl_FragColor = vec4(col * a + uAccent * glow, a * (1.0 - 0.6 * uAdd * link));',
@@ -207,7 +208,7 @@
     '  gl_FragColor = vec4(uAccent * g * mix(1.5, 1.0, uAdd), g * mix(1.5, 0.0, uAdd));',
     '}'
   ].join('\n');
-  var SEG = 32, SHAPE = { event: 0, factor: 1, sector: 2, company: 3, holding: 4 }, SIZE = { event: 9, factor: 7, sector: 8, company: 5, holding: 7 };
+  var SHAPE = { event: 0, factor: 1, sector: 2, company: 3, holding: 4 }, SIZE = { event: 9, factor: 7, sector: 8, company: 5, holding: 7 };
   /* how far a node's glyph reaches from its centre, in units of its radius plus pixels: arrowheads stop there */
   var REACH = { event: [0.95, 0], factor: [1.2, 0], sector: [1, 0], company: [1, 0], holding: [1, 5] };
   /* how far below a node's centre its label starts, in units of its radius plus pixels */
@@ -222,10 +223,11 @@
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
     var interacting = false, moved = false, resumeAt = 0, lastInput = 0, zoomTw = null;
     var fpsAvg = 60, lastT = 0, lastFps = 0;
-    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 } };
+    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 }, uLite: { value: 0 } };
     var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1, mono = 'monospace';
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
     var ptr = null, down = null, pick = false, offX = 0, offY = 0, shifted = false, par = { x: 0, y: 0, tx: 0, ty: 0 }, paused = false;
+    var asleep = false, lastBusy = 0, changed = false, lastCam = [0, 0, 0, 0, 0], qTier = 0, slow = 0, slowSince = 0, lost = null;
 
     /* ---------- the surface texture: night photograph or a land mask in token colours, with borders drawn in ---------- */
     function paintTexture() {
@@ -330,7 +332,7 @@
       RI = links.map(function (l) { return { l: l, kind: 'link' }; })
         .concat(nodes.filter(function (n) { return n.geo.float; }).map(function (n) { return { n: n, kind: 'stem' }; }))
         .concat(nodes.filter(function (n) { return n.geo.fan; }).map(function (n) { return { n: n, kind: 'tether' }; }));
-      var sp = new Float32Array((SEG + 1) * 6), si = new Uint16Array(SEG * 6);
+      var SEG = links.length > 1500 ? 16 : 32, sp = new Float32Array((SEG + 1) * 6), si = new Uint16Array(SEG * 6);
       for (i = 0; i <= SEG; i++) { sp.set([i / SEG, -1, 0, i / SEG, 1, 0], i * 6); if (i < SEG) si.set([i * 2, i * 2 + 1, i * 2 + 2, i * 2 + 1, i * 2 + 3, i * 2 + 2], i * 6); }
       g = instanced({ pos: new THREE.BufferAttribute(sp, 3), idx: new THREE.BufferAttribute(si, 1) }, RI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 4, aStyle: 4, aCol: 3, aState: 3, aEnd: 1 });
       var at = g.attributes;
@@ -366,6 +368,7 @@
         put(at.aP, i, [l.phase + p.j / p.cnt, (14 + 30 * l.conf) / l.geo.len, 5 + 5 * l.conf, l.conf]);
       });
       partMesh = layer(g, PART_VS, PART_FS, 20);
+      quality();
       octx.font = '500 10.5px ' + mono;
       nodes.forEach(function (n) { n.lab = n.w ? n.label + ' · ' + n.w.toFixed(1) + '%' : n.label; n.labW = octx.measureText(n.lab).width; n.labA = 0; n.labT = 0; n.sv = 0; });
       paintGraph(); lastLab = 0;
@@ -377,9 +380,10 @@
     /* colours are per instance, so a theme or accent change refills them */
     function paintGraph() {
       if (!nodeMesh) return;
-      var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']);
+      /* links are pale on the dark globe and near-black ink on the light one, where a mid grey would not stand out from the land */
+      var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']), ink = rgb(COL.dark ? COL['text-2'] : COL['text-1']);
       NI.forEach(function (it, i) { put(a, i, it.dot ? quiet : rgb(COL[core.TYPE[it.n.type].c])); });
-      RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : quiet); });
+      RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : it.kind === 'link' ? ink : quiet); });
       U.uAccent.value = rgb(COL.accent);
       a.needsUpdate = b.needsUpdate = true;
     }
@@ -392,17 +396,20 @@
         n = NI[i].n; tmp4[0] = Math.fround(n.al * n.dim * (NI[i].dot ? 0.9 : 1)); tmp4[1] = NI[i].dot ? 1 : Math.fround(n.sc * (0.6 + 0.4 * n.hA) * (n === hover ? 1.07 : 1)); tmp4[2] = n.lit || n === sel ? 1 : 0; tmp4[3] = n === sel ? 1 : 0;
         if (write(a, i, tmp4)) ch = true;
       }
-      if (ch) a.needsUpdate = true; ch = false;
+      if (ch) { a.needsUpdate = true; changed = true; } ch = false;
+      /* thousands of links at full strength are a white blur: the more there are, the fainter each is, unless it is lit */
+      var base = COL.dark ? 0.42 : 0.5, gain = COL.dark ? 0.5 : 0.45, crowd = Math.min(1, Math.sqrt(300 / Math.max(1, core.links.length)));
       for (i = 0; i < RI.length; i++) {
         if (RI[i].kind === 'link') {
           /* a link is as strong as its confidence, as on the flat map; one in the hovered chain turns accent and brightens */
-          l = RI[i].l; tmp3[0] = Math.fround(Math.min(1, (0.42 + 0.5 * l.conf + (l.lit ? 0.3 : 0)) * l.al * l.dim)); tmp3[1] = Math.fround(l.gp); tmp3[2] = l.lit ? 1 : 0;
+          l = RI[i].l; tmp3[0] = Math.fround(Math.min(1, ((base + gain * l.conf) * (l.lit ? 1 : crowd) + (l.lit ? 0.3 : 0)) * l.al * l.dim)); tmp3[1] = Math.fround(l.gp); tmp3[2] = l.lit ? 1 : 0;
         }
         else { n = RI[i].n; tmp3[0] = Math.fround(n.al * n.dim * Math.min(1, n.sc) * (RI[i].kind === 'stem' ? 0.34 : 0.5)); tmp3[1] = 1; tmp3[2] = 0; }
         if (write(b, i, tmp3)) ch = true;
       }
-      if (ch) b.needsUpdate = true; ch = false;
-      partMesh.visible = core.particlesOn && !M.rm() && !M.compact();
+      if (ch) { b.needsUpdate = true; changed = true; } ch = false;
+      /* particles rest after a minute without input, like the auto-rotate, so an unattended page can stop drawing */
+      partMesh.visible = core.particlesOn && !M.rm() && !M.compact() && performance.now() - lastInput < 60000;
       if (partMesh.visible) { for (i = 0; i < PI.length; i++) { l = PI[i].l; tmp1[0] = l.gp >= 1 && l.al * l.dim >= 0.3 ? Math.fround(l.al * l.dim) : 0; if (write(c, i, tmp1)) ch = true; } if (ch) c.needsUpdate = true; }
     }
 
@@ -458,7 +465,7 @@
       octx.font = '500 10.5px ' + mono; octx.textAlign = 'left'; octx.textBaseline = 'top'; octx.lineJoin = 'round'; octx.lineWidth = 3;
       octx.strokeStyle = M.rgba(COL.canvas, COL.dark ? 0.8 : 0.9);
       for (i = 0; i < nodes.length; i++) {
-        n = nodes[i]; n.labA += (n.labT - n.labA) * (M.rm() ? 1 : k);
+        n = nodes[i]; if (Math.abs(n.labT - n.labA) > 0.01) changed = true; n.labA += (n.labT - n.labA) * (M.rm() ? 1 : k);
         var a = n.labA * n.sv * n.al * n.dim; if (a < 0.02) continue;
         var strong = n.lit || n === hover || n === sel, b = labelBox(n), x = Math.round(b[0]), y = Math.round(b[1]);
         octx.globalAlpha = a * (strong ? 1 : 0.86); octx.strokeText(n.lab, x, y);
@@ -486,13 +493,14 @@
       var c = world.camera().position, vx = sc3[3] - c.x, vy = sc3[4] - c.y, vz = sc3[5] - c.z, s = Math.max(0, Math.min(1, -(c.x * vx + c.y * vy + c.z * vz) / (vx * vx + vy * vy + vz * vz)));
       return sc3[2] <= 0 || Math.hypot(c.x + vx * s, c.y + vy * s, c.z + vz * s) < 99.8;
     }
-    /* the + or − of each link sits at the top of its arc. With very many links only those in a lit chain keep theirs */
+    /* the + or − of each link sits at the top of its arc. With very many links, or from far out, only those in a lit chain keep theirs */
     function drawSigns() {
-      var links = core.links, many = links.length > 150, i, l;
+      var links = core.links, many = links.length > 150, drawn = 0, i, l;
       octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.font = '600 11px Inter, system-ui, sans-serif'; octx.lineWidth = 1;
       for (i = 0; i < links.length; i++) {
-        l = links[i]; var a = l.al * l.dim; if (l.gp < 1 || a < 0.05 || (many && !l.lit)) continue;
-        arcPoint(l, 0.5); if (hidden()) continue;
+        l = links[i]; var a = l.al * l.dim; if (l.gp < 1 || a < 0.05 || ((many || camAlt > 3) && !l.lit)) continue;
+        if (drawn >= 150) break;
+        arcPoint(l, 0.5); if (hidden()) continue; drawn++;
         var x = sc3[0], y = sc3[1];
         octx.globalAlpha = a; octx.beginPath(); octx.arc(x, y, 6.5, 0, 6.2832); octx.fillStyle = COL['surface-1']; octx.fill();
         octx.strokeStyle = M.rgba(COL['text-1'], 0.2); octx.stroke();
@@ -559,9 +567,48 @@
       ['gesturestart', 'gesturechange'].forEach(function (ev) { glHost.addEventListener(ev, function (e) { e.preventDefault(); }); });
     }
 
+    /* ---------- quality: what is drawn steps down when there is a great deal of it, or when frames run slow ---------- */
+    function ratio(pr) {
+      var r = world.renderer(), c = world.postProcessingComposer();
+      if (Math.abs(r.getPixelRatio() - pr) < 0.01) return;
+      r.setPixelRatio(pr); r.setSize(W, H); c.setPixelRatio(pr); c.setSize(W, H);
+    }
+    /* tier 0: everything. 1: no glow on links. 2: half the particles. 3: fewer pixels. A very large graph starts at 1 */
+    function quality() {
+      var many = core.links.length > 1500, t = Math.max(qTier, many ? 1 : 0), full = Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1);
+      U.uLite.value = t >= 1 ? 1 : 0;
+      if (partMesh) partMesh.geometry.instanceCount = t >= 2 ? Math.ceil(PI.length / 2) : PI.length;
+      ratio(t >= 3 ? Math.max(1, full - 0.5) : full);
+    }
+    /* slow means well under 45 frames a second for two seconds running. A steady 30 is a display or battery cap, not a slow page */
+    function govern(ts, dt) {
+      if (dt > 250 || document.hidden) { slow = 0; return; }
+      var capped = Math.abs(dt - 33.3) < 3;
+      if (dt > 22.5 && !capped) { if (!slow) slowSince = ts; slow++; } else slow = 0;
+      if (slow > 30 && ts - slowSince > 2000 && qTier < 3) { qTier++; slow = 0; quality(); console.info('Mind map: frames are slow, stepping quality down to tier ' + qTier); }
+    }
+    /* ---------- idle: when nothing has moved for a while the loop stops, and any input or change starts it again ---------- */
+    function wake() { lastBusy = performance.now(); if (asleep && world && !paused) { asleep = false; lastT = lastBusy; world.resumeAnimation(); } }
+    function rest(ts) {
+      var c = world.camera(), p = c.position, v = c.view && c.view.enabled ? c.view.offsetX + c.view.offsetY : 0;
+      var turned = Math.abs(p.x - lastCam[0]) + Math.abs(p.y - lastCam[1]) + Math.abs(p.z - lastCam[2]) + Math.abs(v - lastCam[3]) > 1e-4;
+      lastCam[0] = p.x; lastCam[1] = p.y; lastCam[2] = p.z; lastCam[3] = v;
+      if (changed || turned || flyTw || pick || core.playing || partMesh.visible || core.now() - core.growStart < 4500) lastBusy = ts;
+      changed = false;
+      /* this runs inside globe.gl's frame, which books the next frame as it ends: the stop has to wait until it has */
+      if (ts - lastBusy > 1500 && !paused && !asleep) { asleep = true; setTimeout(function () { if (asleep && world && !paused) { world.pauseAnimation(); core.report(-2); } }, 0); }
+    }
+    /* a phone may take the graphics context away when the tab is in the background: wait for it to come back before giving up */
+    function contextEvents() {
+      var cv = world.renderer().domElement;
+      cv.addEventListener('webglcontextlost', function (e) { e.preventDefault(); lost = setTimeout(function () { if (!dead) core.fail('the graphics context was lost'); }, 3000); });
+      cv.addEventListener('webglcontextrestored', function () { clearTimeout(lost); lost = null; tex.needsUpdate = true; wake(); });
+    }
+
     /* ---------- theme: every colour comes from the tokens ---------- */
     function applyTheme() {
       if (!world) return;
+      wake();
       world.backgroundColor(COL.canvas).atmosphereColor(COL.accent).showAtmosphere(COL.dark);
       stars.visible = COL.dark; stars.material.uniforms.uCol.value = rgb(COL['text-1']);
       U.uAdd.value = COL.dark ? 1 : 0; U.uBg.value = rgb(COL.canvas); paintGraph();
@@ -570,7 +617,7 @@
 
     /* ---------- auto-rotate: slow, pauses for any interaction, stops by itself after a minute without input ---------- */
     function wantRotate(t) { return core.rotateOn && !M.rm() && !interacting && !flyTw && t > resumeAt && t - lastInput < 60000 && !core.sel && !core.hover && !core.hasFocus; }
-    function input() { lastInput = performance.now(); }
+    function input() { lastInput = performance.now(); wake(); }
 
     /* ---------- frame hooks: globe.gl owns the loop; these run inside its render call ---------- */
     function before() {
@@ -609,6 +656,7 @@
       var tn = core.tipNode; if (tn && nodeMesh) core.tipAt(tn.sx + reach(tn), tn.sy - 8, tn.sv > 0.5 && tn.al > 0.5);
       if (dt > 0 && dt < 500) fpsAvg += (1000 / dt - fpsAvg) * 0.08;
       if (ts - lastFps > 500) { lastFps = ts; core.report(fpsAvg); }
+      govern(ts, dt); rest(ts);
     }
 
     /* the default view: the whole globe with a margin, which on a narrow screen means standing further back */
@@ -642,6 +690,7 @@
       if (!world || !W || !H) return;
       world.width(W).height(H);
       DPR = Math.min(2, window.devicePixelRatio || 1); over.width = Math.round(W * DPR); over.height = Math.round(H * DPR);
+      wake();
       if (!moved && !flyTw) world.pointOfView({ altitude: fitView().altitude }, 0);
     }
 
@@ -668,7 +717,7 @@
       /* an error thrown inside globe.gl's render call would stop its loop for good: report it once and keep drawing */
       var warned = false, guard = function (fn) { return function () { try { fn(); } catch (e) { if (!warned) { warned = true; console.error(e); } } }; };
       world.scene().onBeforeRender = guard(before); world.scene().onAfterRender = guard(after);
-      listen();
+      listen(); contextEvents(); quality();
       core.replay();   /* the map grows in once there is a globe to grow on */
       if (/[?&]debug=1\b/.test(location.search)) window.__mm = { world: world, core: core };   /* a handle for checks from the console */
     }
@@ -700,7 +749,7 @@
         var probe = document.createElement('canvas').getContext('webgl2');
         (probe ? loadLibs() : Promise.reject(new Error('this browser has no WebGL 2'))).then(init).catch(function (e) { if (!dead) core.fail(e && e.message || 'unknown error'); });
       },
-      kick: function () {},
+      kick: function () { wake(); },
       zoomBy: zoomBy,
       fit: function () { if (world) { input(); moved = false; fly(fitView(), 700); } },
       /* the holding filter changed what is on show */
@@ -729,7 +778,7 @@
       },
       setParallax: function () {},
       /* the Table covers the map: stop drawing while it is open */
-      pause: function (on) { if (!world || on === paused) return; paused = on; if (on) { world.pauseAnimation(); core.report(-1); } else { lastT = performance.now(); world.resumeAnimation(); } },
+      pause: function (on) { if (!world || on === paused) return; paused = on; if (on) { world.pauseAnimation(); core.report(-1); } else { asleep = false; lastBusy = lastT = performance.now(); world.resumeAnimation(); } },
       rebuild: function () { if (world) { dropGraph(); buildGraph(); } },
       /* the picture is put together from the WebGL frame, the label layer and a caption, so it carries "Sample data" wherever it goes */
       exportBlob: function (cb) {

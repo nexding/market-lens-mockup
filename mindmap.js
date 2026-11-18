@@ -60,9 +60,31 @@
   function tier(l) { return l.basis === 'fact' ? 'fact' : l.conf < 0.2 ? 'spec' : 'inference'; }
 
   /* ---------- graph ---------- */
-  var nodes = [], links = [], byId = {}, dense = false;
+  var nodes = [], links = [], byId = {}, dense = false, stress = false;
+  /* the stress graph for the globe: 1,000 invented nodes and 3,000 invented links, the same on every load. Links only run
+     from an earlier node to a later one, so there are no loops */
+  function buildStress() {
+    var rnd = M.rng(99), ids = { event: [], factor: [], sector: [], company: [] }, seen = {};
+    [['event', 40, 'Event '], ['factor', 120, 'Factor '], ['sector', 140, 'Sector '], ['company', 700, 'Company ']].forEach(function (t) {
+      for (var i = 0; i < t[1]; i++) {
+        var id = t[0].charAt(0) + 'x' + i, o = {}, type = t[0];
+        if (type === 'event' || type === 'company') { var hub = HUBS[Math.floor(rnd() * HUBS.length)]; o.lat = Math.max(-75, Math.min(75, hub[1] + (rnd() * 2 - 1) * 8)); o.lng = hub[2] + (rnd() * 2 - 1) * 8; o.place = 'Near ' + hub[0]; }
+        if (type === 'company' && i % 35 === 0) { type = 'holding'; o.w = +(1 + rnd() * 4).toFixed(1); }
+        add(id, type, t[2] + (i + 1) + (type === 'factor' ? ' ↑' : ''), Math.floor(rnd() * 12), o); ids[t[0]].push(id);
+      }
+    });
+    [['event', 'factor', 300], ['factor', 'factor', 200], ['factor', 'sector', 600], ['sector', 'company', 1500], ['company', 'company', 400]].forEach(function (k) {
+      for (var made = 0; made < k[2];) {
+        var a = Math.floor(rnd() * ids[k[0]].length), b = Math.floor(rnd() * ids[k[1]].length), t;
+        if (k[0] === k[1]) { if (a === b) continue; if (a > b) { t = a; a = b; b = t; } }
+        var key = k[0] + a + '>' + k[1] + b; if (seen[key]) continue; seen[key] = 1;
+        link(ids[k[0]][a], ids[k[1]][b], rnd() < 0.5 ? 1 : -1, 0.08 + rnd() * 0.85, rnd() < 0.25 ? 'fact' : 'inference', 'Invented link for the 1,000-node test', 1); made++;
+      }
+    });
+  }
   function build() {
     nodes = []; links = []; byId = {};
+    if (stress) { buildStress(); layout(); return; }
     BASE_N.forEach(function (r) { add(r[0], r[1], r[2], r[3], r[4]); });
     BASE_L.forEach(function (r) { link(r[0], r[1], r[2], r[3], r[4], r[5], r[6]); });
     if (dense) {
@@ -182,7 +204,7 @@
     /* on the globe the counts are what is on show: the timeline, folded nodes and the holding filter all reduce them */
     var globe = R && R.name === 'globe', shown = nodes.filter(function (n) { return n.al > 0.5 && (!globe || n.dimT > 0.05); }).length;
     var lk = globe ? links.filter(function (l) { return l.al > 0.5 && l.dimT > 0.05; }).length : links.length;
-    $('#mm-fps').textContent = (fps < 0 ? 'paused' : Math.min(120, Math.round(fps)) + ' fps') + ' · ' + shown + ' nodes · ' + lk + ' links';
+    $('#mm-fps').textContent = (fps === -1 ? 'paused' : fps === -2 ? 'idle' : Math.min(120, Math.round(fps)) + ' fps') + ' · ' + shown + ' nodes · ' + lk + ' links';
   }
 
   /* ---------- tooltips ---------- */
@@ -568,7 +590,11 @@
   function toggleBtn(sel0, fn) { $(sel0).addEventListener('click', function () { var on = this.getAttribute('aria-pressed') !== 'true'; this.setAttribute('aria-pressed', on); this.classList.toggle('is-on', on); fn(on); kick(); }); }
   toggleBtn('#mm-part', function (on) { particlesOn = on; });
   toggleBtn('#mm-para', function (on) { parallax = on; R.setParallax(on); });
-  toggleBtn('#mm-dense', function (on) { dense = on; closePanel(); hover = null; build(); fillFocus(); fillTable(); setTl(11); refold(); R.rebuild(); schedule(true); });
+  function regraph() { closePanel(); hideTip(); hover = hoverLink = null; focusId = null; navVia = null; build(); fillFocus(); fillTable(); setTl(11); refold(); R.rebuild(); schedule(true); }
+  toggleBtn('#mm-dense', function (on) { dense = on; regraph(); });
+  /* ?stress=1 adds a switch for the 1,000-node graph; it is a frame-rate test for the globe, so the flat map does not offer it */
+  toggleBtn('#mm-stress', function (on) { stress = on; $('#mm-dense').disabled = on; regraph(); });
+  toggleBtn('#mm-leg', function (on) { stage.classList.toggle('leg-open', on); $('#mm-leg').setAttribute('aria-expanded', on); });
   toggleBtn('#mm-rot', function (on) { rotateOn = on; });
   toggleBtn('#mm-tbl', function (on) { $('#mm-table').classList.toggle('open', on); R.pause(on); });
   /* reduced motion switches these three off whatever they are set to: say so on the buttons */
@@ -646,11 +672,12 @@
     $('[data-a="x"]', el).addEventListener('click', function () { el.hidden = true; });
   }
 
-  /* ---------- start: the flat map is the default until the globe is finished; ?view=globe or ?view=flat picks one ---------- */
+  /* ---------- start: the globe is the default view; ?view=flat asks for the flat map, which is also what a failed globe falls back to ---------- */
   function begin(view) {
     if (view === 'globe' && !M.mmGlobe) view = 'flat';
     stage.dataset.view = view;
     host.setAttribute('aria-label', view !== 'globe' ? FLAT_LABEL : 'Event mind map on a globe. Right and Left arrow keys follow effects and causes, Up and Down step through alternatives, Shift with an arrow key turns the globe, Enter opens a node, Space folds it, Escape closes. A table of the same links is available from the toolbar.');
+    $('#mm-stress').hidden = !(view === 'globe' && /[?&]stress=1\b/.test(location.search));
     R = view === 'globe' ? M.mmGlobe(core) : flatRenderer();
     refold(); targets();
     nodes.forEach(function (n) { n.dim = n.dimT; }); links.forEach(function (l) { l.dim = l.dimT; });
@@ -658,7 +685,7 @@
     R.start();
   }
   build(); fillFocus(); fillTable();
-  begin((/[?&]view=(globe|flat)\b/.exec(location.search) || [0, 'flat'])[1]);
+  begin((/[?&]view=(globe|flat)\b/.exec(location.search) || [0, 'globe'])[1]);
   document.addEventListener('ml:paint', function () { if (R) R.repaint(); });
   document.addEventListener('ml:pref', function () { kick(); });
   document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });

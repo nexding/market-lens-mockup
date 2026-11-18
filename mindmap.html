@@ -35,7 +35,9 @@
       <button class="btn btn-sm" id="mm-para" type="button" aria-pressed="false">Parallax</button>
       <button class="btn btn-sm is-on" id="mm-rot" type="button" aria-pressed="true">Rotate</button>
       <button class="btn btn-sm" id="mm-dense" type="button" aria-pressed="false" title="Adds invented second-order companies to test 60 nodes">60 nodes</button>
+      <button class="btn btn-sm" id="mm-stress" type="button" aria-pressed="false" title="Invented graph of 1,000 nodes and 3,000 links, to test the frame rate" hidden>1,000 nodes</button>
       <button class="btn btn-sm" id="mm-tbl" type="button" aria-pressed="false"></button>
+      <button class="btn btn-sm" id="mm-leg" type="button" aria-pressed="false" aria-expanded="false" aria-controls="mm-legend">Legend</button>
     </div>
     <div class="mm-group glass">
       <button class="btn btn-sm" id="mm-png" type="button"></button>
@@ -43,7 +45,7 @@
     <div class="mm-group glass mm-fps" id="mm-fps" aria-hidden="true">60 fps</div>
   </div>
 
-  <ul class="mm-legend glass" aria-label="Legend">
+  <ul class="mm-legend glass" id="mm-legend" aria-label="Legend">
     <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Confirmed fact</li>
     <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>Model inference</li>
     <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/></svg>Speculative</li>

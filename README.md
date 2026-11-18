@@ -1,6 +1,6 @@
 # Look-and-feel mockup (milestone M5)
 
-A static mockup for judging the design direction before anything is built on it. No build step, no network requests, no real data: every number, story and forecast is invented.
+A static mockup for judging the design direction before anything is built on it. No build step, no network requests, no real data: every number, story and forecast is invented. The one exception to "no network requests" is the mind map's globe view, described below.
 
 ## Open it
 
@@ -47,12 +47,18 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 
 **Every stock page tab** is built: Chart (candles, indicators, compare, drawing tools), Statistics, Historical Data, Analysis, Holders, Options, Earnings (with transcripts), Profile, Deep-dive, Drawdown check (with its animated sequence and Replay), News & mind map, Stress test, My position, Track record.
 
-**Mind map**
-- It grows in from the first event. Replay runs it again.
-- Hover a node to light its chain of causes and effects. Click to zoom in and open the panel. Drag a node and let go. Double-click (or the Fold button) to fold a node's effects.
-- The timeline slider and its play button; the holding filter; Particles; Parallax; Table view; Export image.
-- "60 nodes" adds invented companies to check the frame rate, shown top right.
-- Keyboard: Tab to the map, arrow keys follow links, Enter opens, Space folds, Escape closes, `+` `-` `0` zoom and fit.
+**Mind map** (`mindmap.html`)
+- It opens as a globe: events and companies sit where they are, factors and sectors float in two shells above, and links are arcs. It grows in from the first event; Replay runs it again.
+- Drag to turn, scroll or pinch to zoom, `−` `+` and Fit in the toolbar. It turns slowly by itself when idle; Rotate switches that off.
+- Hover a node for its tooltip and to light its chain of causes and effects. Click to fly to it and open the panel, where its links are grouped by confidence tier with the ledger line for each. Double-click (or the Fold button) folds a node's effects.
+- Solid, dashed and dotted lines are confirmed fact, model inference and speculative; thicker is more confident; particles run from cause to effect.
+- The holding filter keeps only the chains that reach that holding and fits the view to them.
+- The timeline slider and its play button; Particles; Parallax; Table view; Export image.
+- "60 nodes" adds invented companies. `mindmap.html?stress=1` adds a "1,000 nodes" switch (1,000 nodes, 3,000 links) to check the frame rate, shown top right.
+- Keyboard: Tab to the map, Right and Left follow effects and causes, Up and Down step through alternatives, Shift with an arrow key turns the globe, Enter opens, Space folds, Escape closes, `+` `-` `0` zoom and fit.
+- `mindmap.html?view=flat` shows the earlier flat map. The page also falls back to it, with a notice, if the globe cannot start.
+
+**The globe view uses the network.** It loads globe.gl 2.46.2 and three.js 0.185.1, a night photograph of the Earth and country borders from the jsDelivr CDN, at pinned versions (the list is at the top of `mindmap-globe.js`). Nothing about the page or the portfolio is sent anywhere; these are plain downloads. Offline, or with the CDN blocked, the flat map is shown instead.
 
 ## Files
 
@@ -61,7 +67,8 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 | `tokens.css` | Design tokens: colours for both themes, type, spacing for both densities, radii, shadows, blur, motion |
 | `app.css` | Shell and components |
 | `mock.js` | Sample data, simulated ticks, chart and sparkline drawing, rolling digits, palette, menus, hover cards, tabs |
-| `home.js`, `stock.js`, `mindmap.js` | Page behaviour. `mindmap.js` is the Canvas renderer with its own spring physics |
+| `home.js`, `stock.js`, `mindmap.js` | Page behaviour. `mindmap.js` holds the mind map's data, panel, toolbar and keyboard, and the flat Canvas renderer with its own spring physics |
+| `mindmap-globe.js`, `mindmap-geo.js`, `mindmap.css` | The mind map's globe view: the renderer, the placement maths (checked by `node design/mockup/mindmap-geo.test.js`) and the page's own styles |
 | `stock-tabs-a` to `-d` (`.js`, `.css`) | The stock page tabs other than Summary and Financials |
 | `markets`, `screener`, `compare`, `calendars`, `portfolio`, `watchlists`, `news`, `tools`, `workspace` (`.html`, `.js`, `.css`) | One page each |
 | `serve.py` | The local server |
@@ -75,4 +82,5 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 - Every "Open mind map" link opens the same whole-portfolio map.
 - Logos are monogram tiles; no brand assets are used.
 - The page morph needs the local server and a browser with cross-document view transitions.
-- Frame rate has only been checked in an automated browser, not on a physical display.
+- Frame rate has only been checked in an automated browser, not on a physical display. The globe held 120 frames a second there with 26, 62 and 1,000 nodes, on an Apple M3 Max at one device pixel per CSS pixel; nothing slower has been measured.
+- The globe view has not been opened straight from disk (`file://`), only through the local server and GitHub Pages.

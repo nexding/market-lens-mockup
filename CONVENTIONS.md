@@ -5,6 +5,7 @@ Read this before adding a screen. The finished pages (`home.html` + `home.js`, `
 ## Hard rules
 
 - Static files only. No build step, no modules (`<script src>` classic scripts, wrapped in an IIFE with `'use strict'`), no network requests, no CDN, no new dependencies, no images or brand logos (tickers use monogram tiles).
+  - One agreed exception: the mind map's globe view (`mindmap-globe.js`) loads globe.gl, three.js, an Earth photograph and border data from a CDN at pinned versions, and falls back to the flat map without them. Do not copy this to other pages.
 - Every number, name of a story, forecast and filing excerpt is invented sample data. Keep it plausible and internally consistent, and derive it from the seeded helpers so it is the same on every load.
 - Use tokens from `tokens.css` for every colour, radius, shadow, duration and easing. No hard-coded hex colours in CSS or canvas code (canvas reads `ML.COL`).
 - Dark and light themes, Comfortable and Compact density, and reduced motion must all work. Spacing comes from `--gap`, `--card-pad`, `--row-h`, `--cell-px`, `--ctl-h`.

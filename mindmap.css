@@ -23,6 +23,9 @@
 /* the globe view has one more toggle: its toolbar buttons are a little tighter so everything still fits one row on a laptop */
 .mm-stage[data-view="globe"] .mm-group .btn-sm { padding-inline: 9px; }
 
+/* the Legend button is for phones, where the legend and the footnote are tucked away until asked for */
+#mm-leg { display: none; }
+
 /* the Rotate toggle belongs to the globe; a toggle that reduced motion has switched off looks it */
 .mm-stage[data-view="flat"] #mm-rot { display: none; }
 .mm-group .btn[aria-disabled="true"] { opacity: 0.45; }
@@ -41,4 +44,9 @@
   .mm-stage[data-view="globe"] .mm-bar { top: 8px; left: 0; right: 0; padding: 0 8px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; pointer-events: auto; }
   .mm-stage[data-view="globe"] .mm-bar::-webkit-scrollbar { display: none; }
   .mm-stage[data-view="globe"] .mm-bar > * { flex: none; white-space: nowrap; }
+  /* the stage is as tall as the part of the screen the browser really leaves free */
+  .mm-stage[data-view="globe"] { height: calc(100dvh - 101px - 56px - env(safe-area-inset-bottom, 0px)); }
+  .mm-stage[data-view="globe"] #mm-leg { display: inline-flex; }
+  .mm-stage[data-view="globe"].leg-open .mm-legend { display: grid; left: 8px; bottom: 132px; }
+  .mm-stage[data-view="globe"].leg-open .mm-cap { display: block; left: 8px; right: 8px; bottom: 80px; max-width: none; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--hairline-strong); color: var(--text-2); }
 }
