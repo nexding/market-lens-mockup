@@ -543,12 +543,67 @@
       return ls.length ? '<section><div class="micro">' + T[1] + ' (' + ls.length + ')</div>' + ls.map(function (l) { return lkRow(l, n, T[2]); }).join('') + '</section>' : '';
     }).join('');
   }
+  /* ---------- the chain through a node: the most confident path from a starting event to it, and from it to each
+     holding it reaches. A path is as confident as the product of its links ---------- */
+  function bestIn(n, memo) {
+    memo = memo || {};
+    if (memo[n.id]) return memo[n.id];
+    var best = { p: 1, steps: [] };
+    if (n.ins.length) { best = { p: -1, steps: [] }; n.ins.forEach(function (l) { var b = bestIn(l.s, memo), p = b.p * l.conf; if (p > best.p) best = { p: p, steps: b.steps.concat([l]) }; }); }
+    return (memo[n.id] = best);
+  }
+  function bestTo(n, h, memo) {
+    if (n === h) return { p: 1, steps: [] };
+    if (memo[n.id] !== undefined) return memo[n.id];
+    var best = null;
+    n.outs.forEach(function (l) { var b = bestTo(l.t, h, memo); if (b && (!best || b.p * l.conf > best.p)) best = { p: b.p * l.conf, steps: [l].concat(b.steps) }; });
+    return (memo[n.id] = best);
+  }
+  /* the holdings a node's effects reach, with the most confident path to each */
+  function reaches(n) {
+    if (n.type === 'holding') return [{ h: n, path: { p: 1, steps: [] } }];
+    var down = chain(n), out = [];
+    nodes.forEach(function (h) { if (h.type === 'holding' && down[h.id] && h !== n) { var b = bestTo(n, h, {}); if (b) out.push({ h: h, path: b }); } });
+    return out.sort(function (a, b) { return b.path.p - a.path.p; });
+  }
+  function stepRow(l) {
+    return '<li class="cs"><span class="cs-n">' + esc(l.s.label) + ' <span aria-hidden="true">→</span> ' + esc(l.t.label) + '</span>' +
+      '<span class="cs-m"><span class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? '+ raises' : '− lowers') + '</span> · ' + band(l.conf) + ' ' + l.conf.toFixed(2) + ' · ' + tierName(l) + '</span></li>';
+  }
+  function chainHTML(n, hits) {
+    var into = bestIn(n), parts = [];
+    if (into.steps.length) parts.push('<div class="cs-h">How it got here · path confidence ' + into.p.toFixed(2) + '</div><ol class="cs-l">' + into.steps.map(stepRow).join('') + '</ol>');
+    hits.filter(function (x) { return x.path.steps.length; }).slice(0, 3).forEach(function (x) {
+      parts.push('<div class="cs-h">On to ' + esc(x.h.label) + ' · path confidence ' + x.path.p.toFixed(2) + '</div><ol class="cs-l">' + x.path.steps.map(stepRow).join('') + '</ol>');
+    });
+    return parts.length ? '<section class="mm-chain"><div class="micro">Causal chain</div>' + parts.join('') + '</section>' : '';
+  }
+  function summary(n, hits) {
+    var ty = TYPE[n.type].name, w = hits.reduce(function (a, x) { return a + (x.h.w || 0); }, 0);
+    var s = (n.type === 'event' ? 'An event' : n.type === 'holding' ? 'One of your holdings' : 'A ' + ty.toLowerCase()) + (n.place ? ' in ' + n.place : '') + ', first seen ' + dateOf(n.day) + '. ' +
+      n.ins.length + (n.ins.length === 1 ? ' cause' : ' causes') + ' and ' + n.outs.length + (n.outs.length === 1 ? ' effect' : ' effects') + ' on the map' +
+      (n.type === 'holding' ? '.' : hits.length ? '; its effects reach ' + hits.map(function (x) { return x.h.label; }).join(', ') + ', ' + w.toFixed(1) + '% of the portfolio.' : '; its effects reach none of your holdings.');
+    return '<section class="mm-sum">' + (n.headline ? '<p class="mm-sum-h">' + esc(n.headline) + '</p>' : '') + '<p>' + esc(s) + '</p></section>';
+  }
+  function exposureHTML(hits) {
+    if (!hits.length) return '';
+    var w = hits.reduce(function (a, x) { return a + (x.h.w || 0); }, 0);
+    return '<section><div class="micro">Portfolio exposure</div><ul class="mm-expo">' + hits.map(function (x) { return '<li><span>' + esc(x.h.label) + '</span><span>' + (x.h.w || 0).toFixed(1) + '%</span></li>'; }).join('') +
+      '<li class="tot"><span>Total</span><span>' + w.toFixed(1) + '%</span></li></ul><div class="meta">Exposure is worked out on this computer and never sent to a model.</div></section>';
+  }
+  /* the ledger entry for a node is the implied direction of its most confident cause: that is the claim scored later */
+  function ledgerHTML(n) {
+    var l = n.ins.slice().sort(function (a, b) { return b.conf - a.conf; })[0];
+    if (!l) return '<section><div class="micro">Prediction ledger</div><div class="story">No entry for the event itself: it is observed, not predicted. The directions it implies for its effects are logged on their own nodes.</div></section>';
+    return '<section><div class="micro">Prediction ledger</div><div class="story mm-led"><b>' + esc(n.label.replace(' ↑', '')) + (l.sign > 0 ? ' rises ↑' : ' falls ↓') + '</b> · ' + band(l.conf) + ' (' + l.conf.toFixed(2) + ')' +
+      '<div class="meta">Implied by ' + esc(l.s.label) + ' · ' + tierName(l) + ' · logged ' + dateOf(Math.max(n.day, l.s.day)) + ' · open, scored later</div></div></section>';
+  }
   function openPanel(n, focusIn) {
-    var p = $('#mm-panel'), ty = TYPE[n.type], st = STORY[n.id] || [[n.label.replace(' ↑', '') + ': what moved and why', 3]];
-    p.innerHTML = '<button class="iconbtn x" id="mm-x" aria-label="Close">' + M.icon('x') + '</button>' +
+    var p = $('#mm-panel'), ty = TYPE[n.type], st = STORY[n.id] || [[n.label.replace(' ↑', '') + ': what moved and why', 3]], hits = reaches(n);
+    p.innerHTML = '<button class="btn btn-sm btn-quiet mm-back" id="mm-x" type="button">' + M.icon('left', 'ic-sm') + 'Back</button>' +
       '<span class="badge" style="border-color:' + COL[ty.c] + ';color:' + COL[ty.c] + '">' + ty.name + '</span>' +
       '<h2 class="t2">' + esc(n.label) + '</h2><div class="label">First seen ' + dateOf(n.day) + (n.sym ? ' · ' + esc(n.sym) : '') + (n.place ? ' · ' + esc(n.place) : '') + '</div>' +
-      (n.w ? '<section><div class="story"><b>' + n.w.toFixed(1) + '% of your portfolio</b> is in ' + esc(n.label) + '.<div class="meta">Exposure is worked out on this computer and never sent to a model.</div></div></section>' : '') +
+      summary(n, hits) + chainHTML(n, hits) + exposureHTML(hits) + ledgerHTML(n) +
       '<section><div class="micro">News (' + st.length + ')</div>' + st.map(function (s) { return '<div class="story">' + esc(s[0]) + '<div class="meta">' + s[1] + ' outlets, shown once · ' + dateOf(n.day) + '</div></div>'; }).join('') + '</section>' +
       tierSections(n) +
       '<section style="display:flex;gap:8px;flex-wrap:wrap">' + (n.sym && M.I[n.sym] ? '<a class="btn btn-sm btn-primary" href="stock.html?s=' + encodeURIComponent(n.sym) + '">Open stock page</a>' : '') +
@@ -559,11 +614,17 @@
     var f = $('#mm-fold'); if (f) f.addEventListener('click', function () { n.collapsed = !n.collapsed; refold(); openPanel(n, true); });
     if (focusIn) $('#mm-x').focus();
   }
-  /* closing hands the keyboard back to the map if it was inside the panel */
-  function closePanel() { var p = $('#mm-panel'), had = p.contains(document.activeElement); p.classList.remove('open'); sel = null; if (had) host.focus(); kick(); }
+  /* closing hands the keyboard back to where it came from: the card that opened the panel, or the map */
+  var returnTo = null;
+  function closePanel() {
+    var p = $('#mm-panel'), had = p.contains(document.activeElement), was = sel;
+    p.classList.remove('open'); sel = null;
+    if (had) (returnTo && document.body.contains(returnTo) ? returnTo : host).focus();
+    returnTo = null; kick(); if (was) notify('sel');
+  }
   $('#mm-panel').addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
-  function choose(n, focusIn) {
-    sel = n; focusId = n.id; hideTip(); R.flyTo(n); openPanel(n, focusIn); say(n); kick();
+  function choose(n, focusIn, from) {
+    sel = n; focusId = n.id; returnTo = from || null; hideTip(); R.flyTo(n); openPanel(n, focusIn); say(n); kick(); notify('sel');
   }
   function say(n, lead) { $('#mm-live').textContent = (lead ? lead + ' ' : '') + TYPE[n.type].name + ': ' + n.label + (n.place ? ', ' + n.place : '') + '. ' + n.ins.length + ' causes, ' + n.outs.length + ' effects.' + (n.w ? ' ' + n.w.toFixed(1) + '% of portfolio.' : ''); }
 
@@ -685,7 +746,7 @@
   /* ---------- what the globe renderer may read and call ---------- */
   var core = {
     host: host, stage: stage, TYPE: TYPE, band: band, tier: tier, dateOf: dateOf, now: now, targets: targets, animate: animate, report: report,
-    choose: choose, closePanel: closePanel, say: say, chain: chain, upstream: upstream, setLayer: setLayer, LAYERS: LAYERS, STORY: STORY,
+    choose: choose, closePanel: closePanel, say: say, chain: chain, upstream: upstream, reaches: reaches, setLayer: setLayer, LAYERS: LAYERS, STORY: STORY,
     replay: function () { schedule(true); },
     /* pointer results from the globe: a node (its tooltip stays pinned to it), a link (tooltip at the pointer) or nothing */
     overNode: function (n) { if (n === hover && !hoverLink && tipNode === n) return; hover = n; hoverLink = null; if (n) pin(n); else hideTip(); },

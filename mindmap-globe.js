@@ -671,9 +671,10 @@
       U.uTime.value = (core.now() / 1000) % 3600;
       fanK *= U.uScale.value;   /* fan rings grow with the nodes */
       U.uRes.value = [W, H]; U.uFanK.value = fanK;
-      /* an open panel covers part of the stage: slide the view so the globe sits in what is left. Only the projection
-         shifts, the camera does not move, so picking and labels stay exact */
-      var sheet = core.sel && W <= 767 ? panel.offsetTop : 0, wantX = core.sel && W > 900 ? 190 : 0, wantY = sheet ? Math.max(0, H / 2 - (56 + sheet) / 2) : 0, k = M.rm() ? 1 : 1 - Math.exp(-dt * 8);
+      /* where the details panel covers part of the map (the sheet on a phone), slide the view so the globe sits in what is
+         left. Only the projection shifts, the camera does not move, so picking and labels stay exact */
+      if (ts - lastCover > 200) { lastCover = ts; cover(); }
+      var wantX = cov[0] / 2, wantY = cov[1] / 2, k = M.rm() ? 1 : 1 - Math.exp(-dt * 8);
       offX += (wantX - offX) * k; offY += (wantY - offY) * k;
       /* Parallax: the view leans a few pixels against the pointer and the stars lag behind it. Off, or under reduced motion, nothing drifts */
       var lean = core.parallax && !M.rm() && ptr && !ptr.touch, kp = M.rm() ? 1 : 1 - Math.exp(-dt * 6);
@@ -696,6 +697,15 @@
       govern(ts, dt); rest(ts);
     }
 
+    /* how much of the map the open details panel covers: [from the right, from the bottom], in pixels */
+    var cov = [0, 0], lastCover = 0;
+    function cover() {
+      cov[0] = cov[1] = 0;
+      if (!core.sel || !panel.classList.contains('open')) return;
+      var a = host.getBoundingClientRect(), p = panel.getBoundingClientRect(), ox = Math.min(a.right, p.right) - Math.max(a.left, p.left), oy = Math.min(a.bottom, p.bottom) - Math.max(a.top, p.top);
+      if (ox <= 0 || oy <= 0) return;
+      if (p.top > a.top + 8) cov[1] = a.bottom - p.top; else cov[0] = a.right - p.left;
+    }
     /* the default view: the whole globe with a margin, which on a narrow screen means standing further back */
     function home() {
       var t = Math.tan(world.camera().fov * Math.PI / 360) * Math.min(1, W / H) * 0.8;

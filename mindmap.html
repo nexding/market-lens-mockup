@@ -105,9 +105,39 @@
       </div>
 
       <div class="mm-tip glass" id="mm-tip" role="tooltip"></div>
-      <aside class="mm-panel" id="mm-panel" aria-label="Node details"></aside>
       <div class="mm-table glass" id="mm-table"></div>
     </div>
+
+    <!-- the sidebar: what is moving now and the events on the map; a node's details open over them -->
+    <aside class="mm-side" id="mm-side" aria-label="News and events">
+      <div class="mm-side-grip" id="mm-grip" role="separator" tabindex="0" aria-orientation="vertical" aria-controls="mm-side" aria-label="Sidebar width" aria-valuemin="288" aria-valuemax="560" aria-valuenow="360"></div>
+      <div class="mm-side-bar">
+        <span class="micro mm-side-t">News and events</span>
+        <button class="iconbtn" id="mm-side-btn" type="button" aria-expanded="true" aria-controls="mm-side-in" aria-label="Hide the sidebar"></button>
+      </div>
+      <div class="mm-side-in" id="mm-side-in">
+        <section aria-labelledby="mm-now-h">
+          <h2 class="mm-sh" id="mm-now-h">Market-moving now</h2>
+          <div id="mm-now"></div>
+        </section>
+        <section aria-labelledby="mm-ev-h">
+          <h2 class="mm-sh" id="mm-ev-h">Active events <span class="ct" id="mm-ev-n"></span></h2>
+          <div class="mm-ev-tools">
+            <input class="field" type="search" id="mm-q" placeholder="Search events" aria-label="Search events" autocomplete="off">
+            <div class="chips" id="mm-st" role="group" aria-label="Filter by status"></div>
+            <label class="mm-sort">Sort by
+              <select class="select" id="mm-sort">
+                <option value="impact">Impact</option>
+                <option value="recent">Most recent</option>
+                <option value="expo">Portfolio exposure</option>
+              </select>
+            </label>
+          </div>
+          <div id="mm-evs"></div>
+        </section>
+      </div>
+      <aside class="mm-panel" id="mm-panel" aria-label="Node details"></aside>
+    </aside>
   </div>
 </main>
 
