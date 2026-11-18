@@ -10,6 +10,12 @@
 /* globe.gl sizes its own canvas; undo the stretch that app.css gives every canvas in the stage */
 #map .mm-gl canvas { position: static; inset: auto; width: auto; height: auto; cursor: inherit; display: block; }
 #map .mm-over { pointer-events: none; cursor: default; }
+/* node labels: HTML text over the globe, so they stay sharp at any pixel density. A halo in the page colour keeps them
+   readable over city lights and links */
+#map .mm-labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; contain: layout paint style; }
+#map .mm-labels span { position: absolute; left: 0; top: 0; font: 500 13px/16px var(--font); color: var(--text-2); white-space: nowrap;
+  text-shadow: 0 0 1px var(--canvas), 0 0 2px var(--canvas), 0 0 2px var(--canvas), 0 0 4px var(--canvas), 0 0 8px var(--canvas); }
+#map .mm-labels span.on { color: var(--text-1); }
 
 .mm-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 500 12px/16px var(--mm-mono); letter-spacing: 0.04em; color: var(--text-3); pointer-events: none; transition: opacity var(--d-slow); }
 .mm-loading.off { opacity: 0; }

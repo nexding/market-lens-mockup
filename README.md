@@ -58,7 +58,7 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 - Keyboard: Tab to the map, Right and Left follow effects and causes, Up and Down step through alternatives, Shift with an arrow key turns the globe, Enter opens, Space folds, Escape closes, `+` `-` `0` zoom and fit.
 - `mindmap.html?view=flat` shows the earlier flat map. The page also falls back to it, with a notice, if the globe cannot start.
 
-**The globe view uses the network.** It loads globe.gl 2.46.2 and three.js 0.185.1, a night photograph of the Earth and country borders from the jsDelivr CDN, at pinned versions (the list is at the top of `mindmap-globe.js`). Nothing about the page or the portfolio is sent anywhere; these are plain downloads. Offline, or with the CDN blocked, the flat map is shown instead.
+**The globe view uses the network.** It loads globe.gl 2.46.2 and three.js 0.185.1, a night photograph of the Earth and country borders from the jsDelivr CDN, at pinned versions, and on desktops a sharper night photograph (NASA Black Marble 2016, 8.1 MB) from NASA's own site (the list is at the top of `mindmap-globe.js`). Nothing about the page or the portfolio is sent anywhere; these are plain downloads. Offline, or with the CDN blocked, the flat map is shown instead.
 
 ## Files
 

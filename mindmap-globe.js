@@ -1,7 +1,7 @@
 /* Market Lens mockup: event mind map, globe renderer. globe.gl supplies the sphere, atmosphere, camera and controls;
    everything on top of it is drawn here. This is the one page of the mockup that uses the network: the libraries,
-   the night photograph and the border data come from a CDN at pinned versions. If they cannot load, mindmap.js
-   falls back to the flat map. All graph data is invented. */
+   the night photograph and the border data come from a CDN at pinned versions, and a sharper photograph from NASA.
+   If the libraries cannot load, mindmap.js falls back to the flat map. All graph data is invented. */
 (function () {
   'use strict';
   var M = window.ML, COL = M.COL, G = M.mmGeo;
@@ -12,6 +12,8 @@
     /* the same revision (r185) that globe.gl bundles. It must stay a module import: a global THREE breaks globe.gl */
     three: 'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js',
     night: 'https://cdn.jsdelivr.net/npm/three-globe@2.45.6/example/img/earth-night.jpg',
+    /* NASA Black Marble 2016, 13,500 by 6,750 pixels, public domain. Loaded after the smaller one, on desktops only */
+    nightHi: 'https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg',
     atlas: 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json'
   };
   var LOAD_MS = 8000, HOME = { lat: 36, lng: 12, altitude: 2.5 }, ALT_MIN = 0.6, ALT_MAX = 5;
@@ -212,7 +214,10 @@
   /* how far a node's glyph reaches from its centre, in units of its radius plus pixels: arrowheads stop there */
   var REACH = { event: [0.95, 0], factor: [1.2, 0], sector: [1, 0], company: [1, 0], holding: [1, 5] };
   /* how far below a node's centre its label starts, in units of its radius plus pixels */
-  var DROP = { event: [0.95, 4], factor: [1.3, 4], sector: [0.95, 4], company: [1, 4], holding: [1, 9] }, RANK = { event: 0, holding: 1, factor: 2, sector: 3, company: 4 };
+  var DROP = { event: [0.95, 4], factor: [1.3, 4], sector: [0.95, 4], company: [1, 4], holding: [1, 9] };
+  /* which label wins when two would overlap: lower is more important */
+  var RANK = { holding: 0, event: 1, company: 2, sector: 3, factor: 4 };
+  var LABEL_FONT = '500 13px Inter, system-ui, -apple-system, "Segoe UI", sans-serif', LH = 16;
 
   M.mmGlobe = function (core) {
     var host = core.host, world = null, THREE = null, dead = false, ro = null;
@@ -224,7 +229,8 @@
     var interacting = false, moved = false, resumeAt = 0, lastInput = 0, zoomTw = null;
     var fpsAvg = 60, lastT = 0, lastFps = 0;
     var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 }, uLite: { value: 0 } };
-    var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1, mono = 'monospace';
+    var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1;
+    var labLayer = null, labPool = [], hiRes = false;
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
     var ptr = null, down = null, pick = false, offX = 0, offY = 0, shifted = false, par = { x: 0, y: 0, tx: 0, ty: 0 }, paused = false;
     var asleep = false, lastBusy = 0, changed = false, lastCam = [0, 0, 0, 0, 0], qTier = 0, slow = 0, slowSince = 0, lost = null;
@@ -237,8 +243,9 @@
       var ocean = dark ? mix(COL.canvas, COL['surface-1'], 0.6) : mix(COL['surface-3'], COL.accent, 0.1), ground = dark ? COL['surface-3'] : mix(COL['surface-1'], COL['text-3'], 0.08);
       c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
       if (dark && night) {
-        /* the photograph, then itself again as an overlay: land and sea sink towards black and the city lights lift */
-        c.drawImage(night, 0, 0, w, h); c.globalCompositeOperation = 'overlay'; c.globalAlpha = 0.75; c.drawImage(night, 0, 0, w, h);
+        /* the photograph, then itself again as an overlay: land and sea sink towards black and the city lights lift.
+           The sharper NASA photograph has more contrast of its own, so it gets less */
+        c.drawImage(night, 0, 0, w, h); c.globalCompositeOperation = 'overlay'; c.globalAlpha = hiRes ? 0.3 : 0.75; c.drawImage(night, 0, 0, w, h);
         c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
       }
       else {
@@ -273,8 +280,14 @@
     function loadSurface() {
       fetch(CDN.atlas).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (t) { if (dead) return; atlas = decodeAtlas(t); paintTexture(); }).catch(function () {});
       var img = new Image(); img.crossOrigin = 'anonymous';
-      img.onload = function () { if (dead) return; night = img; if (COL.dark) paintTexture(); };
+      img.onload = function () { if (dead || hiRes) return; night = img; if (COL.dark) paintTexture(); };
       img.src = CDN.night;
+      /* where the texture is 8k, the sharper photograph replaces the 4K one when it arrives. It is decoded and scaled down
+         off the main thread where the browser can; where it cannot, the full image is drawn into the texture instead */
+      if (texCv.width <= 4096 || typeof createImageBitmap !== 'function') return;
+      fetch(CDN.nightHi).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) {
+        return createImageBitmap(b, { resizeWidth: texCv.width, resizeHeight: texCv.height, resizeQuality: 'high' }).catch(function () { return createImageBitmap(b); });
+      }).then(function (bm) { if (dead) { bm.close(); return; } night = bm; hiRes = true; if (COL.dark) paintTexture(); }).catch(function () {});
     }
 
     /* ---------- stars: one draw call, dark theme only ---------- */
@@ -369,9 +382,8 @@
       });
       partMesh = layer(g, PART_VS, PART_FS, 20);
       quality();
-      octx.font = '500 10.5px ' + mono;
-      nodes.forEach(function (n) { n.lab = n.w ? n.label + ' · ' + n.w.toFixed(1) + '%' : n.label; n.labW = octx.measureText(n.lab).width; n.labA = 0; n.labT = 0; n.sv = 0; });
-      paintGraph(); lastLab = 0;
+      nodes.forEach(function (n) { n.labA = 0; n.labT = 0; n.sv = 0; });
+      measureLabels(); paintGraph();
     }
     function dropGraph() {
       [nodeMesh, ribMesh, arrowMesh, partMesh].forEach(function (m) { if (m) { world.scene().remove(m); m.geometry.dispose(); m.material.dispose(); } });
@@ -431,7 +443,13 @@
       n.side = 0;
       if (n.geo.fan) { toScreen(n.geo.v, r); var dx = n.sx - sc3[0], dy = n.sy - sc3[1]; n.side = Math.abs(dx) >= Math.abs(dy) ? (dx > 0 ? 1 : 3) : (dy > 0 ? 0 : 2); }
     }
-    var LH = 13, bx = [0, 0, 0, 0];
+    /* label widths for the collision test, in the font the labels are set in. Measured again once that font has loaded */
+    function measureLabels() {
+      octx.font = LABEL_FONT;
+      core.nodes.forEach(function (n) { n.lab = n.w ? n.label + ' · ' + n.w.toFixed(1) + '%' : n.label; n.labW = Math.ceil(octx.measureText(n.lab).width); });
+      lastLab = 0;
+    }
+    var bx = [0, 0, 0, 0];
     function labelBox(n) {
       var dr = DROP[n.type], off = n.sr * dr[0] + dr[1];
       bx[2] = n.labW; bx[3] = LH;
@@ -444,7 +462,7 @@
     }
     function chooseLabels() {
       var nodes = core.nodes, hover = core.hover, sel = core.sel, focus = core.hasFocus ? core.focusId : null, cap = coarse ? 28 : 80, boxes = [], n, i, j;
-      var level = camAlt > 2.6 ? 1 : camAlt > 1.6 ? 3 : 4;   /* far: events and holdings. Middle: plus factors and sectors. Near: everything */
+      var level = camAlt > 2.6 ? 1 : camAlt > 1.6 ? 2 : 4;   /* far: holdings and events. Middle: plus companies. Near: sectors and factors too */
       function forced(n) { return n === hover || n === sel || n.id === focus; }
       var cand = nodes.filter(function (n) { n.labT = 0; return n.sv > 0.5 && n.al > 0.5 && n.dim > 0.5 && (RANK[n.type] <= level || n.lit || forced(n)); });
       cand.sort(function (a, b) { return (forced(b) - forced(a)) || ((b.lit ? 1 : 0) - (a.lit ? 1 : 0)) || (RANK[a.type] - RANK[b.type]) || ((b.ins.length + b.outs.length) - (a.ins.length + a.outs.length)) || (a.id < b.id ? -1 : 1); });
@@ -455,22 +473,13 @@
       }
     }
     function drawOverlay(ts, dt) {
-      var nodes = core.nodes, i, n, k = 1 - Math.exp(-dt * 12), hover = core.hover, sel = core.sel;
+      var nodes = core.nodes, i, n, k = 1 - Math.exp(-dt * 12);
       var cam = world.camera(), p = cam.projectionMatrix.elements, v = cam.matrixWorldInverse.elements, c, r;
       for (c = 0; c < 4; c++) for (r = 0; r < 4; r++) PV[c * 4 + r] = p[r] * v[c * 4] + p[4 + r] * v[c * 4 + 1] + p[8 + r] * v[c * 4 + 2] + p[12 + r] * v[c * 4 + 3];
       for (i = 0; i < nodes.length; i++) project(nodes[i]);
       if (ts - lastLab > 100) { lastLab = ts; chooseLabels(); }
       octx.setTransform(DPR, 0, 0, DPR, 0, 0); octx.clearRect(0, 0, W, H);
-      drawSigns();
-      octx.font = '500 10.5px ' + mono; octx.textAlign = 'left'; octx.textBaseline = 'top'; octx.lineJoin = 'round'; octx.lineWidth = 3;
-      octx.strokeStyle = M.rgba(COL.canvas, COL.dark ? 0.8 : 0.9);
-      for (i = 0; i < nodes.length; i++) {
-        n = nodes[i]; if (Math.abs(n.labT - n.labA) > 0.01) changed = true; n.labA += (n.labT - n.labA) * (M.rm() ? 1 : k);
-        var a = n.labA * n.sv * n.al * n.dim; if (a < 0.02) continue;
-        var strong = n.lit || n === hover || n === sel, b = labelBox(n), x = Math.round(b[0]), y = Math.round(b[1]);
-        octx.globalAlpha = a * (strong ? 1 : 0.86); octx.strokeText(n.lab, x, y);
-        octx.fillStyle = strong ? COL['text-1'] : COL['text-2']; octx.fillText(n.lab, x, y);
-      }
+      drawSigns(); drawLabels(k);
       /* keyboard focus ring, and the count of effects folded into a node */
       var focus = core.hasFocus ? core.byId[core.focusId] : null;
       if (focus && focus.sv > 0.5 && focus.al > 0.5) { octx.globalAlpha = 1; octx.beginPath(); octx.arc(focus.sx, focus.sy, reach(focus) + 6, 0, 6.2832); octx.lineWidth = 2; octx.strokeStyle = COL.accent; octx.stroke(); }
@@ -482,6 +491,24 @@
         octx.fillStyle = COL.dark ? COL.canvas : COL['surface-1']; octx.fillText('+' + n.hidden, fx, fy + 0.5);
       }
       octx.globalAlpha = 1;
+    }
+    /* labels are HTML text over the globe, so they stay sharp at any pixel density. A pool of spans is reused from frame to
+       frame, and a span is only written to when its text, place, opacity or strength changes */
+    function drawLabels(k) {
+      var nodes = core.nodes, hover = core.hover, sel = core.sel, used = 0, i, n, s;
+      for (i = 0; i < nodes.length; i++) {
+        n = nodes[i]; if (Math.abs(n.labT - n.labA) > 0.01) changed = true; n.labA += (n.labT - n.labA) * (M.rm() ? 1 : k);
+        var a = n.labA * n.sv * n.al * n.dim; if (a < 0.02) continue;
+        var strong = n.lit || n === hover || n === sel, b = labelBox(n), x = Math.round(b[0]), y = Math.round(b[1]), op = Math.round(a * (strong ? 1 : 0.88) * 100) / 100;
+        s = labPool[used] || (labPool[used] = labLayer.appendChild(M.el('span')));
+        if (s.t !== n.lab) s.textContent = s.t = n.lab;
+        if (s.x !== x || s.y !== y) { s.style.transform = 'translate(' + x + 'px, ' + y + 'px)'; s.x = x; s.y = y; }
+        if (s.o !== op) s.style.opacity = s.o = op;
+        if (s.s !== strong) { s.classList.toggle('on', strong); s.s = strong; }
+        if (s.hidden) s.hidden = false;
+        used++;
+      }
+      for (i = used; i < labPool.length; i++) if (!labPool[i].hidden) labPool[i].hidden = true;
     }
     /* the point a share t of the way along a link, as arc() in the shaders */
     function arcPoint(l, t) {
@@ -575,10 +602,17 @@
     }
     /* tier 0: everything. 1: no glow on links. 2: half the particles. 3: fewer pixels. A very large graph starts at 1 */
     function quality() {
-      var many = core.links.length > 1500, t = Math.max(qTier, many ? 1 : 0), full = Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1);
+      var many = core.links.length > 1500, t = Math.max(qTier, many ? 1 : 0), full = Math.min(2, window.devicePixelRatio || 1);
       U.uLite.value = t >= 1 ? 1 : 0;
       if (partMesh) partMesh.geometry.instanceCount = t >= 2 ? Math.ceil(PI.length / 2) : PI.length;
       ratio(t >= 3 ? Math.max(1, full - 0.5) : full);
+    }
+    /* moving the window to a screen of a different pixel density draws at the new density */
+    function watchRatio() {
+      if (!window.matchMedia) return;
+      var mq = window.matchMedia('(resolution: ' + (window.devicePixelRatio || 1) + 'dppx)');
+      function moved() { if (mq.removeEventListener) mq.removeEventListener('change', moved); if (dead || !world) return; quality(); resize(); watchRatio(); }
+      if (mq.addEventListener) mq.addEventListener('change', moved);
     }
     /* slow means well under 45 frames a second for two seconds running. A steady 30 is a display or battery cap, not a slow page */
     function govern(ts, dt) {
@@ -700,11 +734,13 @@
       world = new window.Globe(glHost, { waitForGlobeReady: false, animateIn: false, rendererConfig: { antialias: true, powerPreference: 'high-performance' } });
       world.enablePointerInteraction(false).showPointerCursor(false).atmosphereAltitude(0.18);
       over = M.el('canvas', 'mm-over'); host.insertBefore(over, loading); octx = over.getContext('2d');
-      mono = getComputedStyle(core.stage).getPropertyValue('--mm-mono').trim() || 'monospace';
+      labLayer = M.el('div', 'mm-labels'); labLayer.setAttribute('aria-hidden', 'true'); host.insertBefore(labLayer, loading);
       resize();
-      var gl = world.renderer().getContext(), cap = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), coarse ? 2048 : 4096);
+      /* the surface texture is 8k on a desktop whose graphics allow it and 4K on a phone, mipmapped and filtered as sharply as the graphics allow */
+      var gl = world.renderer().getContext(), cap = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), coarse ? 4096 : 8192);
       texCv = document.createElement('canvas'); texCv.width = cap; texCv.height = cap / 2;
-      tex = new THREE.CanvasTexture(texCv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = Math.min(8, world.renderer().capabilities.getMaxAnisotropy());
+      tex = new THREE.CanvasTexture(texCv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = world.renderer().capabilities.getMaxAnisotropy();
+      tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.magFilter = THREE.LinearFilter;
       world.globeMaterial(new THREE.MeshBasicMaterial({ map: tex }));
       makeStars(); buildGraph(); paintTexture(); applyTheme(); loadSurface();
 
@@ -717,7 +753,8 @@
       /* an error thrown inside globe.gl's render call would stop its loop for good: report it once and keep drawing */
       var warned = false, guard = function (fn) { return function () { try { fn(); } catch (e) { if (!warned) { warned = true; console.error(e); } } }; };
       world.scene().onBeforeRender = guard(before); world.scene().onAfterRender = guard(after);
-      listen(); contextEvents(); quality();
+      listen(); contextEvents(); quality(); watchRatio();
+      if (document.fonts && document.fonts.load) document.fonts.load(LABEL_FONT).then(function () { if (!dead && nodeMesh) measureLabels(); });
       core.replay();   /* the map grows in once there is a globe to grow on */
       if (/[?&]debug=1\b/.test(location.search)) window.__mm = { world: world, core: core };   /* a handle for checks from the console */
     }
@@ -794,7 +831,12 @@
         out.width = gl.width; out.height = gl.height;
         world.renderer().render(world.scene(), world.camera());   /* a WebGL frame can only be read back in the task that drew it */
         c.fillStyle = COL.canvas; c.fillRect(0, 0, out.width, out.height); c.drawImage(gl, 0, 0); c.drawImage(over, 0, 0, out.width, out.height);
-        c.scale(k, k); c.textBaseline = 'bottom'; c.font = '500 12px Inter, system-ui, sans-serif';
+        c.scale(k, k);
+        /* the labels are HTML, so they are drawn into the picture here, as they stand on screen */
+        c.font = LABEL_FONT; c.textBaseline = 'middle'; c.lineJoin = 'round'; c.lineWidth = 3; c.strokeStyle = M.rgba(COL.canvas, 0.85);
+        labPool.forEach(function (s) { if (s.hidden) return; c.globalAlpha = s.o; c.strokeText(s.t, s.x, s.y + LH / 2); c.fillStyle = s.s ? COL['text-1'] : COL['text-2']; c.fillText(s.t, s.x, s.y + LH / 2); });
+        c.globalAlpha = 1;
+        c.textBaseline = 'bottom'; c.font = '500 12px Inter, system-ui, sans-serif';
         c.fillStyle = COL['text-1']; c.fillText('Market Lens · Event mind map · ' + stage().querySelector('#mm-scope').textContent.replace(/^· /, '') + ' · Sample data', 16, H - 34);
         c.fillStyle = COL['text-3']; c.font = '400 11px Inter, system-ui, sans-serif';
         c.fillText(cap.textContent.replace(' Sample data.', ''), 16, H - 16);
