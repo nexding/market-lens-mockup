@@ -112,37 +112,104 @@
     '  gl_FragColor = o * vS.x;',
     '}'
   ].join('\n');
-  /* ribbons: one strip per line, bent along the globe in the vertex shader. aH = altitude at the start, at the end, extra height
-     at the middle. aStyle = width, tier, confidence, kind. aState = alpha, how much of the length is drawn */
-  var RIB_VS = GLSL + [
-    'attribute vec3 aA; attribute vec3 aB; attribute vec3 aFanA; attribute vec3 aFanB; attribute vec3 aH; attribute vec4 aStyle; attribute vec3 aCol; attribute vec2 aState;',
-    'uniform vec2 uRes;',
-    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying vec4 vStyle; varying vec3 vCol;',
-    'vec3 at(vec3 a, vec3 b, float om, float t) {',
-    '  vec3 d = om < 0.0002 ? a : (sin((1.0 - t) * om) * a + sin(t * om) * b) / sin(om);',
+  /* every line is an arc from A to B: a great-circle turn between the two directions while the altitude runs from aH.x to aH.y,
+     with aH.z of extra height at the middle. aH.w is its length in globe units. Links, stems, tethers, arrowheads and particles share this */
+  var ARC = GLSL + [
+    'attribute vec3 aA; attribute vec3 aB; attribute vec3 aFanA; attribute vec3 aFanB; attribute vec4 aH;',
+    'vec3 arcA, arcB; float arcOm;',
+    'void arcEnds() { arcA = fanned(aA, aFanA); arcB = fanned(aB, aFanB); arcOm = acos(clamp(dot(arcA, arcB), -1.0, 1.0)); }',
+    'vec3 arc(float t) {',
+    '  vec3 d = arcOm < 0.0002 ? arcA : (sin((1.0 - t) * arcOm) * arcA + sin(t * arcOm) * arcB) / max(sin(arcOm), 0.0005);',
     '  return d * R * (1.0 + mix(aH.x, aH.y, t) + aH.z * sin(3.14159265 * t));',
-    '}',
+    '}'
+  ].join('\n');
+  /* ribbons: one strip per line, widened in screen space. aStyle = width, tier (0 fact, 1 inference, 2 speculative), confidence,
+     kind (0 link, 1 stem, 2 tether). aState = alpha, how much of the length is drawn, lit */
+  var RIB_VS = ARC + [
+    'attribute vec4 aStyle; attribute vec3 aCol; attribute vec3 aState;',
+    'uniform vec2 uRes;',
+    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying float vLen; varying vec4 vStyle; varying vec3 vCol; varying vec2 vSt;',
     'void main() {',
     '  float t = position.x, e = t < 0.5 ? 0.02 : -0.02;',
-    '  vec3 a = fanned(aA, aFanA), b = fanned(aB, aFanB); float om = acos(clamp(dot(a, b), -1.0, 1.0));',
-    '  vec3 P = at(a, b, om, t);',
-    '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0), c2 = projectionMatrix * viewMatrix * vec4(at(a, b, om, t + e), 1.0);',
+    '  arcEnds(); vec3 P = arc(t);',
+    '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0), c2 = projectionMatrix * viewMatrix * vec4(arc(t + e), 1.0);',
     '  vec2 dir = (c2.xy / c2.w - c.xy / c.w) * uRes * sign(e);',
     '  dir = length(dir) > 0.0001 ? normalize(dir) : vec2(1.0, 0.0);',
-    '  float hw = aStyle.x * 0.5 + 1.0;',
+    '  float hw = aStyle.x * 0.5 + (aStyle.w < 0.5 ? 8.0 : 1.0);   /* links carry room for their glow */',
     '  c.xy += vec2(-dir.y, dir.x) * position.y * hw * 2.0 / uRes * c.w;',
     '  gl_Position = aState.x < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c;',
-    '  vAcross = position.y * hw; vHalf = aStyle.x * 0.5; vT = t; vA = aState.x * vis(P); vStyle = aStyle; vCol = aCol;',
+    '  vAcross = position.y * hw; vHalf = aStyle.x * 0.5; vT = t; vA = aState.x * vis(P); vLen = aH.w; vStyle = aStyle; vCol = aCol; vSt = aState.yz;',
     '}'
   ].join('\n');
   var RIB_FS = [
-    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying vec4 vStyle; varying vec3 vCol;',
+    'uniform float uAdd; uniform vec3 uAccent; uniform vec3 uDash;',
+    'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying float vLen; varying vec4 vStyle; varying vec3 vCol; varying vec2 vSt;',
+    '/* how much of a pixel a dash covers: u counts dashes along the line, on is the drawn share of each */',
+    'float dash(float u, float on) { float x = fract(u); return clamp((on * 0.5 - abs(x - on * 0.5)) / max(fwidth(u), 0.0001) + 0.5, 0.0, 1.0); }',
     'void main() {',
-    '  float a = smoothstep(vHalf + 0.6, vHalf - 0.6, abs(vAcross)) * vA;',
-    '  gl_FragColor = vec4(vCol * a, a);',
+    '  float link = step(vStyle.w, 0.5), tier = vStyle.y, on = 1.0;',
+    '  if (link > 0.5 && tier > 0.5) {',
+    '    /* dashes are fixed to the arc, so they do not crawl as the globe turns. Their length follows the zoom in steps of two,',
+    '       with a short blend between steps (uDash = shorter period, longer period, blend) */',
+    '    float share = tier > 1.5 ? 0.34 : 0.56, k = tier > 1.5 ? 0.66 : 1.0, s = vT * vLen;',
+    '    on = mix(dash(s / (uDash.x * k), share), dash(s / (uDash.y * k), share), uDash.z);',
+    '  }',
+    '  float grown = vSt.x >= 1.0 ? 1.0 : smoothstep(vSt.x, vSt.x - 0.03, vT);',
+    '  float along = on * grown * vA * mix(1.0, mix(0.6, 1.0, vT), link);   /* links brighten towards their target */',
+    '  float a = smoothstep(vHalf + 0.6, vHalf - 0.6, abs(vAcross)) * along;',
+    '  float glow = link * exp(-max(abs(vAcross) - vHalf, 0.0) / 2.8) * (0.07 + 0.2 * vStyle.z + 0.25 * vSt.y) * along * uAdd;',
+    '  vec3 col = mix(vCol, uAccent, vSt.y);',
+    '  /* dark theme: the core mostly adds light and the glow adds the accent, so lines that meet build up. Light theme: plain ink */',
+    '  gl_FragColor = vec4(col * a + uAccent * glow, a * (1.0 - 0.6 * uAdd * link));',
+    '}'
+  ].join('\n');
+  /* arrowheads: one triangle per link, just outside the glyph of the node it points at (aEnd = that glyph\'s radius) */
+  var ARROW_VS = ARC + [
+    'attribute vec4 aStyle; attribute vec3 aCol; attribute vec3 aState; attribute float aEnd;',
+    'uniform vec2 uRes; uniform float uScale;',
+    'varying float vA; varying vec3 vCol; varying float vLit;',
+    'void main() {',
+    '  arcEnds(); vec3 P1 = arc(1.0);',
+    '  vec4 c1 = projectionMatrix * viewMatrix * vec4(P1, 1.0), c0 = projectionMatrix * viewMatrix * vec4(arc(0.93), 1.0);',
+    '  vec2 s1 = c1.xy / c1.w * uRes * 0.5, d = s1 - c0.xy / c0.w * uRes * 0.5;',
+    '  d = length(d) > 0.0001 ? normalize(d) : vec2(1.0, 0.0);',
+    '  float len = 5.0 + aStyle.x;',
+    '  vec2 p = s1 - d * (aEnd * uScale + 1.5) + d * position.x * len + vec2(-d.y, d.x) * position.y * len;',
+    '  vA = aState.x * vis(P1); vCol = aCol; vLit = aState.z;',
+    '  gl_Position = (aStyle.w > 0.5 || aState.y < 1.0 || vA < 0.004) ? vec4(2.0, 2.0, 2.0, 1.0) : vec4(p / (uRes * 0.5) * c1.w, c1.z, c1.w);',
+    '}'
+  ].join('\n');
+  var ARROW_FS = [
+    'uniform vec3 uAccent; varying float vA; varying vec3 vCol; varying float vLit;',
+    'void main() { gl_FragColor = vec4(mix(vCol, uAccent, vLit) * vA, vA); }'
+  ].join('\n');
+  /* particles run from cause to effect: position is worked out here from the clock, so nothing is uploaded per frame but
+     one on/off value per particle. aP = phase, laps per second, radius, confidence */
+  var PART_VS = ARC + [
+    'attribute vec4 aP; attribute float aState;',
+    'uniform vec2 uRes; uniform float uTime;',
+    'varying vec2 vP; varying float vA;',
+    'void main() {',
+    '  float t = fract(uTime * aP.y + aP.x);',
+    '  arcEnds(); vec3 P = arc(t);',
+    '  vec4 c = projectionMatrix * viewMatrix * vec4(P, 1.0);',
+    '  c.xy += position.xy * aP.z * 2.0 / uRes * c.w;',
+    '  /* weak links flicker slowly, as on the flat map */',
+    '  float fl = aP.w < 0.3 ? 0.35 + 0.45 * (0.5 + 0.5 * sin(uTime * 12.566 + aP.x * 20.0)) : 1.0;',
+    '  vA = aState * sin(3.14159265 * t) * fl * vis(P);',
+    '  gl_Position = aState < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c; vP = position.xy;',
+    '}'
+  ].join('\n');
+  var PART_FS = [
+    'uniform float uAdd; uniform vec3 uAccent; varying vec2 vP; varying float vA;',
+    'void main() {',
+    '  float d = dot(vP, vP), g = (0.7 * exp(-d * 9.0) + 0.25 * exp(-d * 2.6)) * smoothstep(1.0, 0.6, d) * vA;',
+    '  gl_FragColor = vec4(uAccent * g * mix(1.5, 1.0, uAdd), g * mix(1.5, 0.0, uAdd));',
     '}'
   ].join('\n');
   var SEG = 32, SHAPE = { event: 0, factor: 1, sector: 2, company: 3, holding: 4 }, SIZE = { event: 9, factor: 7, sector: 8, company: 5, holding: 7 };
+  /* how far a node's glyph reaches from its centre, in units of its radius plus pixels: arrowheads stop there */
+  var REACH = { event: [0.95, 0], factor: [1.2, 0], sector: [1, 0], company: [1, 0], holding: [1, 5] };
   /* how far below a node's centre its label starts, in units of its radius plus pixels */
   var DROP = { event: [0.95, 4], factor: [1.3, 4], sector: [0.95, 4], company: [1, 4], holding: [1, 9] }, RANK = { event: 0, holding: 1, factor: 2, sector: 3, company: 4 };
 
@@ -153,8 +220,8 @@
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
     var interacting = false, moved = false, resumeAt = 0, lastInput = 0, zoomTw = null;
     var fpsAvg = 60, lastT = 0, lastFps = 0;
-    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] } };
-    var nodeMesh = null, ribMesh = null, NI = [], RI = [], over = null, octx = null, DPR = 1, mono = 'monospace';
+    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 } };
+    var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1, mono = 'monospace';
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
 
     /* ---------- the surface texture: night photograph or a land mask in token colours, with borders drawn in ---------- */
@@ -249,24 +316,60 @@
         else { put(g.attributes.aBase, i, n.geo.v); if (n.geo.fan) put(g.attributes.aFan, i, n.geo.fan); put(g.attributes.aMeta, i, [n.geo.alt, SHAPE[n.type], SIZE[n.type], Math.min(1, (n.ins.length + n.outs.length) / 6)]); }
       }
       nodeMesh = layer(g, NODE_VS, NODE_FS, 30);
-      /* line instances: a stem under each floating node, a tether from each fanned node back to its true place */
-      RI = nodes.filter(function (n) { return n.geo.float; }).map(function (n) { return { n: n, kind: 'stem' }; }).concat(nodes.filter(function (n) { return n.geo.fan; }).map(function (n) { return { n: n, kind: 'tether' }; }));
+      /* line instances: every link, a stem under each floating node, a tether from each fanned node back to its true place */
+      var links = core.links, zero = [0, 0, 0];
+      links.forEach(function (l) {
+        var th = G.angle(l.s.geo.v, l.t.geo.v) * Math.PI / 180, hA = l.s.geo.alt, hB = l.t.geo.alt;
+        /* the further apart the ends, the higher the arc. Between two surface nodes it stays under the sector shell */
+        var hp = l.s.geo.float || l.t.geo.float ? Math.min(0.12, 0.1 * th) : Math.max(0.03, Math.min(0.18, 0.28 * th));
+        l.geo = { h: [hA, hB, hp], len: Math.max(4, Math.hypot(th * 100 * (1 + (hA + hB) / 2), (hB - hA) * 100) + hp * 80) };
+      });
+      RI = links.map(function (l) { return { l: l, kind: 'link' }; })
+        .concat(nodes.filter(function (n) { return n.geo.float; }).map(function (n) { return { n: n, kind: 'stem' }; }))
+        .concat(nodes.filter(function (n) { return n.geo.fan; }).map(function (n) { return { n: n, kind: 'tether' }; }));
       var sp = new Float32Array((SEG + 1) * 6), si = new Uint16Array(SEG * 6);
       for (i = 0; i <= SEG; i++) { sp.set([i / SEG, -1, 0, i / SEG, 1, 0], i * 6); if (i < SEG) si.set([i * 2, i * 2 + 1, i * 2 + 2, i * 2 + 1, i * 2 + 3, i * 2 + 2], i * 6); }
-      g = instanced({ pos: new THREE.BufferAttribute(sp, 3), idx: new THREE.BufferAttribute(si, 1) }, RI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 3, aStyle: 4, aCol: 3, aState: 2 });
+      g = instanced({ pos: new THREE.BufferAttribute(sp, 3), idx: new THREE.BufferAttribute(si, 1) }, RI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 4, aStyle: 4, aCol: 3, aState: 3, aEnd: 1 });
+      var at = g.attributes;
       for (i = 0; i < RI.length; i++) {
-        n = RI[i].n; put(g.attributes.aStyle, i, [1, 0, 1, RI[i].kind === 'stem' ? 1 : 2]);
-        if (RI[i].kind === 'stem') { put(g.attributes.aA, i, n.geo.v); put(g.attributes.aB, i, n.geo.v); put(g.attributes.aH, i, [0.004, n.geo.alt, 0]); }
-        else { put(g.attributes.aA, i, n.geo.home); put(g.attributes.aB, i, n.geo.v); put(g.attributes.aFanB, i, n.geo.fan); put(g.attributes.aH, i, [0.005, 0.005, 0]); }
+        var it = RI[i]; n = it.n;
+        if (it.kind === 'link') {
+          var l = it.l, tier = core.tier(l), rch = REACH[l.t.type];
+          put(at.aA, i, l.s.geo.v); put(at.aFanA, i, l.s.geo.fan || zero); put(at.aB, i, l.t.geo.v); put(at.aFanB, i, l.t.geo.fan || zero);
+          put(at.aH, i, l.geo.h.concat(l.geo.len)); put(at.aStyle, i, [1 + 3 * l.conf, tier === 'fact' ? 0 : tier === 'spec' ? 2 : 1, l.conf, 0]); put(at.aEnd, i, [SIZE[l.t.type] * rch[0] + rch[1]]);
+        }
+        else if (it.kind === 'stem') { put(at.aA, i, n.geo.v); put(at.aB, i, n.geo.v); put(at.aH, i, [0.004, n.geo.alt, 0, n.geo.alt * 100]); put(at.aStyle, i, [1, 0, 1, 1]); }
+        else { put(at.aA, i, n.geo.home); put(at.aB, i, n.geo.v); put(at.aFanB, i, n.geo.fan); put(at.aH, i, [0.005, 0.005, 0, 1]); put(at.aStyle, i, [1, 0, 1, 2]); }
       }
       ribMesh = layer(g, RIB_VS, RIB_FS, 10);
+      /* arrowheads reuse the ribbon's per-line data: only the shape differs */
+      var ag = new THREE.InstancedBufferGeometry(); ag.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0, 0, 0, -1, 0.55, 0, -1, -0.55, 0]), 3)); ag.instanceCount = RI.length;
+      ['aA', 'aB', 'aFanA', 'aFanB', 'aH', 'aStyle', 'aCol', 'aState', 'aEnd'].forEach(function (k) { ag.setAttribute(k, at[k]); });
+      arrowMesh = layer(ag, ARROW_VS, ARROW_FS, 25);
+      /* particles: more of them, and faster, on confident links; long arcs get proportionally more so the spacing holds.
+         If the total passes the cap, the weakest links go without */
+      var cap = coarse ? 1200 : 4000, used = 0, bare = 0; PI = [];
+      links.slice().sort(function (a, b) { return b.conf - a.conf; }).forEach(function (l) {
+        var cnt = Math.min(6, Math.ceil((l.conf >= 0.6 ? 3 : l.conf >= 0.3 ? 2 : 1) * Math.max(1, l.geo.len / 100)));
+        if (used + cnt > cap) { bare++; return; } used += cnt;
+        for (var j = 0; j < cnt; j++) PI.push({ l: l, j: j, cnt: cnt });
+      });
+      if (bare) console.info('Mind map: particle cap reached, the ' + bare + ' weakest links carry none');
+      g = instanced(quad, PI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 4, aP: 4, aState: 1 });
+      at = g.attributes;
+      PI.forEach(function (p, i) {
+        var l = p.l;
+        put(at.aA, i, l.s.geo.v); put(at.aFanA, i, l.s.geo.fan || zero); put(at.aB, i, l.t.geo.v); put(at.aFanB, i, l.t.geo.fan || zero); put(at.aH, i, l.geo.h.concat(l.geo.len));
+        put(at.aP, i, [l.phase + p.j / p.cnt, (14 + 30 * l.conf) / l.geo.len, 5 + 5 * l.conf, l.conf]);
+      });
+      partMesh = layer(g, PART_VS, PART_FS, 20);
       octx.font = '500 10.5px ' + mono;
       nodes.forEach(function (n) { n.lab = n.w ? n.label + ' · ' + n.w.toFixed(1) + '%' : n.label; n.labW = octx.measureText(n.lab).width; n.labA = 0; n.labT = 0; n.sv = 0; });
       paintGraph(); lastLab = 0;
     }
     function dropGraph() {
-      [nodeMesh, ribMesh].forEach(function (m) { if (m) { world.scene().remove(m); m.geometry.dispose(); m.material.dispose(); } });
-      nodeMesh = ribMesh = null;
+      [nodeMesh, ribMesh, arrowMesh, partMesh].forEach(function (m) { if (m) { world.scene().remove(m); m.geometry.dispose(); m.material.dispose(); } });
+      nodeMesh = ribMesh = arrowMesh = partMesh = null;
     }
     /* colours are per instance, so a theme or accent change refills them */
     function paintGraph() {
@@ -274,20 +377,30 @@
       var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']);
       NI.forEach(function (it, i) { put(a, i, it.dot ? quiet : rgb(COL[core.TYPE[it.n.type].c])); });
       RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : quiet); });
+      U.uAccent.value = rgb(COL.accent);
       a.needsUpdate = b.needsUpdate = true;
     }
     /* per-frame state from the shared animation: written every frame, uploaded only when something changed */
     function write(attr, i, v) { var arr = attr.array, o = i * attr.itemSize, ch = false; for (var k = 0; k < v.length; k++) if (arr[o + k] !== (arr[o + k] = v[k])) ch = true; return ch; }
-    var tmp4 = [0, 0, 0, 0], tmp2 = [0, 1];
+    var tmp4 = [0, 0, 0, 0], tmp3 = [0, 1, 0], tmp1 = [0];
     function syncGraph() {
-      var a = nodeMesh.geometry.attributes.aState, b = ribMesh.geometry.attributes.aState, i, n, ch = false, hover = core.hover, sel = core.sel;
+      var a = nodeMesh.geometry.attributes.aState, b = ribMesh.geometry.attributes.aState, c = partMesh.geometry.attributes.aState, i, n, l, ch = false, hover = core.hover, sel = core.sel;
       for (i = 0; i < NI.length; i++) {
         n = NI[i].n; tmp4[0] = Math.fround(n.al * n.dim * (NI[i].dot ? 0.9 : 1)); tmp4[1] = NI[i].dot ? 1 : Math.fround(n.sc * (0.6 + 0.4 * n.hA) * (n === hover ? 1.07 : 1)); tmp4[2] = n.lit || n === sel ? 1 : 0; tmp4[3] = n === sel ? 1 : 0;
         if (write(a, i, tmp4)) ch = true;
       }
       if (ch) a.needsUpdate = true; ch = false;
-      for (i = 0; i < RI.length; i++) { n = RI[i].n; tmp2[0] = Math.fround(n.al * n.dim * Math.min(1, n.sc) * (RI[i].kind === 'stem' ? 0.34 : 0.5)); if (write(b, i, tmp2)) ch = true; }
-      if (ch) b.needsUpdate = true;
+      for (i = 0; i < RI.length; i++) {
+        if (RI[i].kind === 'link') {
+          /* a link is as strong as its confidence, as on the flat map; one in the hovered chain turns accent and brightens */
+          l = RI[i].l; tmp3[0] = Math.fround(Math.min(1, (0.42 + 0.5 * l.conf + (l.lit ? 0.3 : 0)) * l.al * l.dim)); tmp3[1] = Math.fround(l.gp); tmp3[2] = l.lit ? 1 : 0;
+        }
+        else { n = RI[i].n; tmp3[0] = Math.fround(n.al * n.dim * Math.min(1, n.sc) * (RI[i].kind === 'stem' ? 0.34 : 0.5)); tmp3[1] = 1; tmp3[2] = 0; }
+        if (write(b, i, tmp3)) ch = true;
+      }
+      if (ch) b.needsUpdate = true; ch = false;
+      partMesh.visible = core.particlesOn && !M.rm() && !M.compact();
+      if (partMesh.visible) { for (i = 0; i < PI.length; i++) { l = PI[i].l; tmp1[0] = l.gp >= 1 && l.al * l.dim >= 0.3 ? Math.fround(l.al * l.dim) : 0; if (write(c, i, tmp1)) ch = true; } if (ch) c.needsUpdate = true; }
     }
 
     /* ---------- labels: a 2D canvas over the globe. Small, quiet, and thinned out by zoom level and importance ---------- */
@@ -338,6 +451,7 @@
       for (i = 0; i < nodes.length; i++) project(nodes[i]);
       if (ts - lastLab > 100) { lastLab = ts; chooseLabels(); }
       octx.setTransform(DPR, 0, 0, DPR, 0, 0); octx.clearRect(0, 0, W, H);
+      drawSigns();
       octx.font = '500 10.5px ' + mono; octx.textAlign = 'left'; octx.textBaseline = 'top'; octx.lineJoin = 'round'; octx.lineWidth = 3;
       octx.strokeStyle = M.rgba(COL.canvas, COL.dark ? 0.8 : 0.9);
       for (i = 0; i < nodes.length; i++) {
@@ -346,6 +460,30 @@
         var strong = n.lit || n === hover || n === sel, b = labelBox(n), x = Math.round(b[0]), y = Math.round(b[1]);
         octx.globalAlpha = a * (strong ? 1 : 0.86); octx.strokeText(n.lab, x, y);
         octx.fillStyle = strong ? COL['text-1'] : COL['text-2']; octx.fillText(n.lab, x, y);
+      }
+      octx.globalAlpha = 1;
+    }
+    /* the point a share t of the way along a link, as arc() in the shaders */
+    function arcPoint(l, t) {
+      var a = G.shown(l.s.geo, fanK), b = G.shown(l.t.geo, fanK), om = Math.acos(Math.max(-1, Math.min(1, G.dot(a, b)))), h = l.geo.h, d = a;
+      if (om > 0.0002) { var ka = Math.sin((1 - t) * om), kb = Math.sin(t * om); d = G.unit([ka * a[0] + kb * b[0], ka * a[1] + kb * b[1], ka * a[2] + kb * b[2]]); }
+      toScreen(d, 100 * (1 + h[0] + (h[1] - h[0]) * t + h[2] * Math.sin(Math.PI * t)));
+    }
+    function hidden() {
+      var c = world.camera().position, vx = sc3[3] - c.x, vy = sc3[4] - c.y, vz = sc3[5] - c.z, s = Math.max(0, Math.min(1, -(c.x * vx + c.y * vy + c.z * vz) / (vx * vx + vy * vy + vz * vz)));
+      return sc3[2] <= 0 || Math.hypot(c.x + vx * s, c.y + vy * s, c.z + vz * s) < 99.8;
+    }
+    /* the + or − of each link sits at the top of its arc. With very many links only those in a lit chain keep theirs */
+    function drawSigns() {
+      var links = core.links, many = links.length > 150, i, l;
+      octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.font = '600 11px Inter, system-ui, sans-serif'; octx.lineWidth = 1;
+      for (i = 0; i < links.length; i++) {
+        l = links[i]; var a = l.al * l.dim; if (l.gp < 1 || a < 0.05 || (many && !l.lit)) continue;
+        arcPoint(l, 0.5); if (hidden()) continue;
+        var x = sc3[0], y = sc3[1];
+        octx.globalAlpha = a; octx.beginPath(); octx.arc(x, y, 6.5, 0, 6.2832); octx.fillStyle = COL['surface-1']; octx.fill();
+        octx.strokeStyle = M.rgba(COL['text-1'], 0.2); octx.stroke();
+        octx.fillStyle = l.sign > 0 ? COL.gain : COL.loss; octx.fillText(l.sign > 0 ? '+' : '−', x, y + 0.5);
       }
       octx.globalAlpha = 1;
     }
@@ -360,7 +498,7 @@
     }
 
     /* ---------- auto-rotate: slow, pauses for any interaction, stops by itself after a minute without input ---------- */
-    function wantRotate(t) { return !M.rm() && !interacting && t > resumeAt && t - lastInput < 60000 && !core.sel && !core.hover && !core.hasFocus; }
+    function wantRotate(t) { return !M.rm() && !interacting && !flyTw && t > resumeAt && t - lastInput < 60000 && !core.sel && !core.hover && !core.hasFocus; }
     function input() { lastInput = performance.now(); }
 
     /* ---------- frame hooks: globe.gl owns the loop; these run inside its render call ---------- */
@@ -372,6 +510,10 @@
       var cam = world.camera(), d = cam.position.length();
       camAlt = d / 100 - 1; fanK = 2 * Math.tan(cam.fov * Math.PI / 360) * (d - 100) / (H * 100);
       U.uScale.value = Math.max(0.75, Math.min(1.6, Math.pow(2 / camAlt, 0.35)));
+      /* dash length: 13 px at the middle of the globe, held to powers of two of globe units so zooming does not make dashes swim */
+      var f = Math.log(13 * fanK * 100) / Math.LN2, lo = Math.floor(f), fr = f - lo;
+      U.uDash.value = [Math.pow(2, lo), Math.pow(2, lo + 1), M.rm() ? Math.round(fr) : Math.max(0, Math.min(1, (fr - 0.35) / 0.3))];
+      U.uTime.value = (core.now() / 1000) % 3600;
       fanK *= U.uScale.value;   /* fan rings grow with the nodes */
       U.uRes.value = [W, H]; U.uFanK.value = fanK;
       core.targets(); core.animate(core.now(), dt);
@@ -413,17 +555,29 @@
 
       var c = world.controls();
       c.minDistance = 100 * (1 + ALT_MIN); c.maxDistance = 100 * (1 + ALT_MAX); c.zoomToCursor = false; c.autoRotateSpeed = 0.35;
-      c.addEventListener('start', function () { interacting = moved = true; input(); if (zoomTw) zoomTw.cancel(); glHost.classList.add('grabbing'); });
+      c.addEventListener('start', function () { interacting = moved = true; input(); stopFly(); if (zoomTw) zoomTw.cancel(); glHost.classList.add('grabbing'); });
       c.addEventListener('end', function () { interacting = false; resumeAt = performance.now() + 4000; input(); glHost.classList.remove('grabbing'); });
       world.pointOfView(home(), 0);
       lastInput = lastT = performance.now();
       world.scene().onBeforeRender = before; world.scene().onAfterRender = after;
+      core.replay();   /* the map grows in once there is a globe to grow on */
       if (/[?&]debug=1\b/.test(location.search)) window.__mm = { world: world, core: core };   /* a handle for checks from the console */
     }
 
+    /* camera moves follow a great circle and stop the moment the controls are touched */
+    function stopFly() { if (flyTw) { flyTw.cancel(); flyTw = null; } }
+    function smooth(u) { return u * u * (3 - 2 * u); }
+    function fly(to, ms) {
+      stopFly(); if (zoomTw) zoomTw.cancel();
+      var from = world.pointOfView(), a = G.vec(from.lat, from.lng), b = G.vec(to.lat, to.lng), om = Math.acos(Math.max(-1, Math.min(1, G.dot(a, b))));
+      flyTw = M.tween(ms, function (u) {
+        var d = b; if (om > 0.0002 && u < 1) { var ka = Math.sin((1 - u) * om), kb = Math.sin(u * om); d = G.unit([ka * a[0] + kb * b[0], ka * a[1] + kb * b[1], ka * a[2] + kb * b[2]]); }
+        var p = G.latlng(d); world.pointOfView({ lat: p.lat, lng: p.lng, altitude: from.altitude + (to.altitude - from.altitude) * u }, 0);
+      }, smooth, function () { flyTw = null; });
+    }
     function zoomBy(f) {
       if (!world) return;
-      input(); moved = true; if (zoomTw) zoomTw.cancel();
+      input(); moved = true; stopFly(); if (zoomTw) zoomTw.cancel();
       var a0 = world.pointOfView().altitude, a1 = Math.max(ALT_MIN, Math.min(ALT_MAX, a0 / f));
       zoomTw = M.tween(250, function (u) { world.pointOfView({ altitude: a0 + (a1 - a0) * u }, 0); }, M.easeOut);
     }
@@ -439,13 +593,20 @@
       },
       kick: function () {},
       zoomBy: zoomBy,
-      fit: function () { if (world) { input(); moved = false; world.pointOfView(home(), M.rm() ? 0 : 700); } },
-      intro: function () {}, flyTo: function () {}, reveal: function () {}, setParallax: function () {},
+      fit: function () { if (world) { input(); moved = false; fly(home(), 700); } },
+      /* Replay and first load: start close over the first event and pull back as the map grows */
+      intro: function (animated, r0, ms) {
+        if (!world) return;
+        moved = false; stopFly();
+        if (!animated || !r0 || !isFinite(r0.lat)) { world.pointOfView(home(), 0); return; }
+        world.pointOfView({ lat: r0.lat, lng: r0.lng, altitude: 1.4 }, 0); fly(home(), Math.max(1600, ms));
+      },
+      flyTo: function () {}, reveal: function () {}, setParallax: function () {},
       rebuild: function () { if (world) { dropGraph(); buildGraph(); } },
       exportBlob: function (cb) { if (!world) return; world.renderer().render(world.scene(), world.camera()); world.renderer().domElement.toBlob(cb); },
       repaint: applyTheme,
       destroy: function () {
-        dead = true; if (ro) ro.disconnect(); if (zoomTw) zoomTw.cancel();
+        dead = true; if (ro) ro.disconnect(); if (zoomTw) zoomTw.cancel(); stopFly();
         ['pointerdown', 'pointermove', 'wheel', 'keydown'].forEach(function (ev) { host.removeEventListener(ev, input); });
         if (world) { world.pauseAnimation(); if (world._destructor) world._destructor(); world = null; }
       }

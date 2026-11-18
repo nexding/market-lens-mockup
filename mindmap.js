@@ -540,6 +540,7 @@
   var core = {
     host: host, stage: stage, TYPE: TYPE, band: band, tier: tier, dateOf: dateOf, now: now, targets: targets, animate: animate, report: report,
     choose: choose, closePanel: closePanel, say: say,
+    replay: function () { schedule(true); },
     setHover: function (n, l) { hover = n; hoverLink = l; },
     fold: function (n) { if (n.outs.length) { n.collapsed = !n.collapsed; refold(); if (sel === n) openPanel(n); } },
     fail: function (why) { R.destroy(); R = null; host.textContent = ''; note('The globe view could not start (' + why + '). Showing the flat map instead.'); begin('flat'); }
