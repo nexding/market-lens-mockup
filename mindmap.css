@@ -132,6 +132,26 @@
 .mm-panel .meta { font-size: 11px; line-height: 16px; color: var(--text-3); }
 .mm-led b { font-weight: 600; }
 
+/* ---------- your holdings: floating over the map, dragged by its title ---------- */
+.mm-watch { position: absolute; z-index: 5; top: 64px; right: 16px; width: 280px; border-radius: 12px; border: 1px solid var(--hairline-strong); box-shadow: var(--shadow-3); overflow: hidden; }
+.mm-watch-h { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 4px 0 12px; border-bottom: 1px solid var(--hairline); cursor: grab; touch-action: none; user-select: none; }
+.mm-watch.dragging .mm-watch-h { cursor: grabbing; }
+.mm-watch-h h2 { font: 600 11px/16px var(--font); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
+.mm-watch-h h2 .ct { color: var(--text-3); font-weight: 500; }
+.mm-watch-h .iconbtn { width: 32px; height: 32px; }
+.mm-watch-l { max-height: 336px; overflow-y: auto; padding: 4px; scrollbar-width: thin; }
+.mm-wr { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) 56px auto; align-items: center; gap: 8px; padding: 6px 8px; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; }
+.mm-wr:hover { background: var(--surface-3); }
+.mm-wr .mono { width: 28px; height: 28px; border-radius: 8px; font-size: 10px; }
+.mm-wr .nm { display: grid; min-width: 0; }
+.mm-wr .nm b { font-size: 12px; line-height: 16px; font-weight: 600; }
+.mm-wr .nm span { font-size: 11px; line-height: 14px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-stage .mm-wr canvas { position: static; inset: auto; width: 56px; height: 24px; cursor: inherit; }
+.mm-wr .pc { display: grid; justify-items: end; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; }
+.mm-wr .pc .chg { font-size: 11px; }
+.mm-watch-f { padding: 6px 12px 8px; font-size: 11px; line-height: 14px; color: var(--text-3); border-top: 1px solid var(--hairline); }
+.mm-watch .mm-empty { margin: 4px; }
+
 /* key rows that only apply to the globe, where links are coloured by their sign */
 .mm-stage[data-view="flat"] .mm-globe-only { display: none; }
 
@@ -155,6 +175,11 @@
   .sheet-open .mm-side, .mm-side:has(.mm-panel.open) { height: 60%; }
   .side-closed .mm-side { width: auto; }
   .mm-time { left: 8px; right: 8px; bottom: 60px; }
+  .mm-watch { top: 52px; right: 8px; left: auto; width: auto; max-width: calc(100% - 16px); box-shadow: var(--shadow-2); }
+  .mm-watch:not(.open) .mm-watch-l, .mm-watch:not(.open) .mm-watch-f { display: none; }
+  .mm-watch:not(.open) .mm-watch-h { border-bottom: 0; }
+  .mm-watch.open { width: 300px; }
+  .mm-watch-h { cursor: pointer; height: 36px; }
   .mm-credit { bottom: 50px; }
   /* the top bar is a title line, then one row of controls that scrolls sideways */
   .mm-top { height: auto; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }

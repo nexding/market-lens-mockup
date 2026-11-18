@@ -41,6 +41,7 @@
           <button class="btn btn-sm" id="mm-replay" type="button" title="Replay how the map grows"></button>
           <button class="btn btn-sm" id="mm-tbl" type="button" aria-pressed="false"></button>
           <button class="btn btn-sm" id="mm-png" type="button"></button>
+          <button class="btn btn-sm is-on" id="mm-watch-t" type="button" aria-pressed="true" aria-controls="mm-watch">Holdings panel</button>
           <div class="mm-menu-sep" role="separator"></div>
           <button class="btn btn-sm" id="mm-dense" type="button" aria-pressed="false" title="Adds invented second-order companies to test 60 nodes">60 nodes</button>
           <button class="btn btn-sm" id="mm-stress" type="button" aria-pressed="false" title="Invented graph of 1,000 nodes and 3,000 links, to test the frame rate" hidden>1,000 nodes</button>
@@ -103,6 +104,16 @@
         <input type="range" id="mm-slider" min="0" max="11" step="0.01" value="11" aria-label="Timeline: show the map as it stood on a date">
         <span class="date" id="mm-date">14 Nov 2026</span>
       </div>
+
+      <!-- your holdings, floating over the map: drag it by its title, close it, bring it back from More -->
+      <section class="mm-watch glass" id="mm-watch" aria-labelledby="mm-watch-h">
+        <header class="mm-watch-h" id="mm-watch-grab">
+          <h2 id="mm-watch-h">Your holdings <span class="ct" id="mm-watch-n"></span></h2>
+          <button class="iconbtn" id="mm-watch-x" type="button" aria-label="Close your holdings"></button>
+        </header>
+        <ul class="mm-watch-l" id="mm-watch-l"></ul>
+        <p class="mm-watch-f">Sample prices. Change and line since the previous close.</p>
+      </section>
 
       <div class="mm-tip glass" id="mm-tip" role="tooltip"></div>
       <div class="mm-table glass" id="mm-table"></div>

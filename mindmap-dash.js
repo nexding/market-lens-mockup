@@ -177,9 +177,60 @@
   sideBtn.addEventListener('click', function () { setOpen(!isOpen(), true); });
   if (phone.addEventListener) phone.addEventListener('change', function () { stage.classList.remove('sheet-open', 'side-closed'); setOpen(phone.matches ? false : store.get('side') !== '0', false); });
 
+  /* ---------- your holdings: a small floating panel over the map with price, day change and a line since the close ---------- */
+  var watch = $('#mm-watch'), wlist = $('#mm-watch-l'), wgrab = $('#mm-watch-grab'), wtoggle = $('#mm-watch-t'), area = $('#mm-area'), W0 = 40;
+  $('#mm-watch-x').innerHTML = M.icon('x', 'ic-sm');
+  /* only holdings with sample prices: the invented holdings of the 1,000-node test have none */
+  function priced() { return core.nodes.filter(function (n) { return n.type === 'holding' && n.sym && M.I[n.sym]; }); }
+  function renderWatch() {
+    var hs = priced();
+    $('#mm-watch-n').textContent = hs.length;
+    wlist.innerHTML = hs.length ? hs.map(function (n) {
+      var it = M.I[n.sym];
+      return '<li><button class="mm-wr" type="button" data-id="' + n.id + '" aria-label="Open ' + esc(n.label) + ' on the map">' +
+        '<span class="mono" style="--h:' + it.h + '" aria-hidden="true">' + it.mono + '</span>' +
+        '<span class="nm"><b>' + esc(n.sym) + '</b><span>' + esc(n.label) + '</span></span>' +
+        '<canvas data-sp="' + esc(n.sym) + '" aria-hidden="true"></canvas>' +
+        '<span class="pc">' + M.pxHTML(n.sym) + M.chgHTML(n.sym) + '</span></button></li>';
+    }).join('') : '<li class="mm-empty">No sample prices for the holdings on this map.</li>';
+    $$('canvas[data-sp]', wlist).forEach(function (cv) { M.spark(cv, M.series(cv.dataset.sp, W0), { w: 56, h: 24 }); });
+  }
+  renderWatch();
+  M.onTick(function (it) { var cv = $('canvas[data-sp="' + it.id + '"]', wlist); if (cv && !watch.hidden) M.spark(cv, M.series(it.id, W0), { w: 56, h: 24 }); });
+  wlist.addEventListener('click', function (e) { var b = e.target.closest('[data-id]'); if (b) core.choose(core.byId[b.dataset.id], true, b); });
+
+  /* where it sits is kept as the gap to the map's top right corner, so it stays put when the sidebar opens or closes */
+  var wpos = (store.get('watch-pos') || '16,64').split(',').map(Number);
+  function placeWatch() {
+    if (phone.matches) { watch.style.left = watch.style.top = ''; return; }
+    var aw = area.clientWidth, ah = area.clientHeight, w = watch.offsetWidth, h = watch.offsetHeight;
+    var right = Math.max(8, Math.min(aw - w - 8, wpos[0])), top = Math.max(8, Math.min(ah - h - 8, wpos[1]));
+    watch.style.left = (aw - w - right) + 'px'; watch.style.top = top + 'px';
+    return [right, top];
+  }
+  function showWatch(on, save) {
+    watch.hidden = !on; wtoggle.setAttribute('aria-pressed', on); wtoggle.classList.toggle('is-on', on);
+    if (on) { renderWatch(); placeWatch(); }
+    if (save) store.set('watch', on ? '1' : '0');
+  }
+  showWatch(store.get('watch') !== '0', false);
+  wtoggle.addEventListener('click', function () { showWatch(watch.hidden, true); });
+  $('#mm-watch-x').addEventListener('click', function () { showWatch(false, true); more.focus(); });
+  wgrab.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('button') || phone.matches) return;
+    e.preventDefault(); wgrab.setPointerCapture(e.pointerId); watch.classList.add('dragging');
+    var x0 = e.clientX, y0 = e.clientY, p0 = wpos.slice();
+    function move(ev) { wpos = [p0[0] - (ev.clientX - x0), p0[1] + (ev.clientY - y0)]; placeWatch(); }
+    function up() { wgrab.removeEventListener('pointermove', move); wgrab.removeEventListener('pointerup', up); watch.classList.remove('dragging'); wpos = placeWatch(); store.set('watch-pos', wpos.map(Math.round).join(',')); }
+    wgrab.addEventListener('pointermove', move); wgrab.addEventListener('pointerup', up);
+  });
+  /* on a phone it is a pill under the tabs that opens in place */
+  wgrab.addEventListener('click', function (e) { if (phone.matches && !e.target.closest('button')) watch.classList.toggle('open'); });
+  new ResizeObserver(function () { if (!watch.hidden) placeWatch(); }).observe(area);
+
   /* ---------- follow the map ---------- */
   document.addEventListener('mm:change', function (e) {
-    if (e.detail === 'graph') { rc = {}; counts(); tabs.select('', false); }
+    if (e.detail === 'graph') { rc = {}; counts(); tabs.select('', false); if (!watch.hidden) { renderWatch(); placeWatch(); } }
     /* a node's details open in the sidebar, so a hidden sidebar comes back for them */
     if (e.detail === 'sel' && core.sel && !phone.matches && !isOpen()) setOpen(true, false);
     if (e.detail !== 'sel') renderSide();
