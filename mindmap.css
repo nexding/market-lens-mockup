@@ -20,6 +20,13 @@
 .mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
 .mm-stage[data-view="globe"] .mm-credit { display: block; }
 
+/* the globe view has one more toggle: its toolbar buttons are a little tighter so everything still fits one row on a laptop */
+.mm-stage[data-view="globe"] .mm-group .btn-sm { padding-inline: 9px; }
+
+/* the Rotate toggle belongs to the globe; a toggle that reduced motion has switched off looks it */
+.mm-stage[data-view="flat"] #mm-rot { display: none; }
+.mm-group .btn[aria-disabled="true"] { opacity: 0.45; }
+
 /* side panel: the ledger line under each link, and the key above the tiers */
 .lk .led { grid-column: 1 / -1; font: 500 11px/16px var(--mm-mono); color: var(--text-2); }
 .mm-panel .led-key { margin-top: 18px; color: var(--text-3); }

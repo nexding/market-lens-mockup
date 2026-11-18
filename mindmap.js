@@ -5,7 +5,7 @@
   var M = window.ML, $ = M.$, $$ = M.$$, esc = M.esc, COL = M.COL;
   M.shell('Mind Maps');
 
-  /* R is the active renderer, flat or globe. Both offer: start, kick, zoomBy, fit, intro, flyTo, reveal, exportBlob, repaint, setParallax, rebuild, destroy */
+  /* R is the active renderer, flat or globe. Both offer: start, kick, zoomBy, fit, refit, intro, flyTo, reveal, rotateBy, exportBlob, repaint, setParallax, pause, rebuild, destroy */
   var host = $('#map'), stage = $('#main'), R = null, FLAT_LABEL = host.getAttribute('aria-label');
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function dateOf(d) { var t = new Date(2026, 10, 3 + Math.floor(d)); return t.getDate() + ' ' + MON[t.getMonth()] + ' ' + t.getFullYear(); }
@@ -113,7 +113,7 @@
 
   /* ---------- state shared by both renderers ---------- */
   var hover = null, hoverLink = null, sel = null, focusId = null, hasFocus = false;
-  var tl = 11, playing = null, particlesOn = true, parallax = false, focusHolding = '';
+  var tl = 11, playing = null, particlesOn = true, parallax = false, rotateOn = true, focusHolding = '';
   var clock0 = performance.now(), growStart = 0, tip = $('#mm-tip');
   function now() { return performance.now() - clock0; }
   function kick() { if (R) R.kick(); }
@@ -158,9 +158,10 @@
   function upstream(n) { var set = {}; set[n.id] = 1; (function up(x) { x.ins.forEach(function (l) { if (!set[l.s.id]) { set[l.s.id] = 1; up(l.s); } }); })(n); return set; }
   function targets() {
     var hset = hover ? chain(hover) : (hoverLink ? (function () { var s = {}; s[hoverLink.s.id] = 1; s[hoverLink.t.id] = 1; return s; })() : null);
-    var fset = focusHolding ? upstream(byId[focusHolding]) : null;
-    nodes.forEach(function (n) { n.dimT = (hset && !hset[n.id] ? 0.15 : 1) * (fset && !fset[n.id] ? 0.14 : 1); n.lit = !!(hset && hset[n.id]); });
-    links.forEach(function (l) { var on = (!hset || (hset[l.s.id] && hset[l.t.id])) && (!hoverLink || hoverLink === l); l.dimT = (on ? 1 : 0.12) * (fset && !(fset[l.s.id] && fset[l.t.id]) ? 0.14 : 1); l.lit = !!((hset || hoverLink) && on); });
+    /* a holding filter keeps only the chains that reach that holding: the globe hides the rest, the flat map dims it */
+    var fset = focusHolding ? upstream(byId[focusHolding]) : null, off = R && R.name === 'globe' ? 0 : 0.14;
+    nodes.forEach(function (n) { n.dimT = (hset && !hset[n.id] ? 0.15 : 1) * (fset && !fset[n.id] ? off : 1); n.lit = !!(hset && hset[n.id]); });
+    links.forEach(function (l) { var on = (!hset || (hset[l.s.id] && hset[l.t.id])) && (!hoverLink || hoverLink === l); l.dimT = (on ? 1 : 0.12) * (fset && !(fset[l.s.id] && fset[l.t.id]) ? off : 1); l.lit = !!((hset || hoverLink) && on); });
   }
 
   /* ---------- per-node and per-link animation state, advanced once a frame by the active renderer ---------- */
@@ -178,8 +179,10 @@
     }
   }
   function report(fps) {
-    var shown = nodes.filter(function (n) { return n.al > 0.5; }).length;
-    $('#mm-fps').textContent = Math.min(120, Math.round(fps)) + ' fps · ' + shown + ' nodes · ' + links.length + ' links';
+    /* on the globe the counts are what is on show: the timeline, folded nodes and the holding filter all reduce them */
+    var globe = R && R.name === 'globe', shown = nodes.filter(function (n) { return n.al > 0.5 && (!globe || n.dimT > 0.05); }).length;
+    var lk = globe ? links.filter(function (l) { return l.al > 0.5 && l.dimT > 0.05; }).length : links.length;
+    $('#mm-fps').textContent = (fps < 0 ? 'paused' : Math.min(120, Math.round(fps)) + ' fps') + ' · ' + shown + ' nodes · ' + lk + ' links';
   }
 
   /* ---------- tooltips ---------- */
@@ -460,7 +463,7 @@
       exportBlob: function (cb) { cv.toBlob(cb); },
       repaint: function () { sprites = {}; kick(); },
       setParallax: function (on) { if (!on) par.tx = par.ty = 0; },
-      rebuild: function () {}, destroy: function () {}
+      rebuild: function () {}, destroy: function () {}, refit: function () {}, pause: function () {}, rotateBy: function () {}
     };
   }
 
@@ -566,7 +569,14 @@
   toggleBtn('#mm-part', function (on) { particlesOn = on; });
   toggleBtn('#mm-para', function (on) { parallax = on; R.setParallax(on); });
   toggleBtn('#mm-dense', function (on) { dense = on; closePanel(); hover = null; build(); fillFocus(); fillTable(); setTl(11); refold(); R.rebuild(); schedule(true); });
-  toggleBtn('#mm-tbl', function (on) { $('#mm-table').classList.toggle('open', on); });
+  toggleBtn('#mm-rot', function (on) { rotateOn = on; });
+  toggleBtn('#mm-tbl', function (on) { $('#mm-table').classList.toggle('open', on); R.pause(on); });
+  /* reduced motion switches these three off whatever they are set to: say so on the buttons */
+  function motionButtons() {
+    ['#mm-part', '#mm-para', '#mm-rot'].forEach(function (id) { var b = $(id); if (M.rm()) { b.setAttribute('aria-disabled', 'true'); b.title = 'Off while reduced motion is on'; } else { b.removeAttribute('aria-disabled'); b.removeAttribute('title'); } });
+  }
+  motionButtons(); document.addEventListener('ml:pref', motionButtons);
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)'); if (mq.addEventListener) mq.addEventListener('change', function () { setTimeout(motionButtons, 0); });
   $('#mm-replay').addEventListener('click', function () { closePanel(); setTl(11); schedule(true); });
   $('#mm-fit').addEventListener('click', function () { R.fit(); });
   $('#mm-in').addEventListener('click', function () { R.zoomBy(1.25); });
@@ -576,11 +586,24 @@
   });
   function fillFocus() {
     var s = $('#mm-focus'); s.innerHTML = '<option value="">All holdings</option>' + nodes.filter(function (n) { return n.type === 'holding'; }).map(function (n) { return '<option value="' + n.id + '">' + esc(n.label) + '</option>'; }).join(''); focusHolding = '';
+    $('#mm-scope').textContent = '· whole portfolio · 3 to 14 Nov 2026';
   }
-  $('#mm-focus').addEventListener('change', function () { focusHolding = this.value; kick(); });
+  $('#mm-focus').addEventListener('change', function () {
+    focusHolding = this.value; var h = byId[focusHolding];
+    $('#mm-scope').textContent = '· ' + (h ? 'chains reaching ' + h.label : 'whole portfolio') + ' · 3 to 14 Nov 2026';
+    targets(); fillTable();
+    if (sel && sel.dimT < 0.05) closePanel();
+    $('#mm-live').textContent = h ? 'Showing ' + Object.keys(upstream(h)).length + ' nodes in chains that reach ' + h.label + '.' : 'Showing the whole portfolio.';
+    R.refit(); kick();
+  });
   function fillTable() {
-    $('#mm-table').innerHTML = '<table><thead><tr><th>Cause</th><th>Effect</th><th>Direction</th><th>Confidence</th><th>Basis</th><th>Evidence</th><th>First seen</th></tr></thead><tbody>' +
-      links.map(function (l) { return '<tr><td>' + esc(l.s.label) + '</td><td>' + esc(l.t.label) + '</td><td class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? '+ raises' : '− lowers') + '</td><td>' + band(l.conf) + ' (' + l.conf.toFixed(2) + ')</td><td>' + (l.basis === 'fact' ? 'Confirmed fact' : 'Model inference') + '</td><td style="white-space:normal;min-width:260px">' + esc(l.why) + '</td><td>' + dateOf(l.t.day) + '</td></tr>'; }).join('') + '</tbody></table>';
+    /* the table follows the holding filter, so it lists the same links the map shows */
+    var fset = focusHolding ? upstream(byId[focusHolding]) : null, rows = links.filter(function (l) { return !fset || (fset[l.s.id] && fset[l.t.id]); });
+    $('#mm-table').innerHTML = '<table><thead><tr><th>Cause</th><th>Effect</th><th>Direction</th><th>Confidence</th><th>Basis</th><th>Evidence</th><th>Where</th><th>First seen</th></tr></thead><tbody>' +
+      rows.map(function (l) {
+        var t = tier(l), where = [l.s.place, l.t.place].filter(Boolean).join(' → ');
+        return '<tr><td>' + esc(l.s.label) + '</td><td>' + esc(l.t.label) + '</td><td class="' + (l.sign > 0 ? 'up' : 'dn') + '">' + (l.sign > 0 ? '+ raises' : '− lowers') + '</td><td>' + band(l.conf) + ' (' + l.conf.toFixed(2) + ')</td><td>' + (t === 'fact' ? 'Confirmed fact' : t === 'spec' ? 'Speculative' : 'Model inference') + '</td><td style="white-space:normal;min-width:260px">' + esc(l.why) + '</td><td>' + (where ? esc(where) : '—') + '</td><td>' + dateOf(l.t.day) + '</td></tr>';
+      }).join('') + '</tbody></table>';
   }
   var slider = $('#mm-slider');
   function setTl(v) { tl = v; slider.value = v; $('#mm-date').textContent = dateOf(v); kick(); }
@@ -611,7 +634,7 @@
   };
   [['nodes', function () { return nodes; }], ['links', function () { return links; }], ['byId', function () { return byId; }], ['hover', function () { return hover; }],
     ['hoverLink', function () { return hoverLink; }], ['tipNode', function () { return tipNode; }], ['sel', function () { return sel; }], ['focusId', function () { return focusId; }], ['hasFocus', function () { return hasFocus; }],
-    ['tl', function () { return tl; }], ['playing', function () { return playing; }], ['particlesOn', function () { return particlesOn; }], ['parallax', function () { return parallax; }],
+    ['tl', function () { return tl; }], ['playing', function () { return playing; }], ['particlesOn', function () { return particlesOn; }], ['parallax', function () { return parallax; }], ['rotateOn', function () { return rotateOn; }],
     ['focusHolding', function () { return focusHolding; }], ['growStart', function () { return growStart; }], ['dense', function () { return dense; }]
   ].forEach(function (g) { Object.defineProperty(core, g[0], { get: g[1] }); });
 

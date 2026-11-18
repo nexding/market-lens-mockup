@@ -216,6 +216,7 @@
   M.mmGlobe = function (core) {
     var host = core.host, world = null, THREE = null, dead = false, ro = null;
     var panel = core.stage.querySelector('#mm-panel');
+    function stage() { return core.stage; }
     var glHost = null, loading = null, W = 0, H = 0;
     var coarse = window.matchMedia('(pointer: coarse)').matches;
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
@@ -224,7 +225,7 @@
     var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 } };
     var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1, mono = 'monospace';
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
-    var ptr = null, down = null, pick = false, offX = 0, offY = 0, shifted = false;
+    var ptr = null, down = null, pick = false, offX = 0, offY = 0, shifted = false, par = { x: 0, y: 0, tx: 0, ty: 0 }, paused = false;
 
     /* ---------- the surface texture: night photograph or a land mask in token colours, with borders drawn in ---------- */
     function paintTexture() {
@@ -568,7 +569,7 @@
     }
 
     /* ---------- auto-rotate: slow, pauses for any interaction, stops by itself after a minute without input ---------- */
-    function wantRotate(t) { return !M.rm() && !interacting && !flyTw && t > resumeAt && t - lastInput < 60000 && !core.sel && !core.hover && !core.hasFocus; }
+    function wantRotate(t) { return core.rotateOn && !M.rm() && !interacting && !flyTw && t > resumeAt && t - lastInput < 60000 && !core.sel && !core.hover && !core.hasFocus; }
     function input() { lastInput = performance.now(); }
 
     /* ---------- frame hooks: globe.gl owns the loop; these run inside its render call ---------- */
@@ -579,7 +580,7 @@
       /* what the shaders need to know about the camera: how far out it is, and how much arc one pixel covers at the surface */
       var cam = world.camera(), d = cam.position.length();
       camAlt = d / 100 - 1; fanK = 2 * Math.tan(cam.fov * Math.PI / 360) * (d - 100) / (H * 100);
-      U.uScale.value = Math.max(0.75, Math.min(1.6, Math.pow(2 / camAlt, 0.35)));
+      U.uScale.value = Math.max(0.75, Math.min(1.6, Math.pow(2 / camAlt, 0.35))) * (M.compact() ? 0.9 : 1);
       /* dash length: 13 px at the middle of the globe, held to powers of two of globe units so zooming does not make dashes swim */
       var f = Math.log(13 * fanK * 100) / Math.LN2, lo = Math.floor(f), fr = f - lo;
       U.uDash.value = [Math.pow(2, lo), Math.pow(2, lo + 1), M.rm() ? Math.round(fr) : Math.max(0, Math.min(1, (fr - 0.35) / 0.3))];
@@ -590,7 +591,13 @@
          shifts, the camera does not move, so picking and labels stay exact */
       var sheet = core.sel && W <= 767 ? panel.offsetTop : 0, wantX = core.sel && W > 900 ? 190 : 0, wantY = sheet ? Math.max(0, H / 2 - (56 + sheet) / 2) : 0, k = M.rm() ? 1 : 1 - Math.exp(-dt * 8);
       offX += (wantX - offX) * k; offY += (wantY - offY) * k;
-      if (Math.abs(offX) + Math.abs(offY) > 0.5) { cam.setViewOffset(W, H, offX, offY, W, H); shifted = true; }
+      /* Parallax: the view leans a few pixels against the pointer and the stars lag behind it. Off, or under reduced motion, nothing drifts */
+      var lean = core.parallax && !M.rm() && ptr && !ptr.touch, kp = M.rm() ? 1 : 1 - Math.exp(-dt * 6);
+      par.tx = lean ? (ptr.x / W - 0.5) * -14 : 0; par.ty = lean ? (ptr.y / H - 0.5) * -14 : 0;
+      par.x += (par.tx - par.x) * kp; par.y += (par.ty - par.y) * kp;
+      stars.rotation.y = par.x * 0.0022; stars.rotation.x = par.y * 0.0022;
+      var ox = offX - par.x, oy = offY - par.y;
+      if (Math.abs(ox) + Math.abs(oy) > 0.05) { cam.setViewOffset(W, H, ox, oy, W, H); shifted = true; }
       else if (shifted) { cam.clearViewOffset(); shifted = false; }
       if (pick && nodeMesh) hoverPick();
       core.targets(); core.animate(core.now(), dt);
@@ -609,12 +616,33 @@
       var t = Math.tan(world.camera().fov * Math.PI / 360) * Math.min(1, W / H) * 0.8;
       return { lat: HOME.lat, lng: HOME.lng, altitude: Math.max(HOME.altitude, Math.min(ALT_MAX, 1 / Math.sin(Math.atan(t)) - 1)) };
     }
+    /* Fit: look straight down on the middle of the nodes that are on show, from just far enough out to take them all in.
+       When they are spread over more of the Earth than can be seen at once (the whole portfolio is), it is the default view */
+    function fitView() {
+      var ns = core.nodes.filter(function (n) { return n.geo && !n.hideTo && n.day <= core.tl && n.dimT > 0.05; }), sum = [0, 0, 0], far = 0;
+      ns.forEach(function (n) { sum[0] += n.geo.v[0]; sum[1] += n.geo.v[1]; sum[2] += n.geo.v[2]; });
+      if (!ns.length || Math.hypot(sum[0], sum[1], sum[2]) < 1e-6) return home();
+      /* the middle is the point that keeps the furthest node as near as possible: start from the average and step towards
+         whichever node is furthest, by less each time. Never straight down on a pole, so north stays up */
+      var c = G.unit(sum), i, k, a, fn;
+      for (i = 1; i <= 40; i++) {
+        a = -1; ns.forEach(function (n) { var x = G.angle(c, n.geo.v); if (x > a) { a = x; fn = n.geo.v; } });
+        k = 1 / (i + 1); c = G.unit([c[0] + (fn[0] - c[0]) * k, c[1] + (fn[1] - c[1]) * k, c[2] + (fn[2] - c[2]) * k]);
+      }
+      var p = G.latlng(c); p.lat = Math.max(-58, Math.min(58, p.lat)); c = G.vec(p.lat, p.lng);
+      ns.forEach(function (n) { far = Math.max(far, G.angle(c, n.geo.v)); });
+      /* a holding's chain is worth a long view from far out; the whole portfolio is not, it reads better from the default view */
+      if (far > (core.focusHolding ? 78 : 62)) return home();
+      var d = (far + 5) * Math.PI / 180, t = Math.tan(world.camera().fov * Math.PI / 360) * Math.min(1, W / H) * 0.62;
+      /* far enough out that the outermost node is inside the frame and this side of the horizon */
+      return { lat: p.lat, lng: p.lng, altitude: Math.max(1, Math.min(ALT_MAX, Math.max(Math.sin(d) / t + Math.cos(d) - 1, 1 / Math.cos(Math.min(d + 0.1, 1.4)) - 1))) };
+    }
     function resize() {
       W = host.clientWidth; H = host.clientHeight;
       if (!world || !W || !H) return;
       world.width(W).height(H);
       DPR = Math.min(2, window.devicePixelRatio || 1); over.width = Math.round(W * DPR); over.height = Math.round(H * DPR);
-      if (!moved) world.pointOfView({ altitude: home().altitude }, 0);
+      if (!moved && !flyTw) world.pointOfView({ altitude: fitView().altitude }, 0);
     }
 
     function init(three) {
@@ -674,13 +702,15 @@
       },
       kick: function () {},
       zoomBy: zoomBy,
-      fit: function () { if (world) { input(); moved = false; fly(home(), 700); } },
+      fit: function () { if (world) { input(); moved = false; fly(fitView(), 700); } },
+      /* the holding filter changed what is on show */
+      refit: function () { if (world) { input(); moved = false; fly(fitView(), 900); } },
       /* Replay and first load: start close over the first event and pull back as the map grows */
       intro: function (animated, r0, ms) {
         if (!world) return;
         moved = false; stopFly();
-        if (!animated || !r0 || !isFinite(r0.lat)) { world.pointOfView(home(), 0); return; }
-        world.pointOfView({ lat: r0.lat, lng: r0.lng, altitude: 1.4 }, 0); fly(home(), Math.max(1600, ms));
+        if (!animated || !r0 || !isFinite(r0.lat)) { world.pointOfView(fitView(), 0); return; }
+        world.pointOfView({ lat: r0.lat, lng: r0.lng, altitude: 1.4 }, 0); fly(fitView(), Math.max(1600, ms));
       },
       /* a chosen node comes to the middle, closer in; floating nodes are viewed from a little further out */
       flyTo: function (n) {
@@ -698,8 +728,23 @@
         var p = world.pointOfView(); input(); moved = true; fly({ lat: Math.max(-85, Math.min(85, p.lat + dLat)), lng: p.lng + dLng, altitude: p.altitude }, 250);
       },
       setParallax: function () {},
+      /* the Table covers the map: stop drawing while it is open */
+      pause: function (on) { if (!world || on === paused) return; paused = on; if (on) { world.pauseAnimation(); core.report(-1); } else { lastT = performance.now(); world.resumeAnimation(); } },
       rebuild: function () { if (world) { dropGraph(); buildGraph(); } },
-      exportBlob: function (cb) { if (!world) return; world.renderer().render(world.scene(), world.camera()); world.renderer().domElement.toBlob(cb); },
+      /* the picture is put together from the WebGL frame, the label layer and a caption, so it carries "Sample data" wherever it goes */
+      exportBlob: function (cb) {
+        if (!world) return;
+        var gl = world.renderer().domElement, out = document.createElement('canvas'), c = out.getContext('2d'), k = gl.width / W, cap = stage().querySelector('.mm-cap'), credit = stage().querySelector('.mm-credit');
+        out.width = gl.width; out.height = gl.height;
+        world.renderer().render(world.scene(), world.camera());   /* a WebGL frame can only be read back in the task that drew it */
+        c.fillStyle = COL.canvas; c.fillRect(0, 0, out.width, out.height); c.drawImage(gl, 0, 0); c.drawImage(over, 0, 0, out.width, out.height);
+        c.scale(k, k); c.textBaseline = 'bottom'; c.font = '500 12px Inter, system-ui, sans-serif';
+        c.fillStyle = COL['text-1']; c.fillText('Market Lens · Event mind map · ' + stage().querySelector('#mm-scope').textContent.replace(/^· /, '') + ' · Sample data', 16, H - 34);
+        c.fillStyle = COL['text-3']; c.font = '400 11px Inter, system-ui, sans-serif';
+        c.fillText(cap.textContent.replace(' Sample data.', ''), 16, H - 16);
+        c.textAlign = 'right'; c.fillText(credit.textContent, W - 16, H - 16);
+        out.toBlob(cb);
+      },
       repaint: applyTheme,
       destroy: function () {
         dead = true; if (ro) ro.disconnect(); if (zoomTw) zoomTw.cancel(); stopFly();
