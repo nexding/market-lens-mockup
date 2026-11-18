@@ -1,0 +1,25 @@
+/* Market Lens mockup: event mind map page. The shared .mm-* rules are in app.css; this file holds what the globe view adds. */
+
+.mm-stage { --mm-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+
+/* the map host: the flat renderer puts one canvas in it, the globe renderer a WebGL layer and a label overlay */
+#map { position: absolute; inset: 0; outline: 0; overflow: hidden; }
+#map .mm-gl { position: absolute; inset: 0; cursor: grab; touch-action: none; }
+#map .mm-gl.grabbing { cursor: grabbing; }
+#map .mm-gl.pointing { cursor: pointer; }
+/* globe.gl sizes its own canvas; undo the stretch that app.css gives every canvas in the stage */
+#map .mm-gl canvas { position: static; inset: auto; width: auto; height: auto; cursor: inherit; display: block; }
+#map .mm-over { pointer-events: none; cursor: default; }
+
+.mm-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 500 12px/16px var(--mm-mono); letter-spacing: 0.04em; color: var(--text-3); pointer-events: none; transition: opacity var(--d-slow); }
+.mm-loading.off { opacity: 0; }
+
+.mm-note { position: absolute; z-index: 6; left: 50%; top: 68px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); box-shadow: var(--shadow-3); background: var(--surface-2); }
+.mm-note .btn { flex: none; }
+
+.mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
+.mm-stage[data-view="globe"] .mm-credit { display: block; }
+
+@media (max-width: 767px) {
+  .mm-credit { right: 12px; bottom: 2px; font-size: 9px; }
+}
