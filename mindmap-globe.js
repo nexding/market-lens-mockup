@@ -145,7 +145,7 @@
     '}'
   ].join('\n');
   var RIB_FS = [
-    'uniform float uAdd; uniform float uLite; uniform vec3 uAccent; uniform vec3 uDash;',
+    'uniform float uAdd; uniform float uLite; uniform vec3 uDash;',
     'varying float vAcross; varying float vHalf; varying float vT; varying float vA; varying float vLen; varying vec4 vStyle; varying vec3 vCol; varying vec2 vSt;',
     '/* how much of a pixel a dash covers: u counts dashes along the line, on is the drawn share of each */',
     'float dash(float u, float on) { float x = fract(u); return clamp((on * 0.5 - abs(x - on * 0.5)) / max(fwidth(u), 0.0001) + 0.5, 0.0, 1.0); }',
@@ -161,9 +161,10 @@
     '  float along = on * grown * vA * mix(1.0, mix(mix(0.82, 0.6, uAdd), 1.0, vT), link);   /* links brighten towards their target */',
     '  float a = smoothstep(vHalf + 0.6, vHalf - 0.6, abs(vAcross)) * along;',
     '  float glow = link * exp(-max(abs(vAcross) - vHalf, 0.0) / 2.8) * (0.07 + 0.2 * vStyle.z + 0.25 * vSt.y) * along * uAdd * (1.0 - uLite);',
-    '  vec3 col = mix(vCol, uAccent, vSt.y);',
-    '  /* dark theme: the core mostly adds light and the glow adds the accent, so lines that meet build up. Light theme: plain ink */',
-    '  gl_FragColor = vec4(col * a + uAccent * glow, a * (1.0 - 0.6 * uAdd * link));',
+    '  /* links are green when they raise their target and red when they lower it, lit or not; a lit chain is brighter instead */',
+    '  vec3 col = mix(vCol, vec3(1.0), 0.18 * vSt.y * uAdd);',
+    '  /* dark theme: the core mostly adds light and the glow adds the same colour, so lines that meet build up. Light theme: plain ink */',
+    '  gl_FragColor = vec4(col * a + vCol * glow, a * (1.0 - 0.6 * uAdd * link));',
     '}'
   ].join('\n');
   /* arrowheads: one triangle per link, just outside the glyph of the node it points at (aEnd = that glyph\'s radius) */
@@ -183,15 +184,15 @@
     '}'
   ].join('\n');
   var ARROW_FS = [
-    'uniform vec3 uAccent; varying float vA; varying vec3 vCol; varying float vLit;',
-    'void main() { gl_FragColor = vec4(mix(vCol, uAccent, vLit) * vA, vA); }'
+    'varying float vA; varying vec3 vCol; varying float vLit;',
+    'void main() { gl_FragColor = vec4(mix(vCol, vec3(1.0), 0.18 * vLit) * vA, vA); }'
   ].join('\n');
   /* particles run from cause to effect: position is worked out here from the clock, so nothing is uploaded per frame but
      one on/off value per particle. aP = phase, laps per second, radius, confidence */
   var PART_VS = ARC + [
-    'attribute vec4 aP; attribute float aState;',
+    'attribute vec4 aP; attribute float aState; attribute vec3 aCol;',
     'uniform vec2 uRes; uniform float uTime;',
-    'varying vec2 vP; varying float vA;',
+    'varying vec2 vP; varying float vA; varying vec3 vCol;',
     'void main() {',
     '  float t = fract(uTime * aP.y + aP.x);',
     '  arcEnds(); vec3 P = arc(t);',
@@ -200,14 +201,14 @@
     '  /* weak links flicker slowly, as on the flat map */',
     '  float fl = aP.w < 0.3 ? 0.35 + 0.45 * (0.5 + 0.5 * sin(uTime * 12.566 + aP.x * 20.0)) : 1.0;',
     '  vA = aState * sin(3.14159265 * t) * fl * vis(P);',
-    '  gl_Position = aState < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c; vP = position.xy;',
+    '  gl_Position = aState < 0.004 ? vec4(2.0, 2.0, 2.0, 1.0) : c; vP = position.xy; vCol = aCol;',
     '}'
   ].join('\n');
   var PART_FS = [
-    'uniform float uAdd; uniform vec3 uAccent; varying vec2 vP; varying float vA;',
+    'uniform float uAdd; varying vec2 vP; varying float vA; varying vec3 vCol;',
     'void main() {',
     '  float d = dot(vP, vP), g = (0.7 * exp(-d * 9.0) + 0.25 * exp(-d * 2.6)) * smoothstep(1.0, 0.6, d) * vA;',
-    '  gl_FragColor = vec4(uAccent * g * mix(1.5, 1.0, uAdd), g * mix(1.5, 0.0, uAdd));',
+    '  gl_FragColor = vec4(mix(vCol, vec3(1.0), 0.25 * uAdd) * g * mix(1.5, 1.0, uAdd), g * mix(1.5, 0.0, uAdd));',
     '}'
   ].join('\n');
   var SHAPE = { event: 0, factor: 1, sector: 2, company: 3, holding: 4 }, SIZE = { event: 9, factor: 7, sector: 8, company: 5, holding: 7 };
@@ -228,7 +229,7 @@
     var tex = null, texCv = null, atlas = null, night = null, paintedDark = null, stars = null;
     var interacting = false, moved = false, resumeAt = 0, lastInput = 0, zoomTw = null;
     var fpsAvg = 60, lastT = 0, lastFps = 0;
-    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uAccent: { value: [1, 1, 1] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 }, uLite: { value: 0 } };
+    var U = { uRes: { value: [1, 1] }, uFanK: { value: 0.003 }, uScale: { value: 1 }, uAdd: { value: 1 }, uBg: { value: [0, 0, 0] }, uDash: { value: [1, 2, 0] }, uTime: { value: 0 }, uLite: { value: 0 } };
     var nodeMesh = null, ribMesh = null, arrowMesh = null, partMesh = null, NI = [], RI = [], PI = [], flyTw = null, over = null, octx = null, DPR = 1;
     var labLayer = null, labPool = [], hiRes = false;
     var PV = new Float32Array(16), camAlt = 2.4, fanK = 0.003, lastLab = 0;
@@ -373,7 +374,7 @@
         for (var j = 0; j < cnt; j++) PI.push({ l: l, j: j, cnt: cnt });
       });
       if (bare) console.info('Mind map: particle cap reached, the ' + bare + ' weakest links carry none');
-      g = instanced(quad, PI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 4, aP: 4, aState: 1 });
+      g = instanced(quad, PI.length, { aA: 3, aB: 3, aFanA: 3, aFanB: 3, aH: 4, aP: 4, aState: 1, aCol: 3 });
       at = g.attributes;
       PI.forEach(function (p, i) {
         var l = p.l;
@@ -392,12 +393,13 @@
     /* colours are per instance, so a theme or accent change refills them */
     function paintGraph() {
       if (!nodeMesh) return;
-      /* links are pale on the dark globe and near-black ink on the light one, where a mid grey would not stand out from the land */
-      var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']), ink = rgb(COL.dark ? COL['text-2'] : COL['text-1']);
+      /* a link and its particles take the colour of its sign: the up colour if it raises its target, the down colour if it
+         lowers it. Both come from the tokens, so the app's up and down colour setting applies here too */
+      var a = nodeMesh.geometry.attributes.aCol, b = ribMesh.geometry.attributes.aCol, c = partMesh.geometry.attributes.aCol, quiet = rgb(COL['text-2']), up = rgb(COL.gain), dn = rgb(COL.loss);
       NI.forEach(function (it, i) { put(a, i, it.dot ? quiet : rgb(COL[core.TYPE[it.n.type].c])); });
-      RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : it.kind === 'link' ? ink : quiet); });
-      U.uAccent.value = rgb(COL.accent);
-      a.needsUpdate = b.needsUpdate = true;
+      RI.forEach(function (it, i) { put(b, i, it.kind === 'stem' ? rgb(COL[core.TYPE[it.n.type].c]) : it.kind === 'link' ? (it.l.sign > 0 ? up : dn) : quiet); });
+      PI.forEach(function (p, i) { put(c, i, p.l.sign > 0 ? up : dn); });
+      a.needsUpdate = b.needsUpdate = c.needsUpdate = true;
     }
     /* per-frame state from the shared animation: written every frame, uploaded only when something changed */
     function write(attr, i, v) { var arr = attr.array, o = i * attr.itemSize, ch = false; for (var k = 0; k < v.length; k++) if (arr[o + k] !== (arr[o + k] = v[k])) ch = true; return ch; }
@@ -520,12 +522,13 @@
       var c = world.camera().position, vx = sc3[3] - c.x, vy = sc3[4] - c.y, vz = sc3[5] - c.z, s = Math.max(0, Math.min(1, -(c.x * vx + c.y * vy + c.z * vz) / (vx * vx + vy * vy + vz * vz)));
       return sc3[2] <= 0 || Math.hypot(c.x + vx * s, c.y + vy * s, c.z + vz * s) < 99.8;
     }
-    /* the + or − of each link sits at the top of its arc. With very many links, or from far out, only those in a lit chain keep theirs */
+    /* the colour of a link already says whether it raises or lowers its target. For the chain that is hovered or selected the
+       sign is also spelt out, as a + or − at the top of each arc, so it does not rest on colour alone */
     function drawSigns() {
-      var links = core.links, many = links.length > 150, drawn = 0, i, l;
+      var links = core.links, drawn = 0, i, l;
       octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.font = '600 11px Inter, system-ui, sans-serif'; octx.lineWidth = 1;
       for (i = 0; i < links.length; i++) {
-        l = links[i]; var a = l.al * l.dim; if (l.gp < 1 || a < 0.05 || ((many || camAlt > 3) && !l.lit)) continue;
+        l = links[i]; var a = l.al * l.dim; if (!l.lit || l.gp < 1 || a < 0.05) continue;
         if (drawn >= 150) break;
         arcPoint(l, 0.5); if (hidden()) continue; drawn++;
         var x = sc3[0], y = sc3[1];

@@ -179,7 +179,8 @@
   }
   function upstream(n) { var set = {}; set[n.id] = 1; (function up(x) { x.ins.forEach(function (l) { if (!set[l.s.id]) { set[l.s.id] = 1; up(l.s); } }); })(n); return set; }
   function targets() {
-    var hset = hover ? chain(hover) : (hoverLink ? (function () { var s = {}; s[hoverLink.s.id] = 1; s[hoverLink.t.id] = 1; return s; })() : null);
+    /* the chain that is lit: the hovered node's, or the hovered link, or on the globe the selected node's while its panel is open */
+    var hset = hover ? chain(hover) : hoverLink ? (function () { var s = {}; s[hoverLink.s.id] = 1; s[hoverLink.t.id] = 1; return s; })() : sel && R && R.name === 'globe' ? chain(sel) : null;
     /* a holding filter keeps only the chains that reach that holding: the globe hides the rest, the flat map dims it */
     var fset = focusHolding ? upstream(byId[focusHolding]) : null, off = R && R.name === 'globe' ? 0 : 0.14;
     nodes.forEach(function (n) { n.dimT = (hset && !hset[n.id] ? 0.15 : 1) * (fset && !fset[n.id] ? off : 1); n.lit = !!(hset && hset[n.id]); });

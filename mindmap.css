@@ -32,6 +32,9 @@
 /* the Legend button is for phones, where the legend and the footnote are tucked away until asked for */
 #mm-leg { display: none; }
 
+/* legend rows that only apply to the globe, where links are coloured by their sign */
+.mm-stage[data-view="flat"] .mm-globe-only { display: none; }
+
 /* the Rotate toggle belongs to the globe; a toggle that reduced motion has switched off looks it */
 .mm-stage[data-view="flat"] #mm-rot { display: none; }
 .mm-group .btn[aria-disabled="true"] { opacity: 0.45; }
