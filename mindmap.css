@@ -24,10 +24,12 @@
 .mm-note { position: absolute; z-index: 6; left: 50%; top: 64px; transform: translateX(-50%); width: max-content; max-width: min(760px, calc(100% - 32px)); box-shadow: var(--shadow-3); background: var(--surface-2); }
 .mm-note .btn { flex: none; }
 
-.mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-3); display: none; }
+.mm-credit { position: absolute; right: 16px; bottom: 8px; font-size: 10px; line-height: 14px; color: var(--text-2); display: none; text-shadow: 0 0 4px var(--canvas); }
 .mm-stage[data-view="globe"] .mm-credit { display: block; }
 
 /* ---------- page layout: the top bar, then the map area ---------- */
+/* panels over the map are nearly opaque, so their text keeps its contrast whatever the globe shows behind them */
+.mm-stage .glass { background: color-mix(in srgb, var(--surface-1) 96%, transparent); }
 .mm-stage { display: flex; flex-direction: column; }
 .mm-top { flex: none; position: relative; z-index: 7; height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid var(--hairline); background: var(--surface-1); }
 .mm-ttl { flex: 1 1 auto; min-width: 0; }
@@ -40,6 +42,8 @@
 .mm-ctl { flex: none; display: flex; align-items: center; gap: 8px; }
 .mm-top .mm-group { background: var(--surface-2); border-color: var(--hairline); box-shadow: none; }
 .mm-top .mm-group .btn-sm { padding-inline: 9px; }
+/* a switched-on toggle keeps the accent, nudged towards the text colour so it reads at 4.5:1 or better in both themes */
+.mm-top .btn.is-on, .mm-menu .btn.is-on { color: color-mix(in srgb, var(--accent) 80%, var(--text-1)); }
 .mm-top .mm-fps { margin-left: 0; padding: 0 0 0 8px; min-width: 176px; text-align: right; }
 .mm-body { flex: 1 1 auto; min-height: 0; display: flex; position: relative; }
 .mm-area { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; }
@@ -55,7 +59,7 @@
 /* layer tabs over the top left of the map */
 .mm-layers { position: absolute; z-index: 4; top: 12px; left: 16px; max-width: calc(100% - 32px); padding: 0 6px; border-radius: 12px; border: 1px solid var(--hairline-strong); box-shadow: var(--shadow-2); }
 .mm-layers .tab { height: 36px; padding: 0 10px; font-size: 12px; }
-.mm-layers .tab .ct { margin-left: 2px; font-size: 11px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.mm-layers .tab .ct { margin-left: 2px; font-size: 11px; color: var(--text-2); font-variant-numeric: tabular-nums; }
 
 /* the key, bottom left: the legend in three groups, and the footnote that always stays */
 .mm-key { position: absolute; z-index: 3; left: 16px; bottom: 16px; width: 240px; padding: 8px; border-radius: 12px; border: 1px solid var(--hairline-strong); box-shadow: var(--shadow-2); }
@@ -68,7 +72,7 @@
 .mm-keylist ul { display: grid; gap: 2px; }
 .mm-keylist li { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 20px; color: var(--text-2); }
 .mm-keylist svg { width: 34px; height: 12px; flex: none; }
-.mm-stage .mm-key .mm-cap { display: block; position: static; max-width: none; margin: 8px 8px 0; font-size: 11px; line-height: 15px; color: var(--text-3); }
+.mm-stage .mm-key .mm-cap { display: block; position: static; max-width: none; margin: 8px 8px 0; font-size: 11px; line-height: 16px; color: var(--text-2); }
 .mm-key.closed .mm-cap { margin-top: 4px; }
 
 /* the timeline sits clear of the key */
@@ -90,7 +94,7 @@
 .side-closed .mm-side-in, .side-closed .mm-side-t, .side-closed .mm-side-grip { display: none; }
 .side-closed .mm-side-bar { padding: 0 6px; justify-content: center; border-bottom: 0; }
 .mm-sh { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font: 600 11px/16px var(--font); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
-.mm-sh .ct, .chip .ct { color: var(--text-3); font-weight: 500; font-variant-numeric: tabular-nums; }
+.mm-sh .ct, .chip .ct { color: var(--text-2); font-weight: 500; font-variant-numeric: tabular-nums; }
 .mm-card { display: grid; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--hairline); background: var(--surface-2); }
 .mm-card + .mm-card { margin-top: 8px; }
 .mm-hl { padding: 0; border: 0; background: none; color: var(--text-1); font: 500 14px/20px var(--font); text-align: left; cursor: pointer; }
@@ -109,7 +113,7 @@
 .mm-imp { display: grid; grid-template-columns: auto 1fr 24px; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); }
 .mm-imp b { font-weight: 600; color: var(--text-1); text-align: right; font-variant-numeric: tabular-nums; }
 /* event status: a word always, a colour as well */
-.badge.st-developing { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.badge.st-developing { color: color-mix(in srgb, var(--accent) 80%, var(--text-1)); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
 .badge.st-active { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
 .badge.st-fading { color: var(--text-2); }
 .badge.st-priced { color: var(--text-2); border-style: dashed; }
@@ -129,7 +133,7 @@
 .mm-expo { display: grid; gap: 4px; }
 .mm-expo li { display: flex; justify-content: space-between; font-size: 13px; line-height: 20px; font-variant-numeric: tabular-nums; }
 .mm-expo .tot { padding-top: 4px; border-top: 1px solid var(--hairline); font-weight: 600; }
-.mm-panel .meta { font-size: 11px; line-height: 16px; color: var(--text-3); }
+.mm-panel .meta { font-size: 11px; line-height: 16px; color: var(--text-2); }
 .mm-led b { font-weight: 600; }
 
 /* ---------- your holdings: floating over the map, dragged by its title ---------- */
@@ -137,7 +141,7 @@
 .mm-watch-h { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 4px 0 12px; border-bottom: 1px solid var(--hairline); cursor: grab; touch-action: none; user-select: none; }
 .mm-watch.dragging .mm-watch-h { cursor: grabbing; }
 .mm-watch-h h2 { font: 600 11px/16px var(--font); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
-.mm-watch-h h2 .ct { color: var(--text-3); font-weight: 500; }
+.mm-watch-h h2 .ct { color: var(--text-2); font-weight: 500; }
 .mm-watch-h .iconbtn { width: 32px; height: 32px; }
 .mm-watch-l { max-height: 336px; overflow-y: auto; padding: 4px; scrollbar-width: thin; }
 .mm-wr { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) 56px auto; align-items: center; gap: 8px; padding: 6px 8px; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; }
@@ -149,7 +153,7 @@
 .mm-stage .mm-wr canvas { position: static; inset: auto; width: 56px; height: 24px; cursor: inherit; }
 .mm-wr .pc { display: grid; justify-items: end; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; }
 .mm-wr .pc .chg { font-size: 11px; }
-.mm-watch-f { padding: 6px 12px 8px; font-size: 11px; line-height: 14px; color: var(--text-3); border-top: 1px solid var(--hairline); }
+.mm-watch-f { padding: 8px 12px; font-size: 11px; line-height: 16px; color: var(--text-2); border-top: 1px solid var(--hairline); }
 .mm-watch .mm-empty { margin: 4px; }
 
 /* key rows that only apply to the globe, where links are coloured by their sign */
@@ -180,6 +184,10 @@
   .mm-watch:not(.open) .mm-watch-h { border-bottom: 0; }
   .mm-watch.open { width: 300px; }
   .mm-watch-h { cursor: pointer; height: 36px; }
+  .mm-side-bar { cursor: pointer; }
+  .sheet-open .mm-side-bar, .mm-side:has(.mm-panel.open) .mm-side-bar { cursor: default; }
+  .mm-status { font-size: 11px; }
+  .mm-layers .tab { padding: 0 8px; }
   .mm-credit { bottom: 50px; }
   /* the top bar is a title line, then one row of controls that scrolls sideways */
   .mm-top { height: auto; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }

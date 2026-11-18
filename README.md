@@ -48,13 +48,16 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 **Every stock page tab** is built: Chart (candles, indicators, compare, drawing tools), Statistics, Historical Data, Analysis, Holders, Options, Earnings (with transcripts), Profile, Deep-dive, Drawdown check (with its animated sequence and Replay), News & mind map, Stress test, My position, Track record.
 
 **Mind map** (`mindmap.html`)
-- It opens as a globe: events and companies sit where they are, factors and sectors float in two shells above, and links are arcs. It grows in from the first event; Replay runs it again.
-- Drag to turn, scroll or pinch to zoom, `−` `+` and Fit in the toolbar. It turns slowly by itself when idle; Rotate switches that off.
-- Hover a node for its tooltip and to light its chain of causes and effects. Click to fly to it and open the panel, where its links are grouped by confidence tier with the ledger line for each. Double-click (or the Fold button) folds a node's effects.
-- Solid, dashed and dotted lines are confirmed fact, model inference and speculative; thicker is more confident; particles run from cause to effect.
-- The holding filter keeps only the chains that reach that holding and fits the view to them.
-- The timeline slider and its play button; Particles; Parallax; Table view; Export image.
-- "60 nodes" adds invented companies. `mindmap.html?stress=1` adds a "1,000 nodes" switch (1,000 nodes, 3,000 links) to check the frame rate, shown top right.
+- It opens as a globe: events and companies sit where they are, factors and sectors float in two shells above, and links are arcs. It grows in from the first event; Replay (under More) runs it again.
+- Drag to turn, scroll or pinch to zoom, Fit, `−` and `+` in the top bar. It turns slowly by itself when idle; Rotate switches that off.
+- Links are green when they raise the next step and red when they lower it. Solid, dashed and dotted lines are confirmed fact, model inference and speculative; thicker is more confident; particles run from cause to effect. The Key, bottom left, folds away.
+- Hover a node for its tooltip and to light its chain of causes and effects; the chain's links show + or −. Click to fly to it and open its details in the sidebar: summary, causal chain with sign and confidence per step, portfolio exposure, the ledger entry, news and every link by confidence tier. Back returns to the lists. Double-click (or the Fold button) folds a node's effects.
+- The top bar shows how fresh the sample data is, the events and sources on show and whether the US market is open.
+- Layer tabs over the map (Macro & rates, Earnings, Commodities & energy, FX, Geopolitics, Predictions) keep one layer's nodes and fade the rest of their chains. The holding filter keeps only the chains that reach one holding and fits the view to them. Both can be combined.
+- The sidebar lists what is moving markets now and the active events, with search, status filters and three sorts. Drag its edge to resize it, or fold it to a rail. On a phone it is a sheet that opens from the bottom.
+- "Your holdings" floats over the map with prices that tick, day change and a line since the close. Drag it by its title, close it, and bring it back from More.
+- The timeline slider and its play button; Particles; Parallax; Table and Export image (under More).
+- "60 nodes" (under More) adds invented companies. `mindmap.html?stress=1` adds a "1,000 nodes" switch (1,000 nodes, 3,000 links) to check the frame rate, shown top right.
 - Keyboard: Tab to the map, Right and Left follow effects and causes, Up and Down step through alternatives, Shift with an arrow key turns the globe, Enter opens, Space folds, Escape closes, `+` `-` `0` zoom and fit.
 - `mindmap.html?view=flat` shows the earlier flat map. The page also falls back to it, with a notice, if the globe cannot start.
 
@@ -68,7 +71,7 @@ Double-clicking `home.html` also works straight from disk, with one loss: the mo
 | `app.css` | Shell and components |
 | `mock.js` | Sample data, simulated ticks, chart and sparkline drawing, rolling digits, palette, menus, hover cards, tabs |
 | `home.js`, `stock.js`, `mindmap.js` | Page behaviour. `mindmap.js` holds the mind map's data, panel, toolbar and keyboard, and the flat Canvas renderer with its own spring physics |
-| `mindmap-globe.js`, `mindmap-geo.js`, `mindmap.css` | The mind map's globe view: the renderer, the placement maths (checked by `node design/mockup/mindmap-geo.test.js`) and the page's own styles |
+| `mindmap-globe.js`, `mindmap-geo.js`, `mindmap-dash.js`, `mindmap.css` | The mind map's globe view: the renderer, the placement maths (checked by `node design/mockup/mindmap-geo.test.js`), the dashboard around the map (status line, layer tabs, key, More menu, sidebar, holdings panel) and the page's own styles |
 | `stock-tabs-a` to `-d` (`.js`, `.css`) | The stock page tabs other than Summary and Financials |
 | `markets`, `screener`, `compare`, `calendars`, `portfolio`, `watchlists`, `news`, `tools`, `workspace` (`.html`, `.js`, `.css`) | One page each |
 | `serve.py` | The local server |

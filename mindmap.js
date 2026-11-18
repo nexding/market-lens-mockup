@@ -271,8 +271,11 @@
     function fit(instant) {
       var vis = nodes.filter(function (n) { return !n.hideTo; }), xs = vis.map(function (n) { return n.ax; }), ys = vis.map(function (n) { return n.ay; });
       var x0 = Math.min.apply(null, xs) - 90, x1 = Math.max.apply(null, xs) + 110, y0 = Math.min.apply(null, ys) - 50, y1 = Math.max.apply(null, ys) + 70;
-      var k = Math.max(0.3, Math.min((W - 40) / (x1 - x0), (H - 150) / (y1 - y0), 1.2));
-      camT = { x: (x0 + x1) / 2, y: (y0 + y1) / 2 + 12 / k, k: k };
+      /* an open key covers the left edge of the map and the holdings panel may cover the right: fit the graph between them */
+      var key = $('#mm-key'), watch = $('#mm-watch'), wide = W > 767;
+      var padL = wide && key && !key.classList.contains('closed') ? key.offsetWidth + 40 : 0, padR = wide && watch && !watch.hidden ? W - watch.offsetLeft + 16 : 0;
+      var k = Math.max(0.3, Math.min((W - 40 - padL - padR) / (x1 - x0), (H - 150) / (y1 - y0), 1.2));
+      camT = { x: (x0 + x1) / 2 - (padL - padR) / 2 / k, y: (y0 + y1) / 2 + 12 / k, k: k };
       if (instant || M.rm()) cam = { x: camT.x, y: camT.y, k: camT.k };
       kick();
     }

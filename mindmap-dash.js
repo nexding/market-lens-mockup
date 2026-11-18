@@ -175,6 +175,8 @@
   }
   setOpen(phone.matches ? false : store.get('side') !== '0', false);
   sideBtn.addEventListener('click', function () { setOpen(!isOpen(), true); });
+  /* on a phone the whole peek bar opens the sheet, not only its button */
+  $('.mm-side-bar', side).addEventListener('click', function (e) { if (phone.matches && !e.target.closest('button')) setOpen(!isOpen(), false); });
   if (phone.addEventListener) phone.addEventListener('change', function () { stage.classList.remove('sheet-open', 'side-closed'); setOpen(phone.matches ? false : store.get('side') !== '0', false); });
 
   /* ---------- your holdings: a small floating panel over the map with price, day change and a line since the close ---------- */
@@ -191,7 +193,7 @@
         '<span class="mono" style="--h:' + it.h + '" aria-hidden="true">' + it.mono + '</span>' +
         '<span class="nm"><b>' + esc(n.sym) + '</b><span>' + esc(n.label) + '</span></span>' +
         '<canvas data-sp="' + esc(n.sym) + '" aria-hidden="true"></canvas>' +
-        '<span class="pc">' + M.pxHTML(n.sym) + M.chgHTML(n.sym) + '</span></button></li>';
+        '<span class="pc">' + M.pxHTML(n.sym) + M.chgHTML(n.sym, { bare: true }) + '</span></button></li>';
     }).join('') : '<li class="mm-empty">No sample prices for the holdings on this map.</li>';
     $$('canvas[data-sp]', wlist).forEach(function (cv) { M.spark(cv, M.series(cv.dataset.sp, W0), { w: 56, h: 24 }); });
   }
