@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My News · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="news.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+  <div class="page-h">
+    <div>
+      <h1>My News</h1>
+      <p class="sub">Stories that touch your holdings, directly or through a supplier, a sector or a macro channel. One row per story, however many outlets ran it.</p>
+    </div>
+    <div class="toolbar">
+      <span class="label" id="news-stamp"></span>
+      <a class="btn" href="mindmap.html" id="pf-map">Mind map for the portfolio</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="main">
+
+      <section class="card reveal digest" aria-labelledby="dg-h">
+        <header class="card-h">
+          <h2 id="dg-h">Daily digest</h2>
+          <div class="card-a"><span class="label" id="dg-date"></span></div>
+        </header>
+        <p class="dg-changed" id="dg-changed"></p>
+        <ol class="dg-list" id="dg-list"></ol>
+        <p class="label dg-foot">Ranked by directness, severity, source tier, novelty and the share of your portfolio touched. The summaries are the ones in the feed below.</p>
+      </section>
+
+      <div class="news-bar" role="group" aria-label="Filter and sort stories">
+        <label class="nb-f"><span class="label">Holding</span><select class="select" id="f-hold"></select></label>
+        <div class="nb-f"><span class="label" id="f-imp-l">Importance</span>
+          <div class="chips" id="f-imp" role="group" aria-labelledby="f-imp-l">
+            <button class="chip" type="button" data-v="major" aria-pressed="true">Major</button>
+            <button class="chip" type="button" data-v="notable" aria-pressed="true">Notable</button>
+            <button class="chip" type="button" data-v="routine" aria-pressed="true">Routine</button>
+          </div>
+        </div>
+        <div class="nb-f"><span class="label" id="f-kind-l">Link</span>
+          <div class="seg" id="f-kind" role="group" aria-labelledby="f-kind-l">
+            <button type="button" data-v="all" aria-pressed="true">All</button>
+            <button type="button" data-v="direct" aria-pressed="false">Direct</button>
+            <button type="button" data-v="indirect" aria-pressed="false">Indirect</button>
+          </div>
+        </div>
+        <span class="sp"></span>
+        <div class="nb-f"><span class="label" id="f-sort-l">Sort by</span>
+          <div class="seg" id="f-sort" role="group" aria-labelledby="f-sort-l">
+            <button type="button" data-v="date" aria-pressed="true">Date</button>
+            <button type="button" data-v="imp" aria-pressed="false">Importance</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="band" id="news-note"></div>
+
+      <div class="news-count"><span id="f-count" role="status"></span><button class="linkish" type="button" id="f-reset" hidden>Clear filters</button></div>
+      <div class="feed" id="feed" aria-label="Stories"></div>
+      <p class="label feed-foot">Links are hypotheses, not facts. Each direction is written to the prediction ledger and scored later. Sample data.</p>
+    </div>
+
+    <aside class="side news-side" aria-label="Your holdings">
+      <section class="card reveal" aria-labelledby="h-hold">
+        <header class="card-h"><h2 id="h-hold">Your holdings</h2><div class="card-a"><span class="label">Share of portfolio</span></div></header>
+        <ul class="rows hold-rows" id="hold-rows"></ul>
+        <p class="label hold-foot">Point at a ticker in a story and its row here lights up.</p>
+      </section>
+
+      <section class="card reveal" aria-labelledby="h-score">
+        <header class="card-h"><h2 id="h-score">How direction is scored</h2></header>
+        <dl class="kv">
+          <dt>Direction calls issued, live</dt><dd>96</dd>
+          <dt>Resolved so far</dt><dd>41</dd>
+          <dt>Verdict</dt><dd><span class="badge">Not yet meaningful</span></dd>
+        </dl>
+        <p class="label hold-foot">Confidence shows as a band (low, medium, high) until enough calls have resolved to justify a number. <a class="linkish" href="tools.html#track">Open track record</a></p>
+      </section>
+    </aside>
+  </div>
+
+  <button class="news-pill glass" type="button" id="pill"></button>
+  <div class="sr" id="news-live" aria-live="polite"></div>
+</main>
+
+<script src="mock.js"></script>
+<script src="news.js"></script>
+</body>
+</html>

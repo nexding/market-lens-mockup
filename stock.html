@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="stock-tabs-a.css">
+<link rel="stylesheet" href="stock-tabs-b.css">
+<link rel="stylesheet" href="stock-tabs-c.css">
+<link rel="stylesheet" href="stock-tabs-d.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="stock-head">
+    <div>
+      <div class="sh-id" id="sh-id"></div>
+      <div class="sh-quote">
+        <div class="sh-price"><span id="sh-px"></span><span class="ccy" id="sh-ccy"></span></div>
+        <span id="sh-chg"></span>
+        <span class="delay" id="sh-delay" title="Quotes from this source are delayed by about 15 minutes"></span>
+      </div>
+      <div class="sh-after" id="sh-after"></div>
+    </div>
+    <div class="sh-actions" id="sh-actions"></div>
+  </div>
+
+  <div class="banner" id="dd-banner" role="status"></div>
+
+  <div class="tabs tabs-line" id="stabs" role="tablist" aria-label="Stock sections"></div>
+
+  <div class="panels" id="panels">
+
+    <!-- ===== Summary ===== -->
+    <section class="panel is-active" data-v="summary" role="tabpanel" aria-label="Summary">
+      <div class="sum">
+        <div class="sum-l">
+          <section class="card">
+            <header class="card-h">
+              <div class="seg" id="s-range" role="group" aria-label="Chart range">
+                <button type="button" data-v="1D" aria-pressed="true">1D</button>
+                <button type="button" data-v="5D" aria-pressed="false">5D</button>
+                <button type="button" data-v="1M" aria-pressed="false">1M</button>
+                <button type="button" data-v="6M" aria-pressed="false">6M</button>
+                <button type="button" data-v="YTD" aria-pressed="false">YTD</button>
+                <button type="button" data-v="1Y" aria-pressed="false">1Y</button>
+                <button type="button" data-v="5Y" aria-pressed="false">5Y</button>
+                <button type="button" data-v="Max" aria-pressed="false">Max</button>
+              </div>
+              <div class="card-a"><span class="badge" title="Prices come from an unofficial source until a licensed feed replaces it">Prototype data</span><button class="linkish" data-goto="chart">Full chart</button></div>
+            </header>
+            <div class="mini-chart" id="s-chart"></div>
+          </section>
+          <section class="card" aria-label="Key statistics">
+            <div class="stats" id="stats"></div>
+          </section>
+        </div>
+        <div class="sum-r" id="mods"></div>
+      </div>
+    </section>
+
+    <!-- ===== Financials ===== -->
+    <section class="panel" data-v="financials" role="tabpanel" aria-label="Financials">
+      <div class="fin-bar">
+        <div class="seg" id="fin-stmt" role="group" aria-label="Statement">
+          <button type="button" data-v="income" aria-pressed="true">Income statement</button>
+          <button type="button" data-v="balance" aria-pressed="false">Balance sheet</button>
+          <button type="button" data-v="cash" aria-pressed="false">Cash flow</button>
+        </div>
+        <div class="seg" id="fin-per" role="group" aria-label="Period">
+          <button type="button" data-v="annual" aria-pressed="true">Annual</button>
+          <button type="button" data-v="quarterly" aria-pressed="false">Quarterly</button>
+          <button type="button" data-v="ttm" aria-pressed="false">TTM</button>
+        </div>
+        <div class="seg" id="fin-basis" role="group" aria-label="Basis">
+          <button type="button" data-v="restated" aria-pressed="true">Latest restated</button>
+          <button type="button" data-v="first" aria-pressed="false">As first reported</button>
+        </div>
+        <span class="sp"></span>
+        <button class="btn btn-sm" id="fin-growth" type="button" aria-pressed="false">Growth %</button>
+        <button class="btn btn-sm" id="fin-expand" type="button" aria-pressed="false">Expand all</button>
+        <button class="btn btn-sm" id="fin-csv" type="button"></button>
+      </div>
+      <div class="fin-layout">
+        <div class="fin-wrap" id="fin-wrap" tabindex="0" aria-label="Financial statement, scrollable">
+          <table class="fin" id="fin"><thead></thead><tbody></tbody></table>
+        </div>
+        <aside class="card mini" id="mini" aria-live="polite">
+          <div class="label" id="mini-k">Line item</div>
+          <h2 class="t3" id="mini-t"></h2>
+          <div class="mini-plot" id="mini-plot"><canvas id="mini-cv" role="img" aria-label="Line item by period"></canvas></div>
+          <dl class="mini-kv" id="mini-kv"></dl>
+        </aside>
+      </div>
+      <p class="label" style="margin-top:14px" id="fin-note"></p>
+    </section>
+
+    <!-- ===== Every other tab ===== -->
+    <section class="panel" data-v="other" role="tabpanel">
+      <section class="card">
+        <div class="placeholder" id="ph"></div>
+      </section>
+    </section>
+  </div>
+</main>
+
+<script src="mock.js"></script>
+<script src="stock-tabs-a.js"></script>
+<script src="stock-tabs-b.js"></script>
+<script src="stock-tabs-c.js"></script>
+<script src="stock-tabs-d.js"></script>
+<script src="stock.js"></script>
+</body>
+</html>

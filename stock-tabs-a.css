@@ -1,0 +1,126 @@
+/* Market Lens mockup: stock page tabs Chart, Statistics, Historical data and Profile.
+   Every rule is scoped to its own tab panel so it cannot touch the other stock-tabs-*.css files. */
+
+/* =====================================================================
+   Chart
+   ===================================================================== */
+.panel[data-v="chart"] .cx { display: flex; flex-direction: column; gap: 12px; }
+.panel[data-v="chart"] .cx-bar { gap: 8px 10px; }
+.panel[data-v="chart"] .cx-bar .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.panel[data-v="chart"] .cx-mw { position: relative; display: inline-flex; }
+.panel[data-v="chart"] .cx-n:not(:empty) { min-width: 16px; height: 16px; padding: 0 4px; margin-left: -2px; border-radius: 8px; background: var(--accent); color: var(--on-accent); font-size: 10px; font-weight: 600; line-height: 16px; text-align: center; }
+
+/* menus: indicators and compare */
+.panel[data-v="chart"] .cx-pop { top: calc(100% + 6px); left: 0; min-width: 236px; max-width: calc(100vw - 32px); }
+.panel[data-v="chart"] .cx-pop-tall { max-height: min(420px, 58vh); overflow: auto; }
+.panel[data-v="chart"] .cx-pop .mi { white-space: nowrap; }
+.panel[data-v="chart"] .cx-ck { position: relative; flex: none; width: 14px; height: 14px; border-radius: var(--r-chip); border: 1px solid var(--hairline-strong); transition: background var(--d-fast), border-color var(--d-fast); }
+.panel[data-v="chart"] .cx-ck::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 7px; border: solid var(--on-accent); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); opacity: 0; }
+.panel[data-v="chart"] .mi[aria-checked="true"] .cx-ck { background: var(--accent); border-color: var(--accent); }
+.panel[data-v="chart"] .mi[aria-checked="true"] .cx-ck::after { opacity: 1; }
+.panel[data-v="chart"] .cx-sw { flex: none; width: 10px; height: 3px; border-radius: 2px; }
+
+/* legend row: one entry per line on the chart; comparisons are removable chips */
+.panel[data-v="chart"] .cx-lg { align-items: center; min-height: 24px; gap: 6px 14px; }
+.panel[data-v="chart"] .cx-lg .chip { height: 24px; padding: 0 8px; }
+
+/* rail of drawing tools and the plot */
+.panel[data-v="chart"] .cx-body { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 10px; align-items: stretch; }
+.panel[data-v="chart"] .cx-rail { align-self: start; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px; border-radius: 12px; border: 1px solid var(--hairline); background: var(--surface-2); }
+.panel[data-v="chart"] .cx-rail .iconbtn { width: 32px; height: 32px; border-radius: var(--r-ctl); }
+.panel[data-v="chart"] .cx-rail .iconbtn[aria-pressed="true"] { background: var(--accent-wash); color: var(--accent); }
+.panel[data-v="chart"] .cx-rail .iconbtn:disabled { opacity: 0.36; cursor: not-allowed; background: none; transform: none; }
+.panel[data-v="chart"] .cx-rule { width: 20px; height: 1px; margin: 4px 0; background: var(--hairline-strong); }
+.panel[data-v="chart"] .cx-plot { position: relative; height: 70vh; min-height: 420px; border-radius: var(--r-ctl); touch-action: pan-y; cursor: crosshair; outline-offset: 4px; }
+.panel[data-v="chart"] .cx-plot canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+:root[data-density="compact"] .panel[data-v="chart"] .cx-plot { height: 68vh; min-height: 360px; }
+
+/* readout pill at the top of the plot, and the note for an event marker */
+.panel[data-v="chart"] .cx-tip { z-index: 2; display: flex; align-items: baseline; max-width: 100%; overflow: hidden; }
+.panel[data-v="chart"] .cx-tip span { margin-right: 0; }
+.panel[data-v="chart"] .cx-tip i { font-style: normal; color: var(--text-3); margin: 0 4px 0 10px; }
+.panel[data-v="chart"] .cx-tip em { font-style: normal; font-weight: 500; margin-left: 8px; }
+.panel[data-v="chart"] .cx-note { position: absolute; left: 0; bottom: 46px; z-index: 2; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--hairline-strong); background: var(--surface-3); box-shadow: var(--shadow-2); font-size: 12px; line-height: 16px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--d-fast); will-change: transform; }
+.panel[data-v="chart"] .cx-note.on { opacity: 1; }
+.panel[data-v="chart"] .cx-note b { font-weight: 600; margin-right: 8px; }
+.panel[data-v="chart"] .cx-foot { margin: 0; }
+.panel[data-v="chart"] .cx-table { max-height: 320px; border-top: 1px solid var(--hairline); }
+
+/* full screen: the card fills the window, above the top bar */
+:root.ml-chart-full { overflow: hidden; }
+.panel[data-v="chart"] .cx.is-full { position: fixed; inset: 0; z-index: 80; margin: 0; border: 0; border-radius: 0; box-shadow: none; overflow: auto; }
+.panel[data-v="chart"] .cx.is-full .cx-body { flex: 1 0 auto; min-height: 360px; grid-template-rows: minmax(0, 1fr); }
+.panel[data-v="chart"] .cx.is-full .cx-plot { height: 100%; min-height: 0; }
+.panel[data-v="chart"] .cx.is-full .cx-table { flex: none; }
+
+@media (max-width: 767px) {
+  .panel[data-v="chart"] .cx-body { grid-template-columns: minmax(0, 1fr); }
+  .panel[data-v="chart"] .cx-rail { flex-direction: row; justify-self: start; }
+  .panel[data-v="chart"] .cx-rule { width: 1px; height: 20px; margin: 0 4px; }
+  .panel[data-v="chart"] .cx-plot { height: 62vh; min-height: 340px; }
+  .panel[data-v="chart"] .cx-tip { font-size: 11px; }
+  .panel[data-v="chart"] .cx.is-full .cx-body { grid-template-rows: auto minmax(0, 1fr); }
+}
+
+/* =====================================================================
+   Statistics
+   ===================================================================== */
+.panel[data-v="statistics"] .sx { position: relative; display: grid; gap: var(--gap); }
+.panel[data-v="statistics"] .sx-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+.panel[data-v="statistics"] .sx-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: var(--row-h); border-bottom: 1px solid var(--hairline); font-size: var(--fs-data); line-height: var(--lh-data); }
+.panel[data-v="statistics"] .sx-row:last-child { border-bottom: 0; }
+.panel[data-v="statistics"] .sx-k { min-width: 0; color: var(--text-2); }
+/* a figure is a button: the dotted underline says there is something behind it */
+.panel[data-v="statistics"] .sx-v { flex: none; margin-right: -6px; padding: 2px 6px; border: 0; border-radius: 6px; background: none; font-size: 14px; line-height: 20px; font-weight: 500; white-space: nowrap; cursor: pointer; text-decoration: underline dotted var(--hairline-strong); text-underline-offset: 4px; transition: background var(--d-fast), color var(--d-fast); }
+.panel[data-v="statistics"] .sx-v:hover, .panel[data-v="statistics"] .sx-v[aria-expanded="true"] { background: var(--accent-wash); color: var(--accent); text-decoration-color: transparent; }
+.panel[data-v="statistics"] .sx-v small { margin-left: 6px; font-size: 11px; font-weight: 500; color: var(--text-3); }
+:root[data-density="compact"] .panel[data-v="statistics"] .sx-v { font-size: 12px; line-height: 16px; padding: 1px 6px; }
+
+.panel[data-v="statistics"] .sx-pop { left: 0; top: 0; width: min(340px, calc(100vw - 32px)); padding: 14px; display: grid; gap: 10px; }
+.panel[data-v="statistics"] .sx-pop:focus-visible { outline-offset: 0; border-radius: var(--r-menu); }
+.panel[data-v="statistics"] .sx-pop-h { display: flex; align-items: center; justify-content: space-between; margin: -6px -6px -8px 0; }
+.panel[data-v="statistics"] .sx-pop-h .iconbtn { width: 28px; height: 28px; border-radius: var(--r-ctl); }
+.panel[data-v="statistics"] .sx-pop-t { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: var(--fs-t3); line-height: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.panel[data-v="statistics"] .sx-pop-t b { font-weight: 600; white-space: nowrap; }
+.panel[data-v="statistics"] .sx-f { padding: 8px 10px; border-radius: var(--r-ctl); background: color-mix(in srgb, var(--text-1) 6%, transparent); font-size: 13px; line-height: 18px; }
+.panel[data-v="statistics"] .sx-pop .kv { gap: 6px 16px; }
+
+@media (max-width: 1100px) { .panel[data-v="statistics"] .sx-cols { grid-template-columns: minmax(0, 1fr); } }
+
+/* =====================================================================
+   Historical data
+   ===================================================================== */
+.panel[data-v="historical"] .hx { display: grid; gap: 12px; }
+.panel[data-v="historical"] .hx-bar { gap: 10px 12px; }
+.panel[data-v="historical"] label.hx-date { display: inline-flex; align-items: center; gap: 8px; }
+.panel[data-v="historical"] label.hx-date .field { flex: none; width: 150px; height: 32px; padding: 0 8px; }
+:root[data-density="compact"] .panel[data-v="historical"] label.hx-date .field { height: var(--ctl-h); }
+.panel[data-v="historical"] .hx-bar .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.panel[data-v="historical"] .hx-sum { margin: 0; }
+.panel[data-v="historical"] .hx-wrap { max-height: 64vh; min-height: 200px; }
+/* hairline under the sticky header, only while the table is scrolled */
+.panel[data-v="historical"] .hx-wrap.is-scrolled thead th { box-shadow: 0 1px 0 var(--hairline-strong), 0 8px 12px -10px var(--scrim); }
+.panel[data-v="historical"] .hx-ev td { color: var(--text-2); text-align: left; }
+.panel[data-v="historical"] .hx-ev .badge { margin-right: 10px; }
+.panel[data-v="historical"] .hx-more { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
+.panel[data-v="historical"] .hx-more:empty { display: none; }
+
+/* =====================================================================
+   Profile
+   ===================================================================== */
+.panel[data-v="profile"] .pfx-desc { display: grid; gap: 12px; max-width: 78ch; color: var(--text-2); }
+.panel[data-v="profile"] .pfx-desc p:first-child { color: var(--text-1); }
+.panel[data-v="profile"] .stat:nth-last-child(-n+4) { border-bottom: 0; }
+.panel[data-v="profile"] .dt th[data-sort]:focus-visible { outline-offset: -2px; }
+.panel[data-v="profile"] .pfx-dates { display: grid; }
+.panel[data-v="profile"] .pfx-dates li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--hairline); font-size: 13px; line-height: 18px; }
+.panel[data-v="profile"] .pfx-dates li:first-child { padding-top: 0; }
+.panel[data-v="profile"] .pfx-dates li:last-child { border-bottom: 0; }
+.panel[data-v="profile"] .pfx-when { color: var(--text-2); font-weight: 500; white-space: nowrap; }
+.panel[data-v="profile"] .pfx-dates b { font-weight: 600; margin-right: 8px; }
+.panel[data-v="profile"] .pfx-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+:root[data-density="compact"] .panel[data-v="profile"] .pfx-dates li { padding: 5px 0; }
+@media (max-width: 1023px) { .panel[data-v="profile"] .stat:nth-last-child(-n+4) { border-bottom: 1px solid var(--hairline); } }
+
+/* on phones the toolbar menus open from the right edge of their button so they stay on screen */
+@media (max-width: 767px) { .panel[data-v="chart"] .cx-pop { left: auto; right: 0; } }

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watchlists · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="watchlists.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>Watchlists</h1>
+      <p class="sub">Named lists of tickers you are following. Drop a ticker on the table to add it; drag rows to put them in your own order.</p>
+    </div>
+  </div>
+
+  <div class="wl">
+
+    <!-- left rail of lists (chips on a phone) -->
+    <nav class="card wl-rail" aria-label="Your lists">
+      <div class="label wl-rail-h">Lists</div>
+      <ul class="wl-lists" id="lists"></ul>
+      <div class="wl-add" id="list-add"></div>
+    </nav>
+
+    <!-- the selected list -->
+    <section class="card wl-main" data-drop="wl" aria-labelledby="wl-h">
+      <header class="card-h">
+        <div class="wl-title"><h2 id="wl-h"></h2><span class="label" id="wl-n"></span></div>
+        <div class="card-a wl-tools">
+          <div class="pop-anchor wl-find">
+            <label class="sr" for="find-q">Add a ticker to this list</label>
+            <input class="field" id="find-q" placeholder="Add a ticker" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="find-pop" aria-autocomplete="list">
+            <div class="pop menu find-pop" id="find-pop" role="listbox" aria-label="Matching tickers"></div>
+          </div>
+          <div class="pop-anchor">
+            <button class="btn btn-sm" type="button" id="cols-btn" aria-haspopup="true" aria-expanded="false" aria-controls="cols-pop">Columns</button>
+            <div class="pop menu cols-pop" id="cols-pop" role="group" aria-label="Columns shown"></div>
+          </div>
+          <button class="btn btn-sm btn-quiet" type="button" id="list-del">Delete list</button>
+        </div>
+      </header>
+      <div class="dt-wrap">
+        <table class="dt wl-table" id="wl" aria-describedby="wl-hint">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="wl-foot">
+        <div class="wl-tray"><span class="label">Recently viewed</span><span class="wl-chips" id="tray"></span></div>
+        <p class="wl-hint" id="wl-hint">Drag a ticker onto the table to add it, or use its right-click menu. To reorder, drag a row by its handle, or focus a row and press Alt with the up or down arrow. Arrow keys move between rows; Delete removes the focused row.</p>
+      </div>
+    </section>
+
+    <!-- linked panel: follows the selected row -->
+    <aside class="card wl-panel" id="panel" aria-label="Quote and chart for the selected row">
+      <div class="wl-p-a">
+        <div class="wl-p-top"><span class="wl-link" title="This panel follows the row selected in the table"><span class="ldot" data-g="a"></span>Linked to the table</span><span class="badge badge-accent" id="p-held" hidden></span></div>
+        <div id="p-id"></div>
+        <div class="wl-p-px"><span class="ccy" id="p-ccy"></span><span id="p-px"></span></div>
+        <div class="wl-p-chg" id="p-chg"></div>
+        <div class="seg" id="p-range" role="group" aria-label="Chart range">
+          <button type="button" data-v="1D" aria-pressed="true">1D</button>
+          <button type="button" data-v="1M" aria-pressed="false">1M</button>
+          <button type="button" data-v="6M" aria-pressed="false">6M</button>
+          <button type="button" data-v="1Y" aria-pressed="false">1Y</button>
+        </div>
+        <div class="wl-chart" id="p-chart"></div>
+      </div>
+      <div class="wl-p-b">
+        <dl class="kv" id="p-kv"></dl>
+        <div class="wl-p-act" id="p-act"></div>
+      </div>
+      <p class="wl-p-empty muted" id="p-empty" hidden>Select a row to see its quote and chart here.</p>
+    </aside>
+  </div>
+
+  <div class="sr" id="wl-live" aria-live="polite"></div>
+</main>
+
+<script src="mock.js"></script>
+<script src="watchlists.js"></script>
+</body>
+</html>

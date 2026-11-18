@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <section class="strip-wrap" aria-label="Markets">
+    <button class="strip-arrow l glass" id="strip-l" aria-label="Scroll markets left"></button>
+    <div class="strip" id="strip" role="list"></div>
+    <button class="strip-arrow r glass" id="strip-r" aria-label="Scroll markets right"></button>
+  </section>
+
+  <div class="layout">
+    <div class="main">
+
+      <section class="card hero reveal" id="hero" aria-labelledby="hero-h">
+        <div id="hero-full">
+          <div class="hero-top">
+            <div>
+              <h1 class="label" id="hero-h">My portfolio · 8 holdings · USD</h1>
+              <div class="hero-total"><span class="ccy">$</span><span id="total"></span></div>
+              <div class="hero-sub">
+                <span id="day-chg"></span><span class="dim">today</span>
+                <span class="dim">·</span>
+                <span id="tot-gain"></span><span class="dim">since purchase</span>
+                <span class="badge" title="Prices come from an unofficial source until a licensed feed replaces it">Prototype data</span>
+              </div>
+            </div>
+            <div class="seg" id="hero-range" role="group" aria-label="Chart range">
+              <button type="button" data-v="1D" aria-pressed="true">1D</button>
+              <button type="button" data-v="1W" aria-pressed="false">1W</button>
+              <button type="button" data-v="1M" aria-pressed="false">1M</button>
+              <button type="button" data-v="1Y" aria-pressed="false">1Y</button>
+              <button type="button" data-v="All" aria-pressed="false">All</button>
+            </div>
+          </div>
+          <div class="hero-chart" id="hero-chart"></div>
+        </div>
+        <div class="empty" id="hero-empty" hidden>
+          <svg viewBox="0 0 132 84" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="6" y="10" width="120" height="64" rx="12"/><path d="M22 56l20-18 14 10 18-22 16 12 20-14" stroke-dasharray="3 5"/><circle cx="66" cy="42" r="13" fill="var(--surface-1)"/><path d="M66 36v12M60 42h12"/>
+          </svg>
+          <h2 class="t2">Add your first stock</h2>
+          <p>Search for a company or ticker, enter how many shares you bought and what you paid, and your portfolio starts here. You can also import a CSV from your broker.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <button class="btn btn-primary" data-stub="Add a holding">Add a holding</button>
+            <button class="btn" data-stub="Import">Import from a broker</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="cols3">
+        <section class="card reveal" aria-labelledby="h-hold">
+          <header class="card-h"><h2 id="h-hold">My Holdings</h2><div class="card-a"><button class="btn btn-sm" id="add-holding">Add</button></div></header>
+          <ul class="rows" id="holdings"></ul>
+        </section>
+
+        <section class="card reveal" aria-labelledby="h-watch" data-drop="watchlist">
+          <header class="card-h"><h2 id="h-watch">Watchlist</h2><div class="card-a"><span class="label">Drop a ticker here</span></div></header>
+          <ul class="rows" id="watchlist"></ul>
+        </section>
+
+        <section class="card reveal" aria-labelledby="h-move">
+          <header class="card-h"><h2 id="h-move">Today's Movers</h2></header>
+          <div class="tabs tabs-line" id="movers-tabs" role="tablist" style="margin:-8px 0 6px">
+            <button class="tab is-active" role="tab" data-v="gainers" style="height:36px;padding-left:0">Gainers</button>
+            <button class="tab" role="tab" data-v="losers" style="height:36px">Losers</button>
+            <button class="tab" role="tab" data-v="active" style="height:36px">Most active</button>
+          </div>
+          <div id="movers">
+            <ul class="rows panel is-active" data-v="gainers"></ul>
+            <ul class="rows panel" data-v="losers"></ul>
+            <ul class="rows panel" data-v="active"></ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="card reveal" aria-labelledby="h-heat">
+        <header class="card-h"><h2 id="h-heat">Sectors today</h2><div class="card-a"><span class="label">Tile size is index weight · colour is the day's move</span></div></header>
+        <div class="heat" id="heat" style="grid-auto-flow:dense"></div>
+      </section>
+
+      <section class="card reveal" aria-labelledby="h-earn">
+        <header class="card-h"><h2 id="h-earn">Upcoming earnings</h2><div class="card-a"><span class="label">Holdings and watchlist · week of 16 November</span></div></header>
+        <div class="week" id="week"></div>
+      </section>
+    </div>
+
+    <aside class="side" aria-label="Sidebar">
+      <section class="card reveal" aria-labelledby="h-look">
+        <header class="card-h"><h2 id="h-look">Quick lookup</h2></header>
+        <form class="lookup" id="lookup">
+          <input class="field" id="lookup-q" placeholder="Ticker, e.g. NVDA" aria-label="Ticker" autocomplete="off" spellcheck="false">
+          <button class="btn btn-primary" type="submit">Open</button>
+        </form>
+      </section>
+
+      <section class="card reveal" aria-labelledby="h-trend">
+        <header class="card-h"><h2 id="h-trend">Trending Tickers</h2><div class="card-a"><span class="label">Unusual volume</span></div></header>
+        <ul class="rows" id="trending"></ul>
+      </section>
+
+      <section class="card reveal" aria-labelledby="h-alloc">
+        <header class="card-h"><h2 id="h-alloc">Allocation</h2><div class="card-a"><div class="seg" id="alloc-by" role="group" aria-label="Allocation by"><button type="button" data-v="stock" aria-pressed="true">Stock</button><button type="button" data-v="sector" aria-pressed="false">Sector</button><button type="button" data-v="country" aria-pressed="false">Country</button></div></div></header>
+        <div class="ring">
+          <div class="ring-c"><svg viewBox="0 0 124 124" id="ring" role="img" aria-label="Portfolio allocation"></svg><div class="ring-mid"><div><b id="ring-n">8</b><div class="label" id="ring-l">holdings</div></div></div></div>
+          <ul class="legend" id="legend"></ul>
+        </div>
+        <div class="warnline" id="alloc-warn"></div>
+      </section>
+
+      <section class="card reveal" aria-labelledby="h-alerts">
+        <header class="card-h"><h2 id="h-alerts">Active alerts</h2><div class="card-a"><button class="linkish" data-stub="Alert rules">Manage</button></div></header>
+        <div class="alerts" id="alerts"></div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<script src="mock.js"></script>
+<script src="home.js"></script>
+</body>
+</html>

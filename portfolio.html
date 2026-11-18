@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Portfolio · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="portfolio.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>My portfolio</h1>
+      <p class="sub">Holdings, performance and records across three accounts, shown in US dollars.</p>
+    </div>
+    <div class="toolbar">
+      <button class="btn" type="button" data-goto="import" id="btn-import">Import from a broker</button>
+      <button class="btn btn-primary" type="button" id="add-holding">Add holding</button>
+    </div>
+  </div>
+
+  <!-- summary strip -->
+  <section class="card pf-sum reveal" aria-labelledby="sum-h">
+    <div class="pf-sum-main">
+      <h2 class="label" id="sum-h">Total value · 8 holdings · USD</h2>
+      <div class="pf-total"><span class="ccy">$</span><span id="total"></span></div>
+      <div class="pf-sum-sub">
+        <span class="badge" title="Prices come from an unofficial source until a licensed feed replaces it">Prototype data</span>
+        <span class="delay" id="sum-delay" title="Quotes from this source are delayed by about 15 minutes"></span>
+      </div>
+    </div>
+    <div class="pf-tiles">
+      <div class="pf-tile"><div class="label">Today's change</div><div class="v" id="s-day"></div><div class="s">Against yesterday's close</div></div>
+      <div class="pf-tile"><div class="label">Total gain</div><div class="v" id="s-gain"></div><div class="s" id="s-gain-s"></div></div>
+      <div class="pf-tile"><div class="label">Realised gain</div><div class="v" id="s-real"></div><div class="s" id="s-real-s"></div></div>
+      <div class="pf-tile"><div class="label">Dividends received</div><div class="v" id="s-div"></div><div class="s" id="s-div-s"></div></div>
+    </div>
+  </section>
+
+  <div class="tabs tabs-line pf-tabs" id="ptabs" role="tablist" aria-label="Portfolio sections">
+    <button class="tab is-active" role="tab" data-v="holdings" aria-selected="true">Holdings</button>
+    <button class="tab" role="tab" data-v="performance" aria-selected="false">Performance</button>
+    <button class="tab" role="tab" data-v="breakdown" aria-selected="false">Breakdown</button>
+    <button class="tab" role="tab" data-v="dividends" aria-selected="false">Dividends</button>
+    <button class="tab" role="tab" data-v="transactions" aria-selected="false">Transactions</button>
+    <button class="tab" role="tab" data-v="import" aria-selected="false">Import and export</button>
+  </div>
+
+  <div class="panels" id="panels">
+
+    <!-- holdings -->
+    <section class="panel is-active" data-v="holdings" role="tabpanel" aria-label="Holdings">
+      <section class="card" aria-labelledby="h-hold">
+        <header class="card-h">
+          <h2 id="h-hold">Holdings</h2>
+          <div class="card-a">
+            <div class="pop-anchor">
+              <button class="btn btn-sm" type="button" id="cols-btn" aria-haspopup="true" aria-expanded="false" aria-controls="cols-pop">Columns</button>
+              <div class="pop menu cols-pop" id="cols-pop" role="group" aria-label="Columns shown"></div>
+            </div>
+          </div>
+        </header>
+        <div class="pf-key" id="pf-key"></div>
+        <div class="dt-wrap" data-keys>
+          <table class="dt pf-table" id="hold" aria-describedby="pf-key">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- performance -->
+    <section class="panel" data-v="performance" role="tabpanel" aria-label="Performance">
+      <div class="stack">
+        <section class="card" aria-labelledby="h-perf">
+          <header class="card-h">
+            <h2 id="h-perf">Portfolio against a benchmark</h2>
+            <div class="card-a pf-ctl">
+              <label class="sr" for="bench">Benchmark</label>
+              <select class="select" id="bench">
+                <option value="SPX">S&amp;P 500</option>
+                <option value="HSI">Hang Seng</option>
+                <option value="FTSE">FTSE 100</option>
+              </select>
+              <div class="seg" id="perf-mode" role="group" aria-label="Show value or return">
+                <button type="button" data-v="value" aria-pressed="true">Value</button>
+                <button type="button" data-v="return" aria-pressed="false">Return</button>
+              </div>
+              <div class="seg" id="perf-range" role="group" aria-label="Chart range">
+                <button type="button" data-v="1M" aria-pressed="false">1M</button>
+                <button type="button" data-v="6M" aria-pressed="false">6M</button>
+                <button type="button" data-v="YTD" aria-pressed="false">YTD</button>
+                <button type="button" data-v="1Y" aria-pressed="true">1Y</button>
+                <button type="button" data-v="All" aria-pressed="false">All</button>
+              </div>
+            </div>
+          </header>
+          <div class="lg pf-lg" id="perf-lg" aria-hidden="true"></div>
+          <div class="plot pf-plot" id="perf-plot" role="img" aria-label="Portfolio value against the benchmark"><div class="pf-cross"></div></div>
+          <p class="pf-cap" id="perf-cap"></p>
+        </section>
+        <div class="g4" id="perf-tiles"></div>
+        <section class="card" aria-labelledby="h-periods">
+          <header class="card-h"><h2 id="h-periods">By period</h2><div class="card-a"><span class="label">The same figures as the chart, as a table</span></div></header>
+          <div class="dt-wrap"><table class="dt" id="perf-table"></table></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- breakdown -->
+    <section class="panel" data-v="breakdown" role="tabpanel" aria-label="Breakdown">
+      <div class="stack">
+        <div class="g2">
+          <section class="card" aria-labelledby="h-alloc">
+            <header class="card-h">
+              <h2 id="h-alloc">Allocation</h2>
+              <div class="card-a">
+                <div class="seg" id="alloc-by" role="group" aria-label="Allocation by">
+                  <button type="button" data-v="stock" aria-pressed="true">Stock</button>
+                  <button type="button" data-v="sector" aria-pressed="false">Sector</button>
+                  <button type="button" data-v="country" aria-pressed="false">Country</button>
+                </div>
+              </div>
+            </header>
+            <div class="ring pf-ring">
+              <div class="ring-c"><svg viewBox="0 0 124 124" id="ring" role="img" aria-label="Portfolio allocation"></svg><div class="ring-mid"><div><b id="ring-n">8</b><div class="label" id="ring-l">holdings</div></div></div></div>
+              <ul class="legend" id="legend"></ul>
+            </div>
+          </section>
+          <section class="card" aria-labelledby="h-lim">
+            <header class="card-h"><h2 id="h-lim">Concentration limits</h2><div class="card-a"><span class="label">Change a limit to test it</span></div></header>
+            <div class="lims" id="lims">
+              <div class="lim" data-lim-row="stock"><span class="lim-ic"></span><b>One stock above</b><label class="lim-in"><span class="sr">Single-stock limit, percent</span><input class="field" type="number" min="1" max="100" step="1" value="10" data-lim="stock"><span>%</span></label><p></p></div>
+              <div class="lim" data-lim-row="sector"><span class="lim-ic"></span><b>One sector above</b><label class="lim-in"><span class="sr">Sector limit, percent</span><input class="field" type="number" min="1" max="100" step="1" value="25" data-lim="sector"><span>%</span></label><p></p></div>
+              <div class="lim" data-lim-row="country"><span class="lim-ic"></span><b>One country above</b><label class="lim-in"><span class="sr">Country limit, percent</span><input class="field" type="number" min="1" max="100" step="1" value="60" data-lim="country"><span>%</span></label><p></p></div>
+            </div>
+            <dl class="kv pf-eff" id="eff"></dl>
+          </section>
+        </div>
+        <div class="g3" id="bars"></div>
+      </div>
+    </section>
+
+    <!-- dividends -->
+    <section class="panel" data-v="dividends" role="tabpanel" aria-label="Dividends">
+      <div class="stack">
+        <div class="split">
+          <section class="card" aria-labelledby="h-divy">
+            <header class="card-h"><h2 id="h-divy">Received by year</h2><div class="card-a"><span class="label">USD, after tax withheld</span></div></header>
+            <div class="plot" id="div-plot" role="img" aria-label="Dividends received by year"></div>
+          </section>
+          <section class="card" aria-labelledby="h-divs">
+            <header class="card-h"><h2 id="h-divs">Summary</h2></header>
+            <dl class="kv" id="div-kv"></dl>
+          </section>
+        </div>
+        <section class="card" aria-labelledby="h-divt">
+          <header class="card-h">
+            <h2 id="h-divt">Dividend records</h2>
+            <div class="card-a">
+              <div class="seg" id="div-view" role="group" aria-label="Table view">
+                <button type="button" data-v="holding" aria-pressed="true">By holding</button>
+                <button type="button" data-v="payments" aria-pressed="false">Payments</button>
+              </div>
+            </div>
+          </header>
+          <div class="dt-wrap dt-mid"><table class="dt" id="div-table"></table></div>
+          <div class="pf-more" id="div-more"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- transactions -->
+    <section class="panel" data-v="transactions" role="tabpanel" aria-label="Transactions">
+      <section class="card" aria-labelledby="h-tx">
+        <header class="card-h">
+          <h2 id="h-tx">Transactions</h2>
+          <div class="card-a">
+            <div class="chips" id="tx-filter" role="group" aria-label="Show transactions of type">
+              <button class="chip" type="button" data-v="all" aria-pressed="true">All</button>
+              <button class="chip" type="button" data-v="buy" aria-pressed="false">Buys</button>
+              <button class="chip" type="button" data-v="sell" aria-pressed="false">Sells</button>
+              <button class="chip" type="button" data-v="div" aria-pressed="false">Dividends</button>
+              <button class="chip" type="button" data-v="fee" aria-pressed="false">Fees</button>
+            </div>
+          </div>
+        </header>
+        <p class="pf-hist" id="tx-hist"></p>
+        <div class="dt-wrap dt-mid">
+          <table class="dt pf-tx" id="tx">
+            <thead><tr>
+              <th scope="col" data-sort="text">Date</th><th scope="col" class="l" data-sort="text">Type</th><th scope="col" class="l" data-sort="text">Ticker</th><th scope="col" class="l">Account</th>
+              <th scope="col" data-sort="num">Quantity</th><th scope="col" data-sort="num">Price</th><th scope="col">Fees and tax</th><th scope="col" data-sort="num">Amount</th><th scope="col" class="l">Note</th><th scope="col"><span class="sr">Edit or delete</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="pf-more" id="tx-more"></div>
+      </section>
+    </section>
+
+    <!-- import and export -->
+    <section class="panel" data-v="import" role="tabpanel" aria-label="Import and export">
+      <div class="split">
+        <section class="card" aria-labelledby="h-imp">
+          <header class="card-h"><h2 id="h-imp">Import from a broker file</h2><div class="card-a"><span class="badge">Sample file</span></div></header>
+          <div id="imp"></div>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-exp">
+            <header class="card-h"><h2 id="h-exp">Export</h2></header>
+            <ul class="pf-exp" id="exp"></ul>
+          </section>
+          <p class="band" id="imp-note"></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <p class="band pf-note" id="pf-note"></p>
+</main>
+
+<!-- bulk actions for selected holdings -->
+<div class="bulk glass" id="bulk" role="region" aria-label="Actions for selected holdings">
+  <b id="bulk-n" aria-live="polite"></b><span class="dim" id="bulk-v"></span>
+  <span class="bulk-sp"></span>
+  <a class="btn btn-sm" id="bulk-cmp" href="compare.html">Compare</a>
+  <button class="btn btn-sm" type="button" data-bulk="watch">Add to watchlist</button>
+  <button class="btn btn-sm" type="button" data-bulk="alert">Set alert</button>
+  <button class="btn btn-sm" type="button" data-bulk="csv">Export CSV</button>
+  <button class="btn btn-sm btn-quiet" type="button" data-bulk="clear">Clear</button>
+</div>
+
+<script src="mock.js"></script>
+<script src="portfolio.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markets · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="markets.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>Markets</h1>
+      <p class="sub">Indexes, sectors, world markets, currencies, commodities, bonds and crypto, with the market regime model alongside.</p>
+    </div>
+    <div class="toolbar">
+      <span class="delay" id="mk-delay" title="Quotes from this source are delayed by about 15 minutes"></span>
+      <span class="badge" title="Prices come from an unofficial source until a licensed feed replaces it">Prototype data</span>
+    </div>
+  </div>
+
+  <div class="tabs tabs-line" id="mk-tabs" role="tablist" aria-label="Market sections">
+    <button class="tab is-active" role="tab" data-v="indexes" aria-selected="true">Indexes</button>
+    <button class="tab" role="tab" data-v="sectors" aria-selected="false">Sectors</button>
+    <button class="tab" role="tab" data-v="world" aria-selected="false">World markets</button>
+    <button class="tab" role="tab" data-v="currencies" aria-selected="false">Currencies</button>
+    <button class="tab" role="tab" data-v="commodities" aria-selected="false">Commodities</button>
+    <button class="tab" role="tab" data-v="bonds" aria-selected="false">Bonds</button>
+    <button class="tab" role="tab" data-v="crypto" aria-selected="false">Crypto</button>
+    <span class="tab-div" aria-hidden="true"></span>
+    <button class="tab" role="tab" data-v="regime" aria-selected="false">Market regime</button>
+    <span class="tab-ind"></span>
+  </div>
+
+  <div class="panels" id="mk-panels">
+    <section class="panel" data-v="indexes" role="tabpanel" aria-label="Indexes"></section>
+    <section class="panel" data-v="sectors" role="tabpanel" aria-label="Sectors"></section>
+    <section class="panel" data-v="world" role="tabpanel" aria-label="World markets"></section>
+    <section class="panel" data-v="currencies" role="tabpanel" aria-label="Currencies"></section>
+    <section class="panel" data-v="commodities" role="tabpanel" aria-label="Commodities"></section>
+    <section class="panel" data-v="bonds" role="tabpanel" aria-label="Bonds"></section>
+    <section class="panel" data-v="crypto" role="tabpanel" aria-label="Crypto"></section>
+    <section class="panel" data-v="regime" role="tabpanel" aria-label="Market regime"></section>
+  </div>
+</main>
+
+<script src="mock.js"></script>
+<script src="markets.js"></script>
+</body>
+</html>

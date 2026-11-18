@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compare · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="compare.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>Compare</h1>
+      <p class="sub">Up to six stocks side by side: rebased price, key statistics and five fiscal years of statements.</p>
+    </div>
+    <div class="toolbar">
+      <span class="label" id="cmp-count" role="status" aria-live="polite"></span>
+      <button class="btn" id="cmp-copy" type="button">Copy link</button>
+    </div>
+  </div>
+
+  <section class="cmp-top" aria-label="Stocks being compared">
+    <div class="cmp-slots" id="cmp-slots"></div>
+    <div class="pop cmp-pop" id="cmp-pop" role="dialog" aria-label="Add a stock to compare" data-keys>
+      <input class="field cmp-q" id="cmp-q" type="search" placeholder="Ticker or company" aria-label="Ticker or company" aria-controls="cmp-list" autocomplete="off" spellcheck="false">
+      <div class="cmp-list" id="cmp-list" role="listbox" aria-label="Stocks that match"></div>
+    </div>
+  </section>
+
+  <div id="cmp-body">
+
+    <section class="card reveal" aria-labelledby="h-chart">
+      <header class="card-h">
+        <div>
+          <h2 id="h-chart">Price, rebased</h2>
+          <p class="label" id="cmp-chart-sub"></p>
+        </div>
+        <div class="card-a">
+          <div class="seg" id="cmp-range" role="group" aria-label="Chart range">
+            <button type="button" data-v="1M" aria-pressed="false">1M</button>
+            <button type="button" data-v="6M" aria-pressed="false">6M</button>
+            <button type="button" data-v="1Y" aria-pressed="true">1Y</button>
+            <button type="button" data-v="5Y" aria-pressed="false">5Y</button>
+          </div>
+          <button class="btn btn-sm" id="cmp-alt-b" type="button" aria-pressed="false" aria-controls="cmp-alt">Show table</button>
+        </div>
+      </header>
+      <div class="plot cmp-plot" id="cmp-plot">
+        <canvas id="cmp-cv" role="img" aria-label="Rebased price chart"></canvas>
+        <div class="cmp-tip glass" id="cmp-tip" aria-hidden="true"></div>
+      </div>
+      <div class="lg cmp-lg" id="cmp-lg"></div>
+      <div class="cmp-alt" id="cmp-alt" hidden>
+        <div class="dt-wrap"><table class="dt" id="cmp-alt-t"><thead></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <h2 class="sec-t" id="h-stats">Key statistics</h2>
+    <p class="cmp-note" id="cmp-stats-note"></p>
+    <div class="dt-wrap" id="cmp-stats-wrap" tabindex="0" role="region" aria-labelledby="h-stats">
+      <table class="dt cmp-st" id="cmp-stats"><thead></thead><tbody></tbody></table>
+    </div>
+    <div class="band cmp-band"><span id="cmp-band-ic"></span><span>Forward P/E uses analyst consensus: third-party data, not a Market Lens forecast.</span></div>
+
+    <h2 class="sec-t" id="h-fin">Statements by fiscal year</h2>
+    <div class="fin-bar">
+      <div class="seg" id="cmp-ccy" role="group" aria-label="Currency of the statement rows">
+        <button type="button" data-v="rep" aria-pressed="true">As reported</button>
+        <button type="button" data-v="usd" aria-pressed="false">Normalised to USD</button>
+      </div>
+      <span class="label" id="cmp-ccy-note"></span>
+    </div>
+    <div class="fin-wrap cmp-fin-wrap" id="cmp-fin-wrap" tabindex="0" role="region" aria-labelledby="h-fin">
+      <table class="fin cmp-fin" id="cmp-fin"><thead></thead><tbody></tbody></table>
+    </div>
+    <p class="cmp-note" id="cmp-fin-note"></p>
+
+  </div>
+
+  <section class="card" id="cmp-empty" hidden>
+    <div class="empty">
+      <svg viewBox="0 0 132 84" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="6" y="10" width="54" height="64" rx="12"/><rect x="72" y="10" width="54" height="64" rx="12" stroke-dasharray="3 5"/><path d="M18 54l10-12 8 6 12-16"/><path d="M99 34v16M91 42h16"/>
+      </svg>
+      <h2 class="t2">Nothing to compare yet</h2>
+      <p>Add a stock to start. With two or more, the chart rebases them to the same starting point and the tables line them up.</p>
+      <div class="cmp-empty-a">
+        <button class="btn btn-primary" id="cmp-empty-add" type="button">Add a stock</button>
+        <button class="btn" id="cmp-empty-def" type="button">Use AAPL, MSFT and NVDA</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="mock.js"></script>
+<script src="compare.js"></script>
+</body>
+</html>

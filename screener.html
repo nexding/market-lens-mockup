@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screener · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="screener.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>Screener</h1>
+      <p class="sub">Narrow the sample universe of 22 stocks by size, valuation, growth, performance and more.</p>
+    </div>
+    <div class="toolbar">
+      <label class="label" for="scr-saved">Saved screens</label>
+      <select class="select" id="scr-saved"></select>
+      <div class="scr-anchor">
+        <button class="btn" id="scr-save" type="button" aria-haspopup="dialog" aria-expanded="false">Save</button>
+        <div class="pop scr-pop" id="scr-save-pop" role="dialog" aria-label="Save this screen" data-keys>
+          <form id="scr-save-form">
+            <label class="fld">Name of this screen
+              <input class="field" id="scr-name" autocomplete="off" spellcheck="false" maxlength="40" placeholder="My screen">
+            </label>
+            <p class="fe-tip" id="scr-save-sum"></p>
+            <div class="fe-f"><span class="sp"></span><button class="btn btn-sm" type="button" data-close>Cancel</button><button class="btn btn-sm btn-primary" type="submit">Save screen</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <section class="card reveal scr-filters" id="scr-filters" aria-labelledby="h-filters">
+      <header class="card-h">
+        <h2 id="h-filters">Filters</h2>
+        <div class="card-a scr-count">
+          <span class="scr-n" id="scr-n" role="img"></span><span id="scr-of"></span><span class="scr-unk" id="scr-unk"></span>
+          <span class="sr" id="scr-live" role="status" aria-live="polite"></span>
+        </div>
+      </header>
+      <div class="scr-bar">
+        <div class="scr-chips" id="scr-chips"></div>
+        <button class="btn btn-sm" id="scr-add" type="button" aria-haspopup="dialog" aria-expanded="false"></button>
+        <button class="linkish" id="scr-clear" type="button">Clear all</button>
+      </div>
+
+      <!-- one editor and one catalogue, moved under whichever chip or button opened them -->
+      <div class="pop scr-pop" id="scr-edit" role="dialog" aria-label="Edit filter" data-keys></div>
+      <div class="pop scr-pop" id="scr-cat" role="dialog" aria-label="Add a filter" data-keys>
+        <input class="field cat-q" id="scr-cat-q" type="search" placeholder="Search filters, e.g. yield or margin" aria-label="Search filters" autocomplete="off" spellcheck="false">
+        <div class="cat-list" id="scr-cat-list"></div>
+      </div>
+    </section>
+
+    <div class="band scr-band" id="scr-band" role="note">
+      <p id="scr-band-t">At $0 the US universe is complete: fundamentals come from company filings and prices from whole-market daily bars. Hong Kong and London rows carry price, size and sector only. Their other cells show a dash, and a filter on a measure they lack can neither pass nor fail them.</p>
+      <button class="btn btn-sm" id="scr-hide" type="button" aria-pressed="false">Hide rows that cannot be checked</button>
+    </div>
+
+    <section class="card reveal" aria-labelledby="h-results">
+      <header class="card-h">
+        <h2 id="h-results">Results</h2>
+        <div class="card-a">
+          <span class="label" id="scr-sorted"></span>
+          <div class="scr-anchor">
+            <button class="btn btn-sm" id="scr-cols" type="button" aria-haspopup="dialog" aria-expanded="false"></button>
+            <div class="pop scr-pop" id="scr-cols-pop" role="dialog" aria-label="Choose columns" data-keys></div>
+          </div>
+        </div>
+      </header>
+      <div class="dt-wrap scr-wrap" id="scr-wrap" tabindex="0" role="region" aria-label="Screener results, scrollable">
+        <table class="dt scr-t" id="scr-t">
+          <caption class="sr">Stocks that match the filters. Column headers sort the table.</caption>
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="empty" id="scr-empty" hidden>
+        <svg viewBox="0 0 132 84" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="10" width="120" height="64" rx="12"/><path d="M42 27h48L72 47v15l-12-6v-9z"/><path d="M22 60h14M96 60h14" stroke-dasharray="3 5"/>
+        </svg>
+        <h3 class="t2">No stock passes every filter</h3>
+        <p>Widen a range or remove a filter. The histogram in each range filter shows where the universe sits.</p>
+        <button class="btn" id="scr-empty-clear" type="button">Clear all filters</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="scr-bulk glass" id="scr-bulk" role="region" aria-label="Actions for the selected rows">
+  <span class="scr-bulk-n" id="scr-bulk-n" role="status" aria-live="polite"></span>
+  <button class="btn btn-sm" id="scr-bulk-watch" type="button"></button>
+  <a class="btn btn-sm btn-primary" id="scr-bulk-cmp" href="compare.html"></a>
+  <button class="btn btn-sm btn-quiet" id="scr-bulk-clear" type="button">Clear</button>
+</div>
+
+<script src="mock.js"></script>
+<script src="screener.js"></script>
+</body>
+</html>

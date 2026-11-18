@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="workspace.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body class="ws-page">
+
+<main class="ws" id="main">
+
+  <div class="ws-bar glass" role="group" aria-label="Workspace controls">
+    <a class="brand" href="home.html" aria-label="Market Lens, back to Home"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16l5-6 4 3 7-8"/></svg></span></a>
+    <div class="seg" id="ws-layouts" role="group" aria-label="Saved layout">
+      <button type="button" data-v="research" aria-pressed="true">Research</button>
+      <button type="button" data-v="review" aria-pressed="false">Portfolio review</button>
+      <button type="button" data-v="desk" aria-pressed="false">News desk</button>
+    </div>
+    <button class="iconbtn ws-ib" type="button" id="ws-reset" aria-label="Reset this layout to how it was saved" title="Reset this layout"></button>
+    <div class="ws-addwrap">
+      <button class="btn btn-sm" type="button" id="ws-add" aria-haspopup="menu" aria-expanded="false" aria-controls="ws-add-menu">Add panel</button>
+      <div class="pop menu" id="ws-add-menu" role="menu" aria-label="Add panel"></div>
+    </div>
+    <label class="ws-qwrap"><span class="sr">Load a symbol into the active panel’s link group</span>
+      <input class="field" id="ws-q" list="ws-syms" placeholder="Symbol" autocomplete="off" spellcheck="false" maxlength="8"></label>
+    <datalist id="ws-syms"></datalist>
+    <span class="sp"></span>
+    <ul class="ws-legend" id="ws-legend" aria-label="Link groups: panels with the same letter follow the same symbol"></ul>
+    <button class="iconbtn ws-ib" type="button" id="ws-settings" aria-label="Settings: theme, density, accent, motion" title="Settings"></button>
+    <a class="btn btn-sm" href="home.html">Exit to Home</a>
+  </div>
+
+  <div class="ws-wrap">
+    <div class="ws-dock" id="dock"></div>
+  </div>
+
+  <div class="ws-status">
+    <span>Sample data. A personal analysis tool, not financial advice. No trading or order entry.</span>
+    <span id="ws-state"></span>
+  </div>
+  <div class="sr" id="ws-live" aria-live="polite"></div>
+
+  <section class="card ws-small" aria-labelledby="ws-small-h">
+    <h1 class="t2" id="ws-small-h">The workspace needs a wider window</h1>
+    <p>The docking workspace is desktop-only. It opens in a window at least 1,024 px wide, where panels can sit side by side. Everything in it is also on the ordinary pages.</p>
+    <a class="btn btn-primary" href="home.html">Back to Home</a>
+  </section>
+</main>
+
+<script src="mock.js"></script>
+<script src="workspace.js"></script>
+</body>
+</html>

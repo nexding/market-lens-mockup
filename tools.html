@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="tools.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+  <div class="page-h">
+    <div>
+      <h1>Tools</h1>
+      <p class="sub">See how sectors moved after past events, apply a shock to a list of stocks, and check how every model on this site has scored.</p>
+    </div>
+  </div>
+
+  <div class="tabs tabs-line" id="ttabs" role="tablist" aria-label="Tools">
+    <button class="tab is-active" type="button" role="tab" id="tab-event" data-v="event" aria-controls="p-event" aria-selected="true">Event study</button>
+    <button class="tab" type="button" role="tab" id="tab-stress" data-v="stress" aria-controls="p-stress" aria-selected="false">Stress test</button>
+    <button class="tab" type="button" role="tab" id="tab-track" data-v="track" aria-controls="p-track" aria-selected="false">Track record</button>
+  </div>
+
+  <div class="panels" id="tpanels">
+
+    <!-- ================= Event study ================= -->
+    <section class="panel is-active" data-v="event" id="p-event" role="tabpanel" aria-labelledby="tab-event">
+      <div class="split-l">
+        <aside class="card es-pick" aria-labelledby="es-pick-h">
+          <header class="card-h"><h2 id="es-pick-h">Event</h2></header>
+          <div id="es-list"></div>
+          <form class="es-custom" id="es-custom">
+            <div class="micro">Custom date</div>
+            <label class="fld">Date<input class="field" type="date" id="es-date" min="2005-01-03" max="2026-11-16" value="2026-10-21" required></label>
+            <label class="fld">Event type<select class="select" id="es-type"></select></label>
+            <button class="btn" type="submit">Run study</button>
+          </form>
+        </aside>
+
+        <div class="stack">
+          <section class="card" aria-labelledby="es-title">
+            <header class="card-h">
+              <h2 id="es-title"></h2>
+              <div class="card-a">
+                <div class="seg" id="es-h" role="group" aria-label="Horizon in trading days">
+                  <button type="button" data-v="1" aria-pressed="false">1 day</button>
+                  <button type="button" data-v="5" aria-pressed="true">5 days</button>
+                  <button type="button" data-v="30" aria-pressed="false">30 days</button>
+                </div>
+              </div>
+            </header>
+            <p class="es-sub" id="es-sub"></p>
+            <div class="kpis es-kpis" id="es-kpis"></div>
+            <div class="band warn" id="es-warn" hidden></div>
+            <div class="plot es-plot" id="es-plot"><canvas role="img" id="es-cv"></canvas></div>
+            <div class="lg es-lg">
+              <span><i class="k-bar"></i>Mean across comparable events</span>
+              <span><i class="k-wh"></i>90% interval</span>
+              <span><i class="k-own"></i>This event</span>
+              <span><i class="k-ns"></i>Interval spans zero</span>
+            </div>
+            <details class="more">
+              <summary>Show these figures as a table</summary>
+              <div class="dt-wrap"><table class="dt" id="es-table"></table></div>
+            </details>
+          </section>
+
+          <section class="card" aria-labelledby="es-sm-h">
+            <header class="card-h">
+              <h2 id="es-sm-h">The individual events</h2>
+              <div class="card-a"><label class="nb-f"><span class="label">Sector</span><select class="select" id="es-sector"></select></label></div>
+            </header>
+            <p class="es-sub" id="es-sm-sub"></p>
+            <div class="sm-grid" id="es-sm" role="list"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Stress test ================= -->
+    <section class="panel" data-v="stress" id="p-stress" role="tabpanel" aria-labelledby="tab-stress">
+      <div class="band warn sx-head" id="sx-head">
+        <div><h2 class="t3">Historical sensitivity, not a forecast</h2>
+        <p>Each stock’s effect is its measured sensitivity to oil, interest rates, the dollar and the market, times the shock you choose. It says how these stocks have moved with those factors, not what will happen.</p></div>
+      </div>
+      <div class="split-l sx-body">
+        <aside class="card sx-build" aria-labelledby="sx-build-h">
+          <header class="card-h"><h2 id="sx-build-h">Scenario</h2><div class="card-a"><button class="linkish" type="button" id="sx-reset">Reset</button></div></header>
+          <div class="chips" id="sx-presets" role="group" aria-label="Preset scenarios"></div>
+          <div class="sx-sliders" id="sx-sliders"></div>
+          <div class="sx-target">
+            <div class="micro" id="sx-target-l">Applied to</div>
+            <div class="seg" id="sx-target" role="group" aria-labelledby="sx-target-l">
+              <button type="button" data-v="pf" aria-pressed="true">My portfolio</button>
+              <button type="button" data-v="watch" aria-pressed="false">Watchlist</button>
+              <button type="button" data-v="paste" aria-pressed="false">Pasted list</button>
+            </div>
+            <form class="sx-paste" id="sx-paste" data-drop="stress" hidden>
+              <label class="fld">Tickers, separated by commas or spaces<input class="field" id="sx-list" value="TSM, AMZN, XOM, DAL, LMT, JPM" autocomplete="off" spellcheck="false"></label>
+              <button class="btn btn-sm" type="submit">Apply list</button>
+              <p class="label" id="sx-paste-note"></p>
+            </form>
+            <p class="label" id="sx-target-note"></p>
+          </div>
+        </aside>
+
+        <div class="stack">
+          <section class="card sx-total" aria-labelledby="sx-total-h">
+            <div class="sx-total-l">
+              <h2 class="label" id="sx-total-h">Estimated effect on the total</h2>
+              <div class="bignum" id="sx-num"></div>
+              <div class="sx-money" id="sx-money"></div>
+              <div class="sr" id="sx-live" aria-live="polite"></div>
+            </div>
+            <div class="sx-total-r">
+              <div class="label" id="sx-ivl-t"></div>
+              <div id="sx-ivl"></div>
+              <div class="sx-fact" id="sx-fact"></div>
+            </div>
+          </section>
+
+          <div class="split sx-charts">
+            <section class="card" aria-labelledby="sx-wf-h">
+              <header class="card-h"><h2 id="sx-wf-h">By holding</h2><div class="card-a"><span class="label">Contribution to the total, most negative first</span></div></header>
+              <div class="plot sx-wf" id="sx-wf"><canvas role="img" id="sx-wf-cv"></canvas></div>
+            </section>
+            <section class="card" aria-labelledby="sx-sec-h">
+              <header class="card-h"><h2 id="sx-sec-h">By sector</h2></header>
+              <div class="plot sx-sec" id="sx-sec"><canvas role="img" id="sx-sec-cv"></canvas></div>
+            </section>
+          </div>
+
+          <section class="card" aria-labelledby="sx-tb-h">
+            <header class="card-h"><h2 id="sx-tb-h">The same figures as a table</h2></header>
+            <div class="dt-wrap"><table class="dt" id="sx-table"></table></div>
+          </section>
+          <p class="label">Worked out on this computer from stored sensitivities (three years of weekly data, shrunk toward each sector). The interval combines the sensitivities’ standard errors with stock-specific risk. A what-if scenario is not a prediction and is not written to the ledger. Sample data.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Track record ================= -->
+    <section class="panel" data-v="track" id="p-track" role="tabpanel" aria-labelledby="tab-track">
+      <div class="band" id="tr-note"></div>
+      <div class="tr-grid" id="tr-cards"></div>
+      <div class="split tr-low">
+        <section class="card" aria-labelledby="tr-cal-h">
+          <header class="card-h">
+            <h2 id="tr-cal-h">Calibration</h2>
+            <div class="card-a">
+              <select class="select" id="tr-mod" aria-label="Module"></select>
+              <div class="seg" id="tr-origin" role="group" aria-label="Backtest or live">
+                <button type="button" data-v="bt" aria-pressed="true">Backtest</button>
+                <button type="button" data-v="live" aria-pressed="false">Live</button>
+              </div>
+            </div>
+          </header>
+          <p class="es-sub" id="tr-cal-sub"></p>
+          <div class="tr-cal-body">
+            <div class="plot tr-cal" id="tr-cal"><canvas role="img" id="tr-cal-cv"></canvas><div class="tr-cal-empty" id="tr-cal-empty" hidden></div></div>
+            <div class="dt-wrap"><table class="dt" id="tr-cal-table"></table></div>
+          </div>
+        </section>
+        <section class="card" aria-labelledby="tr-led-h">
+          <header class="card-h"><h2 id="tr-led-h">Prediction ledger</h2></header>
+          <p class="ledger-line" id="tr-ledger" role="status"></p>
+          <dl class="kv" id="tr-led-kv"></dl>
+          <div class="tr-led-a"><button class="btn btn-sm" type="button" id="tr-verify">Verify again</button><span class="label">Runs <span class="code">mlens ledger verify</span></span></div>
+          <p class="label">Rows can be added but never changed or deleted. Each row stores the hash of the one before it, so a rewritten forecast would break the chain.</p>
+        </section>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="mock.js"></script>
+<script src="tools.js"></script>
+</body>
+</html>

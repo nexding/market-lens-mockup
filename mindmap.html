@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event mind map · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="mm-stage" id="main">
+  <canvas id="map" tabindex="0" data-keys role="application" aria-roledescription="event mind map" aria-label="Event mind map. Arrow keys move along links, Enter opens a node, Space folds it, Escape closes the panel. A table of the same links is available from the toolbar." aria-describedby="mm-live"></canvas>
+  <div class="sr" id="mm-live" aria-live="polite"></div>
+
+  <div class="mm-bar">
+    <div class="mm-group glass mm-title"><b>Event mind map</b>&nbsp;<span class="dim">· whole portfolio · 3 to 14 Nov 2026</span></div>
+    <div class="mm-group glass">
+      <select id="mm-focus" aria-label="Filter by holding"><option value="">All holdings</option></select>
+    </div>
+    <div class="mm-group glass" role="group" aria-label="View">
+      <button class="btn btn-sm" id="mm-replay" type="button" title="Replay how the map grows"></button>
+      <button class="btn btn-sm" id="mm-fit" type="button" title="Fit to window" aria-label="Fit to window"></button>
+      <button class="btn btn-sm" id="mm-out" type="button" aria-label="Zoom out">−</button>
+      <button class="btn btn-sm" id="mm-in" type="button" aria-label="Zoom in">+</button>
+    </div>
+    <div class="mm-group glass" role="group" aria-label="Options">
+      <button class="btn btn-sm is-on" id="mm-part" type="button" aria-pressed="true">Particles</button>
+      <button class="btn btn-sm" id="mm-para" type="button" aria-pressed="false">Parallax</button>
+      <button class="btn btn-sm" id="mm-dense" type="button" aria-pressed="false" title="Adds invented second-order companies to test 60 nodes">60 nodes</button>
+      <button class="btn btn-sm" id="mm-tbl" type="button" aria-pressed="false"></button>
+    </div>
+    <div class="mm-group glass">
+      <button class="btn btn-sm" id="mm-png" type="button"></button>
+    </div>
+    <div class="mm-group glass mm-fps" id="mm-fps" aria-hidden="true">60 fps</div>
+  </div>
+
+  <ul class="mm-legend glass" aria-label="Legend">
+    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Confirmed fact</li>
+    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>Model inference</li>
+    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/></svg>Speculative</li>
+    <li><svg viewBox="0 0 34 12"><path d="M1 6h32" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M1 9h32" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".35"/></svg>Thicker is more confident</li>
+    <li><svg viewBox="0 0 34 12"><rect x="11" y="0.5" width="11" height="11" rx="3" fill="none" stroke="var(--data-1)" stroke-width="1.5"/></svg>Event</li>
+    <li><svg viewBox="0 0 34 12"><path d="M17 0.5 23 6l-6 5.5L11 6z" fill="none" stroke="var(--data-2)" stroke-width="1.5"/></svg>Factor</li>
+    <li><svg viewBox="0 0 34 12"><path d="M13.5 1h7l3.5 5-3.5 5h-7L10 6z" fill="none" stroke="var(--data-3)" stroke-width="1.5"/></svg>Sector</li>
+    <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="5" fill="none" stroke="var(--data-6)" stroke-width="1.5"/></svg>Company</li>
+    <li><svg viewBox="0 0 34 12"><circle cx="17" cy="6" r="3.2" fill="none" stroke="var(--data-4)" stroke-width="1.5"/><circle cx="17" cy="6" r="5.5" fill="none" stroke="var(--data-4)" stroke-width="1" opacity=".6"/></svg>Your holding</li>
+  </ul>
+  <p class="mm-cap">Links are hypotheses, not facts. Each implied direction is written to the prediction ledger and scored later. Sample data.</p>
+
+  <div class="mm-time glass">
+    <button class="btn btn-sm" id="mm-play" type="button" aria-label="Play the timeline"></button>
+    <input type="range" id="mm-slider" min="0" max="11" step="0.01" value="11" aria-label="Timeline: show the map as it stood on a date">
+    <span class="date" id="mm-date">14 Nov 2026</span>
+  </div>
+
+  <div class="mm-tip glass" id="mm-tip" role="tooltip"></div>
+  <aside class="mm-panel" id="mm-panel" aria-label="Node details"></aside>
+  <div class="mm-table glass" id="mm-table"></div>
+</main>
+
+<script src="mock.js"></script>
+<script src="mindmap.js"></script>
+</body>
+</html>

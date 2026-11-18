@@ -1,0 +1,90 @@
+/* Market Lens mockup: Markets page. Tokens only; shared components live in app.css. */
+
+/* ---------- chart of the selected row ---------- */
+.mk-top .card-h { align-items: flex-start; }
+.mk-id { display: grid; gap: 2px; min-width: 0; }
+.mk-q { display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.mk-px { font-size: var(--fs-t1); line-height: 34px; font-weight: 600; letter-spacing: -0.018em; }
+.mk-plot { height: 300px; }
+.mk-stats { display: flex; flex-wrap: wrap; gap: 10px 32px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+.mk-stats > div { display: grid; gap: 2px; min-width: 0; }
+.mk-stats dt { font-size: var(--fs-label); line-height: 16px; font-weight: 500; letter-spacing: 0.01em; color: var(--text-3); }
+.mk-stats dd { font-size: var(--fs-data); line-height: var(--lh-data); font-weight: 500; }
+.mk-stats dd .dim { font-weight: 400; }
+:root[data-density="compact"] .mk-px { font-size: var(--fs-t2); line-height: 28px; }
+:root[data-density="compact"] .mk-plot { height: 220px; }
+:root[data-density="compact"] .mk-stats { margin-top: 6px; padding-top: 6px; gap: 4px 20px; }
+
+/* ---------- table ---------- */
+.mk-tcard { overflow: hidden; }
+.mk-th { padding: 0; border: 0; background: none; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; cursor: pointer; }
+.mk-n { display: grid; min-width: 0; }
+.mk-n1 { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; line-height: 18px; }
+.mk-n2 { max-width: 280px; font-size: 12px; line-height: 16px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:root[data-density="compact"] .mk-n2, :root[data-density="compact"] .mk-n1 .badge { display: none; }
+.mk-t tbody tr.is-sel td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+.mk-t tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 0; }
+.mk-t tbody tr:focus-visible td { background: color-mix(in srgb, var(--accent) 14%, var(--surface-1)); }
+.mk-rb { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); vertical-align: middle; }
+.mk-rb .rangebar { flex: none; width: 72px; margin: 0; }
+
+/* ---------- sector heatmap (tiles are buttons here) ---------- */
+.mk-heat { grid-auto-flow: dense; }
+.mk-heat .tile { border: 0; font: inherit; text-align: left; cursor: pointer; }
+.mk-heat .tile[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--text-1); }
+
+/* ---------- legends with line samples ---------- */
+.mk-lg i { width: 16px; height: 0; border-radius: 0; background: none; border-top: 2px solid; }
+.mk-lg i.d1 { border-top-style: dashed; }
+.mk-lg i.d2 { border-top-style: dotted; }
+.mk-lg i.blk { width: 10px; height: 8px; border: 1px solid; border-radius: 2px; }
+.mk-lg-h { margin: -4px 0 8px; }
+.mk-curve { height: 300px; }
+:root[data-density="compact"] .mk-curve { height: 220px; }
+
+/* ---------- market regime ---------- */
+.mk-rg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px; margin: 4px 0 20px; }
+.mk-rg .bignum { margin-top: 2px; }
+.mk-rg .bignum small, .bignum.mk-b small { display: block; margin: 0; line-height: 16px; }
+.mk-nb { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent); background: color-mix(in srgb, var(--warn) 10%, transparent); }
+.mk-p { margin-top: 14px; max-width: 74ch; color: var(--text-2); font-size: 13px; line-height: 18px; }
+.mk-p.dim { margin-top: 8px; color: var(--text-3); }
+.mk-hist { height: 280px; }
+.mk-hist .chart-tip .x { margin: 0 0 0 6px; }
+.mk-hist-t { margin-top: 12px; }
+:root[data-density="compact"] .mk-hist { height: 220px; }
+:root[data-density="compact"] .mk-rg { margin-bottom: 10px; }
+
+.mk-skill { position: relative; height: 8px; margin: 16px 0 6px; border-radius: 4px; background: var(--surface-3); }
+.mk-skill .band { position: absolute; top: -4px; bottom: -4px; left: var(--lo); width: calc(var(--hi) - var(--lo)); border-radius: 8px; background: var(--accent-wash); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+.mk-skill .zero { position: absolute; top: -6px; bottom: -6px; left: var(--z); width: 2px; margin-left: -1px; border-radius: 1px; background: var(--text-2); }
+.mk-skill .pt { position: absolute; top: 50%; left: var(--p); width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--surface-1); }
+.mk-kv { margin-top: 16px; }
+
+.mk-drv { display: grid; gap: 12px; }
+.mk-drv li { display: grid; grid-template-columns: minmax(0, 1fr) 96px 68px; gap: 12px; align-items: center; font-size: 13px; line-height: 18px; }
+.mk-drv .t { display: grid; min-width: 0; }
+.mk-drv .t b { font-weight: 500; }
+.mk-drv .t span, .mk-drv .v span { font-size: 12px; line-height: 16px; color: var(--text-3); }
+.mk-drv .v { display: grid; justify-items: end; white-space: nowrap; }
+.mk-drv .v b { font-weight: 500; }
+.mk-sb { position: relative; height: 8px; border-radius: 4px; background: var(--surface-3); }
+.mk-sb::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--hairline-strong); }
+.mk-sb i { position: absolute; top: 0; bottom: 0; width: var(--w); transform: scaleX(0); transition: transform var(--spring-smooth-d) var(--spring-smooth); }
+.mk-sb i.pos { left: 50%; border-radius: 0 4px 4px 0; background: var(--accent); transform-origin: 0 50%; }
+.mk-sb i.neg { right: 50%; border-radius: 4px 0 0 4px; background: var(--text-3); transform-origin: 100% 50%; }
+.mk-drv.in .mk-sb i { transform: none; }
+:root[data-density="compact"] .mk-drv { gap: 6px; }
+:root[data-density="compact"] .mk-drv .t span { display: none; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 767px) {
+  .mk-plot, .mk-curve, .mk-hist { height: 220px; }
+  .mk-rg { grid-template-columns: minmax(0, 1fr); }
+  .mk-drv li { grid-template-columns: minmax(0, 1fr) 64px 62px; gap: 8px; }
+  .mk-n2 { max-width: 160px; }
+  /* keep the name in view while the table scrolls sideways */
+  .mk-t th:first-child, .mk-t td:first-child { position: sticky; left: 0; background: var(--surface-1); }
+  .mk-t td:first-child { z-index: 1; }
+  .mk-t thead th:first-child { z-index: 3; }
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendars · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="calendars.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+</head>
+<body>
+
+<main class="page" id="main">
+
+  <div class="page-h">
+    <div>
+      <h1>Calendars</h1>
+      <p class="sub">Earnings, dividends, splits, IPOs and economic events, in the exchange’s time and in yours.</p>
+    </div>
+    <div class="toolbar">
+      <label class="cal-tz" for="cal-tz"><span class="label">Your time zone</span>
+        <select class="select" id="cal-tz">
+          <option value="HK">Hong Kong (UTC+8)</option>
+          <option value="LON">London (UTC+0)</option>
+          <option value="NY">New York (UTC−5)</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="tabs tabs-line" id="cal-tabs" role="tablist" aria-label="Calendar type">
+    <button class="tab is-active" role="tab" data-v="earnings" aria-selected="true">Earnings</button>
+    <button class="tab" role="tab" data-v="dividends" aria-selected="false">Dividends</button>
+    <button class="tab" role="tab" data-v="splits" aria-selected="false">Splits</button>
+    <button class="tab" role="tab" data-v="ipos" aria-selected="false">IPOs</button>
+    <button class="tab" role="tab" data-v="economic" aria-selected="false">Economic events</button>
+    <span class="tab-ind"></span>
+  </div>
+
+  <div class="cal-body" id="cal-panel" role="tabpanel" aria-label="Earnings">
+
+    <section class="card" aria-label="Week">
+      <div class="cal-bar">
+        <div class="cal-nav">
+          <button class="iconbtn" type="button" id="cal-prev" aria-label="Previous week"></button>
+          <h2 class="cal-wk" id="cal-wk" aria-live="polite"></h2>
+          <button class="iconbtn" type="button" id="cal-next" aria-label="Next week"></button>
+          <button class="btn btn-sm" type="button" id="cal-now">This week</button>
+        </div>
+        <div class="chips" id="cal-flt" role="group" aria-label="Show events for">
+          <button class="chip" type="button" data-f="h" aria-pressed="true">My holdings</button>
+          <button class="chip" type="button" data-f="w" aria-pressed="true">Watchlist</button>
+          <button class="chip" type="button" data-f="all" aria-pressed="false">All</button>
+        </div>
+      </div>
+      <div class="cal-week" id="cal-week" role="group" aria-label="Days of the week. Select a day to show only that day."></div>
+      <p class="cal-sum" id="cal-sum" role="status"></p>
+    </section>
+
+    <div class="band" id="cal-band" hidden></div>
+
+    <div class="cal-agenda" id="cal-agenda"></div>
+  </div>
+</main>
+
+<script src="mock.js"></script>
+<script src="calendars.js"></script>
+</body>
+</html>
