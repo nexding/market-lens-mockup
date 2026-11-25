@@ -1,0 +1,1403 @@
+{
+  "covid-crash": [
+    {
+      "claim": "S&P 500 down 34% from 3,386 peak on 19 Feb to 2,237 on 23 Mar 2020",
+      "url": "https://en.wikipedia.org/wiki/List_of_stock_market_crashes_and_bear_markets",
+      "quote": "The S&P 500 index dropped 34% (1,145 points), at its peak of 3,386 on 19 February to 2,237 on 23 March."
+    },
+    {
+      "claim": "VIX record close of 82.69 on 16 Mar 2020",
+      "url": "https://en.wikipedia.org/wiki/2020_stock_market_crash",
+      "quote": "The CBOE Volatility Index closed at 82.69 on 16 March, the highest ever closing for the index"
+    },
+    {
+      "claim": "WHO characterized COVID-19 as a pandemic on 11 Mar 2020",
+      "url": "https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020",
+      "quote": "WHO Director-General's opening remarks at the media briefing on COVID-19 - 11 March 2020"
+    },
+    {
+      "claim": "WHO pandemic declaration wording",
+      "url": "https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020",
+      "quote": "We have therefore made the assessment that COVID-19 can be characterized as a pandemic."
+    }
+  ],
+  "fed-zero-qe": [
+    {
+      "claim": "Target range cut to 0 to 1/4 percent",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200315a.htm",
+      "quote": "the Committee decided to lower the target range for the federal funds rate to 0 to 1/4 percent"
+    },
+    {
+      "claim": "Purchases of at least $500B Treasuries and $200B agency MBS",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200315a.htm",
+      "quote": "increase its holdings of Treasury securities by at least $500 billion and its holdings of agency mortgage-backed securities by at least $200 billion"
+    },
+    {
+      "claim": "Key date 15 Mar 2020",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200315a.htm",
+      "quote": "Implementation Note issued March 15, 2020"
+    },
+    {
+      "claim": "Half-point emergency cut on 3 Mar 2020",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200303a.htm",
+      "quote": "decided today to lower the target range for the federal funds rate by 1/2 percentage point"
+    },
+    {
+      "claim": "3 Mar 2020 date",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200303a.htm",
+      "quote": "Implementation Note issued March 3, 2020"
+    },
+    {
+      "claim": "Stocks fell 12-13% on 16 Mar 2020",
+      "url": "https://en.wikipedia.org/wiki/2020_stock_market_crash",
+      "quote": "The Dow Jones Industrial Average, the NASDAQ Composite, and the S&P 500 all fell by 12–13%"
+    },
+    {
+      "claim": "10-year yield fell to 0.76% on 16 Mar 2020",
+      "url": "https://en.wikipedia.org/wiki/2020_stock_market_crash",
+      "quote": "Treasury securities fell to 0.76% and 1.38% respectively"
+    }
+  ],
+  "cares-act": [
+    {
+      "claim": "$2.2 trillion, signed 27 Mar 2020",
+      "url": "https://en.wikipedia.org/wiki/CARES_Act",
+      "quote": "is a $2.2 trillion economic stimulus bill passed by the 116th United States Congress and signed into law by President Donald Trump on March 27, 2020"
+    },
+    {
+      "claim": "Dow +2,112.98 points, more than 11%, best day since 1933",
+      "url": "https://www.cnbc.com/2020/03/23/dow-futures-up-more-than-200-points-as-senate-debates-over-virus-bill.html",
+      "quote": "The 30-stock average closed 2,112.98 points higher — or more than 11% — at 20,704.91, notching its biggest one-day percentage gain since 1933."
+    },
+    {
+      "claim": "S&P 500 +9.4%",
+      "url": "https://www.cnbc.com/2020/03/23/dow-futures-up-more-than-200-points-as-senate-debates-over-virus-bill.html",
+      "quote": "The S&P 500 rallied 9.4% to 2,447.33 for its best day since October 2008."
+    },
+    {
+      "claim": "Nasdaq +8.1%",
+      "url": "https://www.cnbc.com/2020/03/23/dow-futures-up-more-than-200-points-as-senate-debates-over-virus-bill.html",
+      "quote": "The Nasdaq Composite surged 8.1% to 7,417.86"
+    },
+    {
+      "claim": "Rally tied to stimulus expectations",
+      "url": "https://www.cnbc.com/2020/03/23/dow-futures-up-more-than-200-points-as-senate-debates-over-virus-bill.html",
+      "quote": "as investors bet U.S. lawmakers would deliver soon a stimulus bill"
+    }
+  ],
+  "oil-negative-price": [
+    {
+      "claim": "Settled at -$37.63/bbl on 20 Apr 2020",
+      "url": "https://www.cftc.gov/PressRoom/PressReleases/8315-20",
+      "quote": "fell from $17.73 per barrel to settle at -$37.63 per barrel on April 20, the day before the contract expired"
+    },
+    {
+      "claim": "Date 20 Apr 2020",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=43495",
+      "quote": "On Monday, April 20, 2020, West Texas Intermediate (WTI) crude oil front-month futures"
+    },
+    {
+      "claim": "Intraday low -$40.32/b",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=43495",
+      "quote": "At about 2:30 p.m. ET, WTI traded as low as -$40.32/b"
+    },
+    {
+      "claim": "First negative price since 1983",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=43495",
+      "quote": "for the first time since trading began in 1983"
+    },
+    {
+      "claim": "Brent June 2020 closed at $19.33/b on 21 Apr",
+      "url": "https://www.eia.gov/todayinenergy/detail.php?id=43495",
+      "quote": "with the Brent contract for June 2020 delivery closing at $19.33/b on April 21"
+    }
+  ],
+  "chip-shortage": [
+    {
+      "claim": "$210B revenue cost in 2021",
+      "url": "https://www.cnbc.com/2021/09/23/chip-shortage-expected-to-cost-auto-industry-210-billion-in-2021.html",
+      "quote": "expected to cost the global automotive industry $210 billion in revenue in 2021, according to consulting firm AlixPartners"
+    },
+    {
+      "claim": "7.7 million units of production lost in 2021",
+      "url": "https://www.cnbc.com/2021/09/23/chip-shortage-expected-to-cost-auto-industry-210-billion-in-2021.html",
+      "quote": "AlixPartners is now forecasting that 7.7 million units of production will be lost in 2021, up from 3.9 million in its May forecast."
+    },
+    {
+      "claim": "Audi cut Q1 2021 production",
+      "url": "https://www.bbc.com/news/technology-55704936",
+      "quote": "Boss Markus Duesmann said it was now aiming to make 10,000 fewer cars in the first quarter of the year"
+    },
+    {
+      "claim": "Production cuts reported 18 Jan 2021",
+      "url": "https://en.wikipedia.org/wiki/2020%E2%80%932023_global_chip_shortage",
+      "quote": "\"Chip-shortage 'crisis' halts car-company output\". BBC News. 18 January 2021."
+    },
+    {
+      "claim": "Toyota cut global production 40% in Sep 2021",
+      "url": "https://en.wikipedia.org/wiki/2020%E2%80%932023_global_chip_shortage",
+      "quote": "Toyota planned to cut vehicle production worldwide by 40% in September 2021"
+    },
+    {
+      "claim": "Carmakers cancelled chip orders early in the pandemic",
+      "url": "https://en.wikipedia.org/wiki/2020%E2%80%932023_global_chip_shortage",
+      "quote": "car manufacturers incorrectly predicted that sales would drop, canceled chip orders, and were unprepared to meet demand"
+    }
+  ],
+  "arp": [
+    {
+      "claim": "Followed the CARES Act and the December 2020 relief bill",
+      "url": "https://en.wikipedia.org/wiki/American_Rescue_Plan_Act_of_2021",
+      "quote": "the CARES Act from March 2020 and in the Consolidated Appropriations Act, 2021, from December"
+    },
+    {
+      "claim": "$1.9 trillion, signed 11 Mar 2021",
+      "url": "https://en.wikipedia.org/wiki/American_Rescue_Plan_Act_of_2021",
+      "quote": "is a US$1.9 trillion economic stimulus bill passed by the 117th United States Congress and signed into law by President Joe Biden on March 11, 2021"
+    },
+    {
+      "claim": "10-year yield +10bp to 1.626%, high of 1.642%",
+      "url": "https://www.cnbc.com/2021/03/12/us-bonds-treasury-yields-higher-following-stimulus-vaccine-news.html",
+      "quote": "The yield on the benchmark 10-year Treasury note advanced 10 basis points to 1.626% at around 4:00 p.m. ET and briefly reached 1.642%, its highest level since February 2020."
+    },
+    {
+      "claim": "Yield rise linked to inflation fears after the stimulus",
+      "url": "https://www.cnbc.com/2021/03/12/us-bonds-treasury-yields-higher-following-stimulus-vaccine-news.html",
+      "quote": "heightened inflation fears after the enactment of the $1.9 trillion stimulus package"
+    }
+  ],
+  "us-inflation-surge": [
+    {
+      "claim": "CPI +4.2% y/y for April 2021",
+      "url": "https://www.bls.gov/news.release/archives/cpi_05122021.htm",
+      "quote": "all items index increased 4.2 percent before seasonal adjustment"
+    },
+    {
+      "claim": "Released 12 May 2021",
+      "url": "https://www.bls.gov/news.release/archives/cpi_05122021.htm",
+      "quote": "8:30 a.m. (ET) May 12, 2021"
+    },
+    {
+      "claim": "Fastest pace since 2008",
+      "url": "https://www.cnbc.com/2021/05/11/stock-market-futures-open-to-close-news.html",
+      "quote": "Inflation accelerated at its fastest pace since 2008 last month with the Consumer Price Index spiking 4.2% from a year ago"
+    },
+    {
+      "claim": "Dow -681.50 points, -2%",
+      "url": "https://www.cnbc.com/2021/05/11/stock-market-futures-open-to-close-news.html",
+      "quote": "The Dow Jones Industrial Average fell 681.50 points, or 2%, to 33,587.66, posting its worst day since January."
+    },
+    {
+      "claim": "S&P 500 -2.1%",
+      "url": "https://www.cnbc.com/2021/05/11/stock-market-futures-open-to-close-news.html",
+      "quote": "The S&P 500 lost 2.1% to 4,063.04 for its biggest drop since February"
+    },
+    {
+      "claim": "Nasdaq -2.7%",
+      "url": "https://www.cnbc.com/2021/05/11/stock-market-futures-open-to-close-news.html",
+      "quote": "the tech-heavy Nasdaq Composite slid 2.7% to 13,031.68"
+    },
+    {
+      "claim": "Peak CPI +9.1% y/y for June 2022",
+      "url": "https://www.bls.gov/news.release/archives/cpi_07132022.htm",
+      "quote": "The all items index increased 9.1 percent for the 12 months ending June, the largest 12-month"
+    },
+    {
+      "claim": "Highest since 1981",
+      "url": "https://www.bls.gov/news.release/archives/cpi_07132022.htm",
+      "quote": "increase since the period ending November 1981"
+    },
+    {
+      "claim": "June 2022 CPI released 13 Jul 2022",
+      "url": "https://www.bls.gov/news.release/archives/cpi_07132022.htm",
+      "quote": "8:30 a.m. (ET) July 13, 2022"
+    }
+  ],
+  "ukraine-invasion": [
+    {
+      "claim": "RTS -39% on 24 Feb 2022, first day of the invasion",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "quote": "The Russian stock market crashed, falling 39%, as measured by the RTS Index, on 24 February, the first day of the invasion"
+    },
+    {
+      "claim": "Brent +8% to $105.79 session high",
+      "url": "https://www.cnbc.com/2022/02/24/oil-prices-jump-as-russia-launches-attack-on-ukraine.html",
+      "quote": "Brent crude futures rose more than 8% at one point to hit a session high of $105.79 per barrel, the highest level since August 2014."
+    },
+    {
+      "claim": "WTI +9% to $100.54",
+      "url": "https://www.cnbc.com/2022/02/24/oil-prices-jump-as-russia-launches-attack-on-ukraine.html",
+      "quote": "U.S. West Texas Intermediate crude futures, meanwhile, climbed over 9% to trade as high as $100.54"
+    },
+    {
+      "claim": "Gold +3.17% to $1,968.01",
+      "url": "https://www.cnbc.com/2022/02/24/russia-invades-ukraine-gold-jumps-to-highest-in-more-than-a-year.html",
+      "quote": "the precious metal was trading at $1,968.01 per ounce, up 3.17% and the highest since late 2020"
+    }
+  ],
+  "russia-sanctions": [
+    {
+      "claim": "Commitment to remove selected Russian banks from SWIFT",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/02/26/joint-statement-on-further-restrictive-economic-measures/",
+      "quote": "we commit to ensuring that selected Russian banks are removed from the SWIFT messaging system"
+    },
+    {
+      "claim": "Restrictions on Russian central bank reserves",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/02/26/joint-statement-on-further-restrictive-economic-measures/",
+      "quote": "prevent the Russian Central Bank from deploying its international reserves in ways that undermine the impact of our sanctions"
+    },
+    {
+      "claim": "SWIFT exclusion agreed 26 Feb 2022",
+      "url": "https://en.wikipedia.org/wiki/SWIFT_ban_against_Russian_banks",
+      "quote": "On 26 February 2022, Cyprus, Italy, Hungary and Germany confirmed that they would not block the Russian exclusion from SWIFT."
+    },
+    {
+      "claim": "Seven Russian banks removed from SWIFT",
+      "url": "https://en.wikipedia.org/wiki/SWIFT_ban_against_Russian_banks",
+      "quote": "The European Union, United Kingdom, Canada, and the United States finally agreed to remove seven Russian banks from the SWIFT messaging system"
+    },
+    {
+      "claim": "Ruble -30% to 119 per dollar by 28 Feb",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "quote": "The value of the ruble fell 30% against the U.S. dollar, to as low as ₽119/$1 as of 28 February."
+    },
+    {
+      "claim": "Ruble 142.46 per dollar on 7 Mar",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "quote": "On 7 March, the ruble was reported to be as low as ₽142.46/$1."
+    },
+    {
+      "claim": "Central bank raised rates to 20%",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "quote": "The Russian central bank raised interest rates to 20% as a result."
+    }
+  ],
+  "oil-spike-2022": [
+    {
+      "claim": "Date 7 Mar 2022 and highest since 2008",
+      "url": "https://marinelink.com/amp/news/brent-crude-soars-a-barrel-us-europe-mull-494800",
+      "quote": "March 7, 2022 Oil prices spiked to their highest levels since 2008 on Monday"
+    },
+    {
+      "claim": "Driver: possible Russian oil import ban",
+      "url": "https://marinelink.com/amp/news/brent-crude-soars-a-barrel-us-europe-mull-494800",
+      "quote": "as the United States and European allies weighed a Russian oil import ban"
+    },
+    {
+      "claim": "Brent $139.13 and WTI $130.50 intraday",
+      "url": "https://marinelink.com/amp/news/brent-crude-soars-a-barrel-us-europe-mull-494800",
+      "quote": "In the first few minutes of trade Brent crude reached $139.13 and U.S. West Texas Intermediate (WTI) hit $130.50, both benchmarks striking their highest levels since July 2008"
+    },
+    {
+      "claim": "European gas record $3,700/1,000 m3 on 7 Mar",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "quote": "natural gas prices in Europe reaching an all-time high of $3,700 per thousand cubic meters on 7 March at ICE Futures"
+    }
+  ],
+  "fed-hikes-begin": [
+    {
+      "claim": "Target range raised to 1/4 to 1/2 percent",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm",
+      "quote": "the Committee decided to raise the target range for the federal funds rate to 1/4 to 1/2 percent"
+    },
+    {
+      "claim": "Date 16 Mar 2022",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm",
+      "quote": "Implementation Note issued March 16, 2022"
+    },
+    {
+      "claim": "Statement cites the invasion as an upside inflation risk",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm",
+      "quote": "in the near term the invasion and related events are likely to create additional upward pressure on inflation"
+    },
+    {
+      "claim": "75bp hike on 15 Jun 2022, largest since 1994",
+      "url": "https://www.cnbc.com/2022/06/15/fed-hikes-its-benchmark-interest-rate-by-three-quarters-of-a-point-the-biggest-increase-since-1994.html",
+      "quote": "The Federal Reserve raised its benchmark interest rates three-quarters of a percentage point in its most aggressive hike since 1994."
+    },
+    {
+      "claim": "New range 1.5%-1.75%",
+      "url": "https://www.cnbc.com/2022/06/15/fed-hikes-its-benchmark-interest-rate-by-three-quarters-of-a-point-the-biggest-increase-since-1994.html",
+      "quote": "took the level of its benchmark funds rate to a range of 1.5%-1.75%"
+    },
+    {
+      "claim": "S&P 500 -3.88%, more than 21% below January record",
+      "url": "https://www.cnbc.com/2022/06/12/stock-market-news-open-to-close.html",
+      "quote": "The S&P 500 fell 3.88% to 3,749.63, marking its lowest level since March 2021 and bringing its losses from its January record to more than 21%."
+    },
+    {
+      "claim": "Nasdaq -4.68%",
+      "url": "https://www.cnbc.com/2022/06/12/stock-market-news-open-to-close.html",
+      "quote": "The Nasdaq Composite tumbled 4.68% to close at 10,809.23"
+    },
+    {
+      "claim": "10-year yield up more than 20bp to top 3.3%",
+      "url": "https://www.cnbc.com/2022/06/12/stock-market-news-open-to-close.html",
+      "quote": "The 10-year Treasury rose more than 20 basis points higher to top 3.3%"
+    },
+    {
+      "claim": "Markets priced a possible 75bp hike",
+      "url": "https://www.cnbc.com/2022/06/12/stock-market-news-open-to-close.html",
+      "quote": "the Fed would consider raising rates by 0.75% on Wednesday"
+    }
+  ],
+  "terra-luna": [
+    {
+      "claim": "UST lost peg from 9 May 2022",
+      "url": "https://en.wikipedia.org/wiki/Terra_(blockchain)",
+      "quote": "Beginning on 9 May 2022, the tokens made headlines after UST began to break its peg"
+    },
+    {
+      "claim": "UST fell to 10 cents",
+      "url": "https://en.wikipedia.org/wiki/Terra_(blockchain)",
+      "quote": "Over the next week, the price of UST plunged to 10 cents"
+    },
+    {
+      "claim": "LUNA to near zero from $119.51 high",
+      "url": "https://en.wikipedia.org/wiki/Terra_(blockchain)",
+      "quote": "LUNA fell to \"virtually zero\", down from an all-time high of $119.51."
+    },
+    {
+      "claim": "Almost $45B wiped out in a week",
+      "url": "https://en.wikipedia.org/wiki/Terra_(blockchain)",
+      "quote": "The collapse wiped out almost $45 billion of market capitalization in one week."
+    },
+    {
+      "claim": "Bitcoin -29% in 7 days, below $26,000",
+      "url": "https://www.cnbc.com/2022/05/12/cryptocurrency-luna-now-almost-worthless-after-ust-falls-below-peg.html",
+      "quote": "Bitcoin has plunged more than 29% in the last seven days and on Thursday dropped below $26,000 at one point to trade at its lowest level since late Dec. 2020."
+    },
+    {
+      "claim": "More than $200B erased from crypto in a day on 12 May 2022",
+      "url": "https://www.cnbc.com/2022/05/12/bitcoin-btc-price-falls-below-27000-as-crypto-sell-off-intensifies.html",
+      "quote": "amid a broader sell-off in cryptocurrencies that erased more than $200 billion from the entire market in a single day"
+    },
+    {
+      "claim": "Date of the crypto sell-off article",
+      "url": "https://www.cnbc.com/2022/05/12/bitcoin-btc-price-falls-below-27000-as-crypto-sell-off-intensifies.html",
+      "quote": "Published Thu, May 12 2022"
+    }
+  ],
+  "ecb-first-hike": [
+    {
+      "claim": "50bp hike and TPI approval",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.mp220721~53e5bdd317.en.html",
+      "quote": "The Governing Council decided to raise the three key ECB interest rates by 50 basis points and approved the Transmission Protection Instrument (TPI)."
+    },
+    {
+      "claim": "New rates 0.50%, 0.75% and 0.00%",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.mp220721~53e5bdd317.en.html",
+      "quote": "will be increased to 0.50%, 0.75% and 0.00% respectively"
+    },
+    {
+      "claim": "First hike in 11 years",
+      "url": "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html",
+      "quote": "The European Central Bank on Thursday increased interest rates for the first time in 11 years in an attempt to cool rampant inflation in the euro zone."
+    },
+    {
+      "claim": "Market had expected 25bp",
+      "url": "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html",
+      "quote": "Traders had expected a smaller hike of 25 basis points."
+    },
+    {
+      "claim": "Euro session high $1.0257",
+      "url": "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html",
+      "quote": "The euro rose to a session high on news of the more aggressive rate hike, to trade at $1.0257."
+    },
+    {
+      "claim": "Italian 10-year yield jumped",
+      "url": "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html",
+      "quote": "The yield on the 10-year Italian bond also jumped on the news"
+    },
+    {
+      "claim": "Date 21 Jul 2022",
+      "url": "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html",
+      "quote": "Published Thu, Jul 21 2022"
+    }
+  ],
+  "chips-act": [
+    {
+      "claim": "$52.7 billion for semiconductors",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/08/09/fact-sheet-chips-and-science-act-will-lower-costs-create-jobs-strengthen-supply-chains-and-counter-china/",
+      "quote": "The CHIPS and Science Act provides $52.7 billion for American semiconductor research, development, manufacturing, and workforce development."
+    },
+    {
+      "claim": "25% investment tax credit",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/08/09/fact-sheet-chips-and-science-act-will-lower-costs-create-jobs-strengthen-supply-chains-and-counter-china/",
+      "quote": "It also provides a 25 percent investment tax credit for capital expenses for manufacturing of semiconductors and related equipment."
+    },
+    {
+      "claim": "Micron $40B investment",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/08/09/fact-sheet-chips-and-science-act-will-lower-costs-create-jobs-strengthen-supply-chains-and-counter-china/",
+      "quote": "Micron is announcing a $40 billion investment in memory chip manufacturing"
+    },
+    {
+      "claim": "Signed 9 Aug 2022",
+      "url": "https://en.wikipedia.org/wiki/CHIPS_and_Science_Act",
+      "quote": "signed into law by President Joe Biden on August 9, 2022. The act authorizes roughly $280 billion in new funding"
+    }
+  ],
+  "eu-gas-shock": [
+    {
+      "claim": "TTF record near EUR 340/MWh on 26 Aug 2022",
+      "url": "https://www.gisreportsonline.com/r/gas/",
+      "quote": "reached an all-time high of nearly 340 euros per megawatt-hour (MWh) on August 26, 2022"
+    },
+    {
+      "claim": "Up more than 320% since the start of the year",
+      "url": "https://www.gisreportsonline.com/r/gas/",
+      "quote": "an increase of more than 320 percent compared to the beginning of the year"
+    },
+    {
+      "claim": "Nord Stream 1 cut to 40% in June 2022, gas +30%",
+      "url": "https://en.wikipedia.org/wiki/2022_Russia%E2%80%93European_Union_gas_dispute",
+      "quote": "On 16 June 2022, European benchmark natural gas prices increased by around 30% after Gazprom reduced Nord Stream 1's gas supply to Germany to 40% of the pipeline's capacity."
+    },
+    {
+      "claim": "Sanctions held up the Nord Stream turbine",
+      "url": "https://en.wikipedia.org/wiki/2022_Russia%E2%80%93European_Union_gas_dispute",
+      "quote": "Due to sanctions, Canada could not deliver the turbine back to Russia after repair works"
+    },
+    {
+      "claim": "UK price cap to £3,549 from 1 Oct 2022, announced 26 Aug 2022",
+      "url": "https://www.ofgem.gov.uk/press-release/ofgem-updates-price-cap-level-and-tightens-rules-suppliers",
+      "quote": "Today (26 August 2022) Ofgem has announced the energy price cap will increase to £3,549 per year for dual fuel for an average household from 1 October 2022."
+    },
+    {
+      "claim": "Russian supply cuts drove record wholesale prices",
+      "url": "https://www.ofgem.gov.uk/press-release/ofgem-updates-price-cap-level-and-tightens-rules-suppliers",
+      "quote": "have been driven still higher to record levels by Russia slowly switching off gas supplies to Europe"
+    }
+  ],
+  "nord-stream": [
+    {
+      "claim": "Explosions on 26 September 2022 hit 3 of 4 Nord Stream pipes",
+      "url": "https://en.wikipedia.org/wiki/Nord_Stream_pipelines_sabotage",
+      "quote": "On 26 September 2022, a series of underwater explosions and consequent gas leaks occurred on 3 of 4 Nord Stream pipes, rendering them inoperable."
+    },
+    {
+      "claim": "European gas prices +12% on 27 September 2022",
+      "url": "https://en.wikipedia.org/wiki/Nord_Stream_pipelines_sabotage",
+      "quote": "On 27 September 2022, European gas prices jumped 12 percent after news spread of the damaged pipelines"
+    },
+    {
+      "claim": "Pipelines were not delivering gas at the time",
+      "url": "https://en.wikipedia.org/wiki/Nord_Stream_pipelines_sabotage",
+      "quote": "despite the fact that Nord Stream 1 had not delivered gas since August and Nord Stream 2 had never gone into service."
+    }
+  ],
+  "uk-mini-budget": [
+    {
+      "claim": "Growth Plan delivered 23 September 2022",
+      "url": "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget",
+      "quote": "On 23 September 2022, the Chancellor of the Exchequer, Kwasi Kwarteng, delivered a Ministerial Statement entitled \"The Growth Plan\" to the House of Commons."
+    },
+    {
+      "claim": "Sterling lost 3% against the dollar on 23 September",
+      "url": "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget",
+      "quote": "the pound sterling fell sharply in response to the government's planned spending increases and tax cuts, losing 3% against the US dollar and dropping below $1.09."
+    },
+    {
+      "claim": "Record low of $1.0327 on 26 September",
+      "url": "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget",
+      "quote": "On 26 September, sterling reached an all-time low against the dollar, dropping to $1.0327, its lowest since Decimal Day in 1971."
+    },
+    {
+      "claim": "Energy bills support was among the costed measures",
+      "url": "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget",
+      "quote": "Energy bills support 2022–23 60,000"
+    }
+  ],
+  "boe-gilt-intervention": [
+    {
+      "claim": "Purchases of long-dated gilts from 28 September",
+      "url": "https://www.bankofengland.co.uk/news/2022/september/bank-of-england-announces-gilt-market-operation",
+      "quote": "the Bank will carry out temporary purchases of long-dated UK government bonds from 28 September."
+    },
+    {
+      "claim": "30-year gilt yields +130bp in three days",
+      "url": "https://www.bankofengland.co.uk/quarterly-bulletin/2023/2023/financial-stability-buy-sell-tools-a-gilt-market-case-study",
+      "quote": "By 28 September, the yield on 30-year gilts had risen by 130 basis points in just three days of trading"
+    },
+    {
+      "claim": "£19.3 billion bought, 28 September to 14 October 2022",
+      "url": "https://www.bankofengland.co.uk/quarterly-bulletin/2023/2023/financial-stability-buy-sell-tools-a-gilt-market-case-study",
+      "quote": "In total, the Bank bought £19.3 billion of gilts between 28 September and 14 October 2022"
+    },
+    {
+      "claim": "Pension funds were at risk of collapse",
+      "url": "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget",
+      "quote": "doing so because certain types of pension funds were at risk of collapse"
+    }
+  ],
+  "dollar-20yr-high": [
+    {
+      "claim": "DXY hit a two-decade high of 114.78",
+      "url": "https://www.theglobeandmail.com/investing/markets/inside-the-market/article-before-the-bell-what-every-canadian-investor-needs-to-know-today-905/",
+      "quote": "the U.S. dollar index rose around 0.5 per cent to hit a new two-decade high of 114.78, according to figures from Reuters."
+    },
+    {
+      "claim": "Report published 28 September 2022",
+      "url": "https://www.theglobeandmail.com/investing/markets/inside-the-market/article-before-the-bell-what-every-canadian-investor-needs-to-know-today-905/",
+      "quote": "What every Canadian investor needs to know today Terry Weber Published September 28, 2022"
+    },
+    {
+      "claim": "Already at a 20-and-a-half-year high of 114.53 on 26 September",
+      "url": "https://www.ofx.com/en-us/forex-news/daily-and-weekly-market-news/2022/09/26/the-us-dollar-index-hit-a-new-20-and-a-half-year-high-trading-at-114-53/",
+      "quote": "The US dollar index hit a new 20-and-a-half year high, trading at 114.53 Monday 26 September, 2022"
+    }
+  ],
+  "us-chip-export-controls": [
+    {
+      "claim": "Controls effective 7 October 2022",
+      "url": "https://en.wikipedia.org/wiki/United_States_New_Export_Controls_on_Advanced_Computing_and_Semiconductors_to_China",
+      "quote": "Effective October 7, 2022, the United States implemented new export controls targeting the People's Republic of China's (PRC) ability to access and develop advanced computing and semiconductor manufacturing items."
+    },
+    {
+      "claim": "Nasdaq −1.04%, lowest close since July 2020, led by chip stocks",
+      "url": "https://www.cnbc.com/2022/10/09/stock-futures-are-down-as-market-exits-rollercoaster-week.html",
+      "quote": "The Nasdaq Composite closed 1.04% lower at 10,542.10, hitting its lowest close since July 2020, weighed down by a slump in semiconductor stocks such as Nvidia and AMD."
+    },
+    {
+      "claim": "October 2023 update tightened the 2022 controls",
+      "url": "https://www.cnn.com/2023/10/18/tech/us-china-chip-export-curbs-intl-hnk/index.html",
+      "quote": "On Tuesday, the US Commerce Department unveiled new rules that further tighten a sweeping set of export controls first introduced in October 2022."
+    },
+    {
+      "claim": "Nvidia −4.7%, Intel −1.4% after the 2023 update",
+      "url": "https://www.cnn.com/2023/10/18/tech/us-china-chip-export-curbs-intl-hnk/index.html",
+      "quote": "Nvidia’s (NVDA) stock closed down 4.7%, while Intel (INTC) slipped 1.4%."
+    }
+  ],
+  "ftx-collapse": [
+    {
+      "claim": "Bankruptcy filing on 11 November",
+      "url": "https://en.wikipedia.org/wiki/Bankruptcy_of_FTX",
+      "quote": "On 11 November, FTX, Alameda Research, and over 100 affiliated entities filed for bankruptcy."
+    },
+    {
+      "claim": "Bitcoin −12% to just under $16,000",
+      "url": "https://www.cnbc.com/2022/11/09/cryptocurrencies-pressured-as-investors-digest-ftx-fallout-solana-loses-another-20percent.html",
+      "quote": "Bitcoin fell 12% before 4:30 p.m. ET to just under $16,000, hitting a low not seen since November 2020, according to Coin Metrics."
+    },
+    {
+      "claim": "Ether −14%",
+      "url": "https://www.cnbc.com/2022/11/09/cryptocurrencies-pressured-as-investors-digest-ftx-fallout-solana-loses-another-20percent.html",
+      "quote": "Meanwhile, ether tumbled 14%, to $1,128.87."
+    },
+    {
+      "claim": "Silvergate wound down after FTX losses",
+      "url": "https://en.wikipedia.org/wiki/Bankruptcy_of_FTX",
+      "quote": "Silvergate Bank covered colossal losses on the bankruptcy of FTX. On 9 March 2023 Silvergate Bank announced it would wind down its operations"
+    }
+  ],
+  "chatgpt": [
+    {
+      "claim": "Released 30 November 2022",
+      "url": "https://en.wikipedia.org/wiki/ChatGPT",
+      "quote": "ChatGPT Developer OpenAI Release November 30, 2022"
+    },
+    {
+      "claim": "100 million monthly users two months after release",
+      "url": "https://en.wikipedia.org/wiki/ChatGPT",
+      "quote": "ChatGPT was quickly adopted, reaching 100 million monthly active users two months after its release"
+    },
+    {
+      "claim": "Microsoft multiyear, multibillion-dollar investment (23 Jan 2023)",
+      "url": "https://blogs.microsoft.com/blog/2023/01/23/microsoftandopenaiextendpartnership/",
+      "quote": "Today, we are announcing the third phase of our long-term partnership with OpenAI through a multiyear, multibillion dollar investment"
+    },
+    {
+      "claim": "ChatGPT made AI Wall Street's buzzword",
+      "url": "https://en.wikipedia.org/wiki/ChatGPT",
+      "quote": "Reuters attributed this surge to ChatGPT's role in turning AI into Wall Street's buzzword."
+    }
+  ],
+  "boj-ycc-tweak": [
+    {
+      "claim": "Statement dated 20 December 2022",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2022/k221220a.pdf",
+      "quote": "December 20, 2022 Bank of Japan Statement on Monetary Policy"
+    },
+    {
+      "claim": "Band widened from ±0.25 to ±0.5 percentage points",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2022/k221220a.pdf",
+      "quote": "from between around plus and minus 0.25 percentage points to between around plus and minus 0.5 percentage points."
+    },
+    {
+      "claim": "Dollar −3.78% to 131.71 yen",
+      "url": "https://www.cnbc.com/2022/12/20/yen-soars-to-4-month-peak-after-surprise-boj-policy-tweak.html",
+      "quote": "The dollar was last down 3.78% against the Japanese currency at 131.71 yen."
+    },
+    {
+      "claim": "10-year JGB yield rose to 0.46% from the 0.25% cap",
+      "url": "https://www.cnbc.com/2022/12/20/yen-soars-to-4-month-peak-after-surprise-boj-policy-tweak.html",
+      "quote": "The 10-year JGB yield jumped to 0.46% from the previous cap at 0.25%."
+    },
+    {
+      "claim": "US 10-year Treasury yield rose to 3.711%, the month's high",
+      "url": "https://www.cnbc.com/2022/12/20/yen-soars-to-4-month-peak-after-surprise-boj-policy-tweak.html",
+      "quote": "It pulled equivalent U.S. Treasury yields higher as well, with the 10-year soaring to the highest this month at 3.711%."
+    }
+  ],
+  "svb-failure": [
+    {
+      "claim": "Failed on 10 March 2023; largest since 2008",
+      "url": "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank",
+      "quote": "On March 10, 2023, Silicon Valley Bank (SVB) failed after a bank run, marking the third-largest bank failure in United States history and the largest since the 2008 financial crisis."
+    },
+    {
+      "claim": "$42 billion withdrawn",
+      "url": "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank",
+      "quote": "caused a bank run as customers withdrew funds totaling $42 billion by the following day."
+    },
+    {
+      "claim": "Fed created the Bank Term Funding Program (12 March 2023)",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20230312a.htm",
+      "quote": "The additional funding will be made available through the creation of a new Bank Term Funding Program (BTFP), offering loans of up to one year in length"
+    },
+    {
+      "claim": "HSBC UK bought SVB UK for £1 on 13 March 2023",
+      "url": "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank",
+      "quote": "HSBC UK announced on March 13, 2023, that it had agreed to acquire Silicon Valley Bank UK for £1"
+    },
+    {
+      "claim": "KBW Bank Index fell by a quarter for the month",
+      "url": "https://www.aeaweb.org/conference/2025/program/paper/dTEHy2GH",
+      "quote": "the KBW Bank Index fell by a quarter for the month, even as the S&P 500 rose."
+    },
+    {
+      "claim": "Bond values fell as the Fed raised rates",
+      "url": "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank",
+      "quote": "The market value of these bonds decreased significantly through 2022 and into 2023 as the Federal Reserve raised interest rates to curb an inflation surge"
+    }
+  ],
+  "usdc-depeg": [
+    {
+      "claim": "Lost its peg on 11 March 2023 over $3.3 billion at SVB",
+      "url": "https://en.wikipedia.org/wiki/USDC_(cryptocurrency)",
+      "quote": "On March 11, 2023, USDC temporarily lost its peg to the US dollar after Circle revealed that $3.3 billion dollars, about 8% of its reserves, were jeopardized"
+    },
+    {
+      "claim": "Fell below 87 cents",
+      "url": "https://www.cnbc.com/2023/03/11/stablecoin-usdc-breaks-dollar-peg-after-firm-reveals-it-has-3point3-billion-in-svb-exposure.html",
+      "quote": "USDC is designed to trade at $1, but it fell below 87 cents on Saturday, according to data from CoinDesk."
+    },
+    {
+      "claim": "Regained the peg four days later",
+      "url": "https://en.wikipedia.org/wiki/USDC_(cryptocurrency)",
+      "quote": "USDC regained its dollar peg four days later."
+    }
+  ],
+  "credit-suisse-ubs": [
+    {
+      "claim": "UBS agreed to buy Credit Suisse for CHF 3 billion on 19 March 2023",
+      "url": "https://en.wikipedia.org/wiki/Acquisition_of_Credit_Suisse_by_UBS",
+      "quote": "On 19 March 2023, Swiss bank UBS Group AG agreed to buy Credit Suisse for CHF 3 billion (US$3.2 billion) in an all-stock deal"
+    },
+    {
+      "claim": "AT1 write-down of about CHF 16 billion",
+      "url": "https://www.finma.ch/en/news/2023/03/20230319-mm-cs-ubs/",
+      "quote": "trigger a complete write-down of the nominal value of all AT1 debt of Credit Suisse in the amount of around CHF 16 billion"
+    },
+    {
+      "claim": "Shares closed −24% after the Saudi backer ruled out more support",
+      "url": "https://www.cnbc.com/2023/03/15/credit-suisse-shares-slide-after-saudi-backer-rules-out-further-assistance.html",
+      "quote": "Swiss-listed Credit Suisse shares ended the session down 24%, paring some of its earlier losses after dropping more than 30% at one point."
+    },
+    {
+      "claim": "US bank turmoil spread fear to Credit Suisse",
+      "url": "https://en.wikipedia.org/wiki/Acquisition_of_Credit_Suisse_by_UBS",
+      "quote": "The banking crisis in the United States had caused fear among global investors and led to panic over other possibly troubled banks."
+    }
+  ],
+  "first-republic": [
+    {
+      "claim": "Closed on 1 May 2023 and deposits assumed by JPMorgan",
+      "url": "https://www.fdic.gov/news/press-releases/2023/pr23034.html",
+      "quote": "First Republic Bank, San Francisco, California, was closed today by the California Department of Financial Protection and Innovation"
+    },
+    {
+      "claim": "Release dated 1 May 2023",
+      "url": "https://www.fdic.gov/news/press-releases/2023/pr23034.html",
+      "quote": "Assumes All the Deposits of First Republic Bank, San Francisco, California May 1, 2023"
+    },
+    {
+      "claim": "Deposit Insurance Fund cost about $13 billion",
+      "url": "https://www.fdic.gov/news/press-releases/2023/pr23034.html",
+      "quote": "The FDIC estimates that the cost to the Deposit Insurance Fund will be about $13 billion."
+    },
+    {
+      "claim": "Shares −49% on the day, more than −90% year to date",
+      "url": "https://www.cnbc.com/2023/04/25/first-republic-falls-more-than-40percent-to-record-low-after-reporting-massive-deposit-drop.html",
+      "quote": "First Republic's stock fell more than 49% on Tuesday, extending its year-to-date losses beyond 90%."
+    },
+    {
+      "claim": "Lost about 40% of deposits in Q1",
+      "url": "https://www.cnbc.com/2023/04/25/first-republic-falls-more-than-40percent-to-record-low-after-reporting-massive-deposit-drop.html",
+      "quote": "after losing about 40% of its deposits during the first quarter."
+    }
+  ],
+  "nvidia-ai-guidance": [
+    {
+      "claim": "Results and outlook released 24 May 2023",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2024",
+      "quote": "NVIDIA Announces Financial Results for First Quarter Fiscal 2024 May 24, 2023 Quarterly revenue of $7.19 billion"
+    },
+    {
+      "claim": "Q2 FY24 revenue outlook $11.00 billion",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2024",
+      "quote": "Revenue is expected to be $11.00 billion, plus or minus 2%."
+    },
+    {
+      "claim": "Record data-centre revenue of $4.28 billion",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2024",
+      "quote": "Record Data Center revenue of $4.28 billion Second quarter fiscal 2024 revenue outlook of $11.00 billion"
+    },
+    {
+      "claim": "Shares closed up 24%",
+      "url": "https://www.cnbc.com/2023/05/25/nvidia-on-track-for-record-high-driven-by-ai-chip-demand.html",
+      "quote": "Shares of Nvidia are closed up 24% on Thursday on the back of an outsize earnings report that beat consensus estimates"
+    },
+    {
+      "claim": "Briefly hit $1 trillion market cap on 30 May 2023",
+      "url": "https://www.cnbc.com/2023/05/30/nvidia-on-track-to-hit-1-trillion-market-cap-when-market-opens.html",
+      "quote": "Nvidia hit a $1 trillion market cap at the start of trading Tuesday, before slipping to $990 billion by close of trading."
+    }
+  ],
+  "us-fitch-downgrade": [
+    {
+      "claim": "Yellen statement dated 1 August 2023 on Fitch decision",
+      "url": "https://home.treasury.gov/news/press-releases/jy1665",
+      "quote": "Janet L. Yellen August 1, 2023 WASHINGTON - Secretary of the Treasury Janet L. Yellen issued the following statement on the recent decision by Fitch Ratings."
+    },
+    {
+      "claim": "Yellen called it arbitrary",
+      "url": "https://home.treasury.gov/news/press-releases/jy1665",
+      "quote": "The change by Fitch Ratings announced today is arbitrary and based on outdated data."
+    },
+    {
+      "claim": "AAA to AA+, citing fiscal deterioration",
+      "url": "https://www.cnbc.com/2023/08/02/asia-markets-poised-to-fall-as-fitch-lowered-us-credit-ratings.html",
+      "quote": "Fitch cut the U.S. credit rating from AAA to AA+, citing \"expected fiscal deterioration over the next three years.\""
+    },
+    {
+      "claim": "Nasdaq −2.17%, S&P 500 −1.38%",
+      "url": "https://www.cnbc.com/2023/08/01/stock-market-today-live-updates.html",
+      "quote": "The tech-heavy index shed 2.17% to end at 13,973.45, while the S&P 500 pulled back 1.38% to close at 4,513.39."
+    },
+    {
+      "claim": "Nikkei 225 −2.3%",
+      "url": "https://www.cnbc.com/2023/08/02/asia-markets-poised-to-fall-as-fitch-lowered-us-credit-ratings.html",
+      "quote": "Japan's Nikkei 225 led losses in the region, falling 2.3% and closed at 32,707.69"
+    }
+  ],
+  "israel-hamas-war": [
+    {
+      "claim": "War began 7 October 2023 with a Hamas attack on Israel",
+      "url": "https://en.wikipedia.org/wiki/Gaza_war",
+      "quote": "The war began on 7 October 2023, when Palestinian militant group Hamas led an attack on Israel"
+    },
+    {
+      "claim": "1,195 killed and 251 taken hostage",
+      "url": "https://en.wikipedia.org/wiki/Gaza_war",
+      "quote": "in which 1,195 Israelis and foreign nationals were killed and 251 were taken hostage."
+    },
+    {
+      "claim": "Brent +4.2% to $88.15; WTI +4.3%",
+      "url": "https://www.cnbc.com/2023/10/09/brent-wti-prices-jump-after-hamas-attack-on-israel.html",
+      "quote": "Global benchmark Brent settled 4.2% higher at $88.15 a barrel, while the U.S. West Texas Intermediate rose 4.3% to $86.38 per barrel."
+    }
+  ],
+  "red-sea-attacks": [
+    {
+      "claim": "Attacks began 19 November 2023",
+      "url": "https://en.wikipedia.org/wiki/Houthi_attacks_on_commercial_vessels",
+      "quote": "Houthi forces began attacking shipping vessels affiliated with Israel passing through the Red Sea on 19 November 2023."
+    },
+    {
+      "claim": "Shipping lines rerouted around the Cape of Good Hope",
+      "url": "https://en.wikipedia.org/wiki/Houthi_attacks_on_commercial_vessels",
+      "quote": "instead moved to position their vessels around the Cape of Good Hope, off the Cape Peninsula, South Africa."
+    },
+    {
+      "claim": "Shanghai–Europe spot rates +256% (UNCTAD)",
+      "url": "https://en.wikipedia.org/wiki/Red_Sea_crisis",
+      "quote": "A UNCTAD analysis found that, from December 2023 to February 2024, spot container rates from Shanghai to Europe rose by 256% on average"
+    },
+    {
+      "claim": "SE Asia–US East Coast +195% from 1 December",
+      "url": "https://www.freightwaves.com/news/red-sea-driven-surge-in-container-shipping-rates-loses-momentum",
+      "quote": "Platts put Southeast Asia-U.S. East Coast rates on Thursday at $6,500 per FEU, up 195% from Dec. 1"
+    },
+    {
+      "claim": "Tesla two-week Grünheide production pause",
+      "url": "https://en.wikipedia.org/wiki/Red_Sea_crisis",
+      "quote": "On 12 January 2024, Tesla said it would suspend most production from its Grünheide factory, its only factory in Europe, for two weeks"
+    }
+  ],
+  "boj-ends-negative": [
+    {
+      "claim": "BoJ framework change dated 19 March 2024",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240319a.pdf",
+      "quote": "March 19, 2024 Bank of Japan Changes in the Monetary Policy Framework"
+    },
+    {
+      "claim": "Overnight call rate guided to around 0 to 0.1 percent",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240319a.pdf",
+      "quote": "The Bank will encourage the uncollateralized overnight call rate to remain at around 0 to 0.1 percent."
+    },
+    {
+      "claim": "From −0.1% to 0–0.1%, first hike in 17 years",
+      "url": "https://www.aljazeera.com/economy/2024/3/19/bank-of-japan-scraps-negative-interest-rate-in-first-hike-in-17-years",
+      "quote": "The Bank of Japan on Tuesday raised the policy short-term rate from -0.1 percent to between zero and 0.1 percent – the first such hike in 17 years."
+    },
+    {
+      "claim": "Yen −1.19% to 150.91 per dollar",
+      "url": "https://www.cnbc.com/2024/03/19/yen-holds-nerve-as-boj-decision-looms-dollar-resurgent.html",
+      "quote": "The yen was last down 1.19% at 150.91 to the dollar."
+    },
+    {
+      "claim": "Move was priced in, so the yen fell",
+      "url": "https://www.cnbc.com/2024/03/19/yen-holds-nerve-as-boj-decision-looms-dollar-resurgent.html",
+      "quote": "As most investors had already priced in a change, the yen dropped more than 1%"
+    }
+  ],
+  "yen-carry-unwind": [
+    {
+      "claim": "BoJ decision dated 31 July 2024",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240731a.pdf",
+      "quote": "July 31, 2024 Bank of Japan Change in the Guideline for Money Market Operations"
+    },
+    {
+      "claim": "Policy rate guided to around 0.25 percent",
+      "url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240731a.pdf",
+      "quote": "The Bank will encourage the uncollateralized overnight call rate to remain at around 0.25 percent."
+    },
+    {
+      "claim": "Nikkei −12.4%, worst day since 1987",
+      "url": "https://www.cnbc.com/2024/08/05/asia-markets.html",
+      "quote": "The 12.4% loss on the Nikkei — which saw it close at 31,458.42 — was the worst day for the index since the \"Black Monday\" of 1987."
+    },
+    {
+      "claim": "Topix −12.23%",
+      "url": "https://www.cnbc.com/2024/08/05/asia-markets.html",
+      "quote": "The broad-based Topix also saw a rout as it tumbled 12.23% and closed at 2,227.15."
+    },
+    {
+      "claim": "Yen at 142.09, strongest since January",
+      "url": "https://www.cnbc.com/2024/08/05/asia-markets.html",
+      "quote": "the yen also strengthened to its strongest level against the dollar since January, and was last trading at 142.09."
+    },
+    {
+      "claim": "VIX topped 65 on 5 August",
+      "url": "https://www.cnbc.com/2024/08/21/volatility-spike-was-a-huge-overreaction-but-more-could-be-ahead-strategist-says.html",
+      "quote": "The VIX, a measure of expected market volatility, topped 65 on August 5, up from around 23 the previous trading day."
+    },
+    {
+      "claim": "Weak US jobs report and BoJ tone drove the carry-trade unwind",
+      "url": "https://www.cnbc.com/2024/08/21/volatility-spike-was-a-huge-overreaction-but-more-could-be-ahead-strategist-says.html",
+      "quote": "a more hawkish tone from the Bank of Japan led to an unwinding of the yen \"carry trade\" and saw the Nikkei fall over 12%."
+    },
+    {
+      "claim": "Weak US jobs report at the start of August",
+      "url": "https://www.cnbc.com/2024/08/21/volatility-spike-was-a-huge-overreaction-but-more-could-be-ahead-strategist-says.html",
+      "quote": "At the start of the month, a weaker-than-expected jobs report in the U.S. raised concerns about a potential recession"
+    }
+  ],
+  "fed-first-cut": [
+    {
+      "claim": "Cut of 1/2 point to 4-3/4 to 5 percent",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+      "quote": "the Committee decided to lower the target range for the federal funds rate by 1/2 percentage point to 4-3/4 to 5 percent."
+    },
+    {
+      "claim": "Statement dated 18 September 2024",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+      "quote": "September 18, 2024 Federal Reserve issues FOMC statement"
+    },
+    {
+      "claim": "First cut since the early days of the pandemic",
+      "url": "https://www.cnbc.com/2024/09/18/fed-cuts-rates-september-2024-.html",
+      "quote": "It was the first interest rate cut since the early days of the Covid pandemic."
+    },
+    {
+      "claim": "S&P 500 +1.7%, first close above 5,700",
+      "url": "https://www.cnbc.com/2024/09/18/stock-market-today-live-updates.html",
+      "quote": "The S&P 500 rose 1.7% to close at 5,713.64, topping 5,700 for the first time."
+    },
+    {
+      "claim": "Dow +1.26%",
+      "url": "https://www.cnbc.com/2024/09/18/stock-market-today-live-updates.html",
+      "quote": "The 30-stock index advanced 522.09 points, or 1.26%, ending at 42,025.19"
+    },
+    {
+      "claim": "Nasdaq +2.51%",
+      "url": "https://www.cnbc.com/2024/09/18/stock-market-today-live-updates.html",
+      "quote": "The Nasdaq Composite surged 2.51% to end at 18,013.98."
+    }
+  ],
+  "china-stimulus-2024": [
+    {
+      "claim": "Announced 24 September 2024 by PBOC governor Pan Gongsheng",
+      "url": "https://www.cepweb.org/chinas-monetary-stimulus-aggregate-and-structural-implications/",
+      "quote": "On 24 September 2024, Pan Gongsheng (潘功胜), Governor of the People’s Bank of China (PBOC)"
+    },
+    {
+      "claim": "RRR −50bp and 7-day repo −0.2 points",
+      "url": "https://www.cnbc.com/2024/09/24/chinas-central-bank-chief-set-to-hold-press-conference-days-after-fed-rate-cut.html",
+      "quote": "by 50 basis points in the near term, he said. Pan also said the PBOC would cut the 7-day repo rate by 0.2 percentage points"
+    },
+    {
+      "claim": "Fed's cut gave China room to ease",
+      "url": "https://www.cnbc.com/2024/09/24/chinas-central-bank-chief-set-to-hold-press-conference-days-after-fed-rate-cut.html",
+      "quote": "scheduled after the U.S. Federal Reserve cut interest rates last week. That kicked off an easing cycle that gave China's central bank further room"
+    },
+    {
+      "claim": "CSI 300 +4.33%, best day since July 2020",
+      "url": "https://www.cnbc.com/2024/09/24/asia-markets.html",
+      "quote": "The index rose 4.33%, notching its best day since July 2020, to close at 3,351.9."
+    },
+    {
+      "claim": "Hang Seng up nearly 4%",
+      "url": "https://www.cnbc.com/2024/09/24/asia-markets.html",
+      "quote": "Hong Kong's Hang Seng index was up nearly 4% after the decision"
+    }
+  ],
+  "deepseek": [
+    {
+      "claim": "Date: 27 Jan 2025",
+      "url": "https://finance.yahoo.com/news/nvidia-stock-plummets-loses-record-589-billion-as-deepseek-prompts-questions-over-ai-spending-135105824.html",
+      "quote": "Laura Bratton January 27, 2025"
+    },
+    {
+      "claim": "NVDA fell 17%",
+      "url": "https://www.nbcnewyork.com/news/business/money-report/nvidia-sheds-almost-600-billion-in-market-cap-biggest-one-day-loss-in-u-s-history/6123481/",
+      "quote": "Nvidia shares plunged 17% on Monday, resulting in a market cap loss of close to $600 billion"
+    },
+    {
+      "claim": "Nasdaq fell 3.1%",
+      "url": "https://www.nbcnewyork.com/news/business/money-report/nvidia-sheds-almost-600-billion-in-market-cap-biggest-one-day-loss-in-u-s-history/6123481/",
+      "quote": "the stock's drop Monday led a 3.1% slide in the tech-heavy Nasdaq"
+    },
+    {
+      "claim": "$589 billion, a record",
+      "url": "https://finance.yahoo.com/news/nvidia-stock-plummets-loses-record-589-billion-as-deepseek-prompts-questions-over-ai-spending-135105824.html",
+      "quote": "Nvidia stock plummets, loses record $589 billion as DeepSeek prompts questions over AI spending"
+    }
+  ],
+  "us-tariffs-2025": [
+    {
+      "claim": "Date: 2 Apr 2025",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "Donald Trump announced Liberation Day would occur on April 2"
+    },
+    {
+      "claim": "S&P 500 −4.84% on 3 Apr",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "The S&P 500 lost 4.84% of its value on April 3."
+    },
+    {
+      "claim": "S&P 500 −5.97% and Dow −5.5% on 4 Apr",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "The Dow Jones fell 2,231 points or 5.5%. The S&P 500 lost 5.97%, the second straight day of losses."
+    },
+    {
+      "claim": "9 Apr pause: 90-day cut to 10% except China",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "The stock market surged significantly on April 9, immediately after Trump confirmed a 90-day decrease to 10% on all tariffs except those imposed on China."
+    },
+    {
+      "claim": "S&P 500 +9.52%, Nasdaq +12.16% on the pause",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "The S&P 500 rose 9.52% for its biggest one-day gain since 2008. The Dow Jones rose 7.87%, for its biggest gain since March 2020, and the Nasdaq rose 12.16%"
+    }
+  ],
+  "china-rare-earth-curbs": [
+    {
+      "claim": "Date: export restrictions from 4 Apr 2025",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "Subject to export restrictions from April 4, 2025."
+    },
+    {
+      "claim": "Seven rare earth elements covered",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "These earlier controls impact seven rare earth elements (REEs) and their derivative products"
+    },
+    {
+      "claim": "Same day: China's 34% retaliatory tariff",
+      "url": "https://en.wikipedia.org/wiki/2025_stock_market_crash",
+      "quote": "The following day, April 4, China imposed a 34% retaliatory tariff."
+    }
+  ],
+  "us-china-truce": [
+    {
+      "claim": "Date: 12 May 2025 agreement",
+      "url": "https://en.wikipedia.org/wiki/2025_China%E2%80%93United_States_trade_war",
+      "quote": "May 12: The United States and China reach an agreement to reduce tariffs in an effort to de-escalate trade tensions."
+    },
+    {
+      "claim": "24 points suspended for 90 days",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/05/joint-statement-on-u-s-china-economic-and-trade-meeting-in-geneva/",
+      "quote": "by suspending 24 percentage points of that rate for an initial period of 90 days, while retaining the remaining ad valorem rate of 10 percent"
+    },
+    {
+      "claim": "S&P 500 +3.3% (nearly)",
+      "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-jumps-1100-points-sp-500-and-nasdaq-surge-after-us-china-tariff-rollback-triggers-buying-spree-200036073.html",
+      "quote": "The S&P 500 (^GSPC) soared nearly 3.3% to its highest level since March 3."
+    },
+    {
+      "claim": "Dow +2.8%; Nasdaq +4.3%",
+      "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-jumps-1100-points-sp-500-and-nasdaq-surge-after-us-china-tariff-rollback-triggers-buying-spree-200036073.html",
+      "quote": "The Dow Jones Industrial Average (^DJI) gained 2.8%, or more than 1,100 points. The tech-heavy Nasdaq Composite (^IXIC) led gains, rocketing up 4.3%."
+    }
+  ],
+  "moodys-downgrade": [
+    {
+      "claim": "Date: 16 May 2025; Aaa to Aa1",
+      "url": "https://www.moodys.com/web/en/us/about-us/usrating.html",
+      "quote": "New York, May 16, 2025 -- Moody's Ratings (Moody's) has downgraded the Government of United States of America's (US) long-term issuer and senior unsecured ratings to Aa1 from Aaa"
+    },
+    {
+      "claim": "30-year yield high around 5.03%",
+      "url": "https://www.cnbc.com/2025/05/19/us-treasury-yields-moodys-downgrades-us-credit-rating.html",
+      "quote": "The 30-year Treasury yield hit a high around 5.03%, reaching levels not seen since November 2023."
+    },
+    {
+      "claim": "30-year +2 bp; 10-year +2 bp to 4.459%",
+      "url": "https://www.cnbc.com/2025/05/19/us-treasury-yields-moodys-downgrades-us-credit-rating.html",
+      "quote": "The yield last traded at 4.921%, up 2 basis points. The 10-year yield also climbed 2 basis points to reach 4.459%."
+    }
+  ],
+  "obbba": [
+    {
+      "claim": "Date: signed 4 Jul 2025",
+      "url": "https://en.wikipedia.org/wiki/One_Big_Beautiful_Bill_Act",
+      "quote": "The bill was signed into law by Trump on July 4, 2025."
+    },
+    {
+      "claim": "CBO: +$3.4 trillion deficits over 2025-2034",
+      "url": "https://www.cbo.gov/publication/61570",
+      "quote": "CBO estimates that Public Law 119-21 will result in a net increase in the unified budget deficit totaling $3.4 trillion over the 2025-2034 period"
+    }
+  ],
+  "fed-cuts-resume-2025": [
+    {
+      "claim": "Cut of 1/4 point to 4-4.25%",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm",
+      "quote": "the Committee decided to lower the target range for the federal funds rate by 1/4 percentage point to 4 to 4‑1/4 percent"
+    },
+    {
+      "claim": "Date: 17 Sep 2025",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm",
+      "quote": "September 17, 2025 Federal Reserve issues FOMC statement"
+    },
+    {
+      "claim": "Rate was still 4-1/4 to 4-1/2 percent in July 2025 (no earlier 2025 cut)",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250730a.htm",
+      "quote": "the Committee decided to maintain the target range for the federal funds rate at 4-1/4 to 4-1/2 percent"
+    },
+    {
+      "claim": "Previous cut was December 2024, to 4-1/4 to 4-1/2 percent",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm",
+      "quote": "the Committee decided to lower the target range for the federal funds rate by 1/4 percentage point to 4-1/4 to 4-1/2 percent"
+    },
+    {
+      "claim": "Date of previous cut: 18 Dec 2024",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm",
+      "quote": "December 18, 2024 Federal Reserve issues FOMC statement"
+    }
+  ],
+  "china-rare-earth-expansion": [
+    {
+      "claim": "Date: announced 9 Oct 2025",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "On October 9, 2025, China’s Ministry of Commerce (MOFCOM) announced a sweeping expansion of its export controls"
+    },
+    {
+      "claim": "Five more REEs; 12 of 17 now controlled",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "meaning export controls are now in place on 12 of the 17 REEs"
+    },
+    {
+      "claim": "100% tariff threat",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "with US President Donald Trump threatening to impose an additional 100 percent tariff on Chinese goods"
+    },
+    {
+      "claim": "S&P −2.7%, Dow −1.9%, Nasdaq −3.6% on 10 Oct",
+      "url": "https://www.pbs.org/newshour/economy/wall-street-tumbles-in-its-worst-day-since-april-after-trump-threatens-more-tariffs-on-china",
+      "quote": "The S&P 500 sank 2.7% in its worst day since April. The Dow Jones Industrial Average dropped 878 points, or 1.9%, and the Nasdaq composite fell 3.6%."
+    }
+  ],
+  "nvidia-5t": [
+    {
+      "claim": "NVDA up more than 3%; first to $5T",
+      "url": "https://www.cnbc.com/2025/10/29/nvidia-on-track-to-hit-historic-5-trillion-valuation-amid-ai-rally.html",
+      "quote": "Shares of Nvidia rose more than 3% on Wednesday, making the tech giant the first company to cross the $5 trillion market value threshold."
+    },
+    {
+      "claim": "Date: Wed 29 Oct 2025",
+      "url": "https://www.cnbc.com/2025/10/29/nvidia-on-track-to-hit-historic-5-trillion-valuation-amid-ai-rally.html",
+      "quote": "Published Wed, Oct 29 2025"
+    },
+    {
+      "claim": "$500 billion in AI chip orders",
+      "url": "https://www.cnbc.com/2025/10/29/nvidia-on-track-to-hit-historic-5-trillion-valuation-amid-ai-rally.html",
+      "quote": "Nvidia expects $500 billion in artificial intelligence chip orders"
+    }
+  ],
+  "us-china-busan-deal": [
+    {
+      "claim": "Date: Busan meeting 30 Oct 2025",
+      "url": "https://en.wikipedia.org/wiki/2025_China%E2%80%93United_States_trade_war",
+      "quote": "engaged in bilateral discussions during the Busan summit on October 30, 2025."
+    },
+    {
+      "claim": "China suspends the 9 Oct controls",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/",
+      "quote": "China will suspend the global implementation of the expansive new export controls on rare earths and related measures that it announced on October 9, 2025."
+    },
+    {
+      "claim": "US cuts fentanyl tariffs by 10 points from 10 Nov 2025",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/",
+      "quote": "by removing 10 percentage points of the cumulative rate, effective November 10, 2025"
+    },
+    {
+      "claim": "Suspension for one year until 10 Nov 2026",
+      "url": "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "quote": "for one year until November 10, 2026"
+    }
+  ],
+  "iran-war-2026": [
+    {
+      "claim": "Date: war began 28 Feb 2026",
+      "url": "https://en.wikipedia.org/wiki/2026_Iran_war",
+      "quote": "28 February 2026 (2026-02-28) – present"
+    },
+    {
+      "claim": "Initial strikes killed Khamenei",
+      "url": "https://en.wikipedia.org/wiki/2026_Iran_war",
+      "quote": "Initial strikes killed Iran's supreme leader Ali Khamenei and other top Iranian officials"
+    },
+    {
+      "claim": "S&P 500 −0.7% on 2 Mar",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "Global stock markets declined, with the Dow Jones falling over 400 points and the S&P 500 dropping 0.7% on 2 March."
+    },
+    {
+      "claim": "Brent +10-13% to $80-82 by 2 Mar",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "with Brent crude oil prices surging 10–13% to around $80–82 per barrel by 2 March 2026"
+    },
+    {
+      "claim": "United Airlines −6%",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "airline stocks like United Airlines dropped 6%"
+    },
+    {
+      "claim": "Ceasefire collapsed 8 Jul 2026",
+      "url": "https://en.wikipedia.org/wiki/2026_Iran_war",
+      "quote": "The ceasefire collapsed on 8 July 2026"
+    }
+  ],
+  "hormuz-closure-2026": [
+    {
+      "claim": "Date: closure announced 4 Mar 2026",
+      "url": "https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis",
+      "quote": "On 4 March, Iran announced that the Strait of Hormuz, a key waterway for the shipping of oil, LNG, and other products, was"
+    },
+    {
+      "claim": "Brent above $100 on 8 Mar, first time in four years",
+      "url": "https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis",
+      "quote": "Brent crude oil prices surpassed US$100 per barrel on 8 March for the first time in four years"
+    },
+    {
+      "claim": "Brent $72.48 to $112.57 (+55.32%)",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "From February 28 to March 27, 2026, Brent crude oil went up from $72.48 to $112.57 reflecting a 55.32% increase."
+    },
+    {
+      "claim": "10-year yield 4.46% on 27 Mar",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "On 27 March the 10-year bonds yield jumped to 4.46%, its highest level since July 2025."
+    },
+    {
+      "claim": "IEA: largest supply disruption in oil market history",
+      "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "quote": "largest supply disruption in the history of the global oil market"
+    },
+    {
+      "claim": "Oil above $100 again on 13 Mar",
+      "url": "https://www.aljazeera.com/economy/2026/3/13/oil-stays-above-100-a-barrel-amid-irans-stranglehold-on-strait-of-hormuz",
+      "quote": "Oil prices have again risen above $100 per barrel as energy markets see little relief"
+    }
+  ],
+  "us-inflation-2026": [
+    {
+      "claim": "CPI +3.3% over 12 months to March 2026",
+      "url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm",
+      "quote": "The Consumer Price Index for All Urban Consumers increased 3.3 percent, not seasonally adjusted, over the 12 months from March 2025 to March 2026."
+    },
+    {
+      "claim": "Gasoline +21.2% in March, record",
+      "url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm",
+      "quote": "Gasoline prices rose 21.2 percent in March, the largest monthly increase since these data were first published in 1967."
+    },
+    {
+      "claim": "Up from 2.4% in February",
+      "url": "https://www.cnbc.com/2026/04/10/cpi-inflation-report-march-2026.html",
+      "quote": "The annual rate was the highest since April 2024 and up from 2.4% in February."
+    },
+    {
+      "claim": "Date: report published 10 Apr 2026",
+      "url": "https://www.cnbc.com/2026/04/10/cpi-inflation-report-march-2026.html",
+      "quote": "Published Fri, Apr 10 2026"
+    },
+    {
+      "claim": "3.7% in September 2026",
+      "url": "https://www.cnbc.com/2026/10/14/cpi-inflation-report-september-2026.html",
+      "quote": "The consumer price index showed annual inflation of 3.7% in September after rising 0.6% for the month"
+    }
+  ],
+  "warsh-fed-chair": [
+    {
+      "claim": "Succeeded Jerome Powell",
+      "url": "https://en.wikipedia.org/wiki/Kevin_Warsh",
+      "quote": "named Warsh as his nominee to serve as the chair of the Federal Reserve, succeeding Jerome Powell"
+    },
+    {
+      "claim": "Date: took office 22 May 2026",
+      "url": "https://www.federalreserve.gov/aboutthefed/bios/board/warsh.htm",
+      "quote": "Kevin Warsh took office as chairman of the Board of Governors of the Federal Reserve System on May 22, 2026"
+    },
+    {
+      "claim": "Nominated 4 Mar 2026",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260522a.htm",
+      "quote": "President Donald J. Trump nominated Mr. Warsh on March 4, 2026."
+    },
+    {
+      "claim": "Confirmed as chairman 13 May 2026",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260522a.htm",
+      "quote": "to serve as a member of the Board on May 12, and as chairman of the Board on May 13."
+    }
+  ],
+  "fed-hike-2026": [
+    {
+      "claim": "Hike of 1/4 point to 3-3/4 to 4 percent; 12-0 vote",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "quote": "The Committee decided to raise the target range for the federal funds rate by 1/4 percentage point to 3-3/4 to 4 percent"
+    },
+    {
+      "claim": "Date: 16 Sep 2026",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "quote": "Implementation Note issued September 16, 2026"
+    },
+    {
+      "claim": "First hike in more than three years",
+      "url": "https://www.usbank.com/content/dam/usbank/en/documents/pdfs/wealth-management/situation-analysis-9-16-2026.pdf",
+      "quote": "It was the first Fed rate hike in more than three years."
+    },
+    {
+      "claim": "10-year +0.02 to 5.02%",
+      "url": "https://www.usbank.com/content/dam/usbank/en/documents/pdfs/wealth-management/situation-analysis-9-16-2026.pdf",
+      "quote": "Ten-year Treasury yields rose 0.02% to 5.02% versus the prior day’s close."
+    },
+    {
+      "claim": "2-year +0.08 to 4.74%",
+      "url": "https://www.usbank.com/content/dam/usbank/en/documents/pdfs/wealth-management/situation-analysis-9-16-2026.pdf",
+      "quote": "Two-year Treasury yields rose 0.08% to 4.74% today"
+    },
+    {
+      "claim": "Held on 28 Oct 2026",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+      "quote": "The Committee decided to maintain the target range for the federal funds rate at 3-3/4 to 4 percent"
+    },
+    {
+      "claim": "12-0 vote",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "quote": "approved the following statement for release by a 12 – 0 vote"
+    }
+  ],
+  "nvidia-ceo-crisis": [
+    {
+      "claim": "Date: resigned 12 Nov 2026",
+      "url": "https://www.bbc.com/news/live/crd61y5dwqgpt",
+      "quote": "12 November: Jensen Huang resigns as CEO."
+    },
+    {
+      "claim": "Export-control probe of Megaspeed",
+      "url": "https://www.bbc.com/news/live/crd61y5dwqgpt",
+      "quote": "for potential export control violations"
+    },
+    {
+      "claim": "Reinstated 23 Nov 2026",
+      "url": "https://www.bbc.com/news/live/crd61y5dwqgpt",
+      "quote": "23 November: Jensen Huang is brought back as Nvidia CEO"
+    },
+    {
+      "claim": "NVDA +31.5% on reinstatement",
+      "url": "https://www.bbc.com/news/live/crd61y5dwqgpt",
+      "quote": "Nvidia shares rose by 31.5% after the news of Huang"
+    },
+    {
+      "claim": "NVDA closed −4.3% on 12 Nov 2026",
+      "url": "https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html",
+      "quote": "Shares of Nvidia declined 4.3% Thursday, hitting a new 52-week low early in the day"
+    }
+  ],
+  "anthropic-ipo": [
+    {
+      "claim": "IPO price $83.00",
+      "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+      "quote": "Today Anthropic, PBC priced its initial public offering of its Class A common stock at $83.00 per share."
+    },
+    {
+      "claim": "Date: trading from 19 Nov 2026, ticker ANT",
+      "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+      "quote": "The shares are expected to begin trading on the Nasdaq Global Select Market on November 19, 2026 under the symbol"
+    },
+    {
+      "claim": "Open $111.50 (+34%), close $97.17 (+17%)",
+      "url": "https://www.businessinsider.com/anthropic-ipo-ant-stock-market-nasdaq-2026-11",
+      "quote": "After opening at $111.50, 34% higher than its IPO price of $83, Anthropic shares closed at $97.17, up 17% on the day."
+    },
+    {
+      "claim": "$81.3 billion raised, largest IPO",
+      "url": "https://www.euronews.com/2026/11/19/anthropic-shares-open-34-above-ipo-price-in-nasdaq-debut-after-record-listing",
+      "quote": "after it raised $81.3 billion (€74bn) in the largest initial public offering in history"
+    }
+  ],
+  "ai-selloff-2026": [
+    {
+      "claim": "Nasdaq −5.3% to 22,618",
+      "url": "https://www.cbsnews.com/news/stocks-enter-correction-territory-ai-fears/",
+      "quote": "The Nasdaq Composite Index fell 1,261 points, or 5.3%, to close at 22,618"
+    },
+    {
+      "claim": "S&P 500 −3.7%, Dow −1.9%",
+      "url": "https://www.cbsnews.com/news/stocks-enter-correction-territory-ai-fears/",
+      "quote": "The S&P 500 declined 3.7%, while the Dow Jones Industrial Average fell 1.9%."
+    },
+    {
+      "claim": "Correction: more than 10% from highs",
+      "url": "https://www.cbsnews.com/news/stocks-enter-correction-territory-ai-fears/",
+      "quote": "meaning the indexes have fallen more than 10% from their most recent highs"
+    },
+    {
+      "claim": "Date: 20 Nov 2026",
+      "url": "https://www.cbc.ca/news/business/anthropic-ipo-markets-today-9.7429534",
+      "quote": "Jeff Lagerquist · CBC News · Posted: Nov 20, 2026"
+    },
+    {
+      "claim": "Drivers: oil, rates, debt, inflation",
+      "url": "https://www.nbcnews.com/business/markets/anthropic-shares-markets-selloff-nasdaq-rcna610394",
+      "quote": "the combination of elevated oil prices, rising interest rates, mounting corporate debt loads, stubborn inflation, supply chain issues and a flagging consumer"
+    },
+    {
+      "claim": "Drivers: Nvidia crisis, chip curbs, data-centre fears",
+      "url": "https://www.cbc.ca/news/business/anthropic-ipo-markets-today-9.7429534",
+      "quote": "These include the leadership crisis at Nvidia, U.S. regulators putting tighter controls on China's access to AI chips and fears of a data centre slowdown"
+    }
+  ]
+}

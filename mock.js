@@ -488,7 +488,7 @@
   }
 
   /* ---------- shell: top bar, nav row, footer, overlays ---------- */
-  var NAV = [['Home', 'home.html'], ['Markets', 'markets.html'], ['Screener', 'screener.html'], ['Compare', 'compare.html'], ['Calendars', 'calendars.html'], ['My Portfolio', 'portfolio.html'], ['Watchlists', 'watchlists.html'], ['My News', 'news.html'], ['Mind Maps', 'mindmap.html'], ['Tools', 'tools.html']];
+  var NAV = [['Home', 'home.html'], ['Markets', 'markets.html'], ['Screener', 'screener.html'], ['Compare', 'compare.html'], ['Calendars', 'calendars.html'], ['My Portfolio', 'portfolio.html'], ['Watchlists', 'watchlists.html'], ['My News', 'news.html'], ['Event Map', 'eventmap.html'], ['Tools', 'tools.html']];
   var pop = {};
   function closePops(except) { Object.keys(pop).forEach(function (k) { if (k !== except && pop[k]) pop[k].classList.remove('open'); }); var q = $('#q'); if (q && except !== 'search') q.setAttribute('aria-expanded', 'false'); }
   function place(node, x, y) {
@@ -630,6 +630,7 @@
       ['Switch theme', 'sun', function () { setTheme(root.dataset.theme === 'light' ? 'dark' : 'light'); }],
       ['Toggle density: Comfortable or Compact', 'table', function () { setPref('density', compact() ? 'comfortable' : 'compact'); }],
       ['Toggle reduced motion', 'pause', function () { setPref('motion', root.dataset.motion === 'reduced' ? 'system' : 'reduced'); }],
+      ['Open Event Map', 'globe', function () { location.href = 'eventmap.html'; }],
       ['Open event mind map', 'map', function () { location.href = 'mindmap.html'; }],
       ['Go to Home', 'home', function () { location.href = 'home.html'; }]
     ];

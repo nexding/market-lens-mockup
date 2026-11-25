@@ -1,0 +1,482 @@
+[
+  {
+    "from": "covid-crash",
+    "to": "fed-zero-qe",
+    "type": "direct",
+    "mechanism": "The pandemic sell-off and credit strain pushed the Fed into emergency cuts and bond buying."
+  },
+  {
+    "from": "covid-crash",
+    "to": "cares-act",
+    "type": "direct",
+    "mechanism": "Lockdowns and job losses prompted Congress to pass a $2.2T relief package."
+  },
+  {
+    "from": "covid-crash",
+    "to": "oil-negative-price",
+    "type": "direct",
+    "mechanism": "Lockdowns collapsed fuel demand and filled storage at Cushing, forcing holders to pay to exit contracts."
+  },
+  {
+    "from": "covid-crash",
+    "to": "chip-shortage",
+    "type": "contributing",
+    "mechanism": "Carmakers cancelled chip orders early in the pandemic while electronics demand jumped."
+  },
+  {
+    "from": "covid-crash",
+    "to": "arp",
+    "type": "contributing",
+    "mechanism": "The ongoing pandemic led to a third large US relief bill."
+  },
+  {
+    "from": "fed-zero-qe",
+    "to": "us-inflation-surge",
+    "type": "contributing",
+    "mechanism": "Zero rates and large asset purchases kept financial conditions very loose into the recovery."
+  },
+  {
+    "from": "cares-act",
+    "to": "us-inflation-surge",
+    "type": "contributing",
+    "mechanism": "Large cash transfers lifted household demand."
+  },
+  {
+    "from": "arp",
+    "to": "us-inflation-surge",
+    "type": "contributing",
+    "mechanism": "Another $1.9T of stimulus added demand as supply was still constrained."
+  },
+  {
+    "from": "chip-shortage",
+    "to": "us-inflation-surge",
+    "type": "contributing",
+    "mechanism": "Fewer cars built pushed up vehicle prices, a visible part of early CPI gains."
+  },
+  {
+    "from": "chip-shortage",
+    "to": "chips-act",
+    "type": "direct",
+    "mechanism": "The shortage exposed reliance on Asian fabs and built support for US chip subsidies."
+  },
+  {
+    "from": "us-inflation-surge",
+    "to": "fed-hikes-begin",
+    "type": "direct",
+    "mechanism": "Inflation far above the 2% target forced the Fed to raise rates."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "russia-sanctions",
+    "type": "direct",
+    "mechanism": "The invasion triggered coordinated Western financial sanctions."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "oil-spike-2022",
+    "type": "direct",
+    "mechanism": "War risk to Russian energy exports drove crude to 2008 highs."
+  },
+  {
+    "from": "russia-sanctions",
+    "to": "oil-spike-2022",
+    "type": "contributing",
+    "mechanism": "Talk of extending sanctions to a Russian oil import ban fuelled the 7 March spike."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "fed-hikes-begin",
+    "type": "contributing",
+    "mechanism": "The Fed said the invasion added upward pressure on inflation as it began hiking."
+  },
+  {
+    "from": "oil-spike-2022",
+    "to": "fed-hikes-begin",
+    "type": "contributing",
+    "mechanism": "Higher energy prices lifted headline inflation and the pace of tightening."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "eu-gas-shock",
+    "type": "direct",
+    "mechanism": "Russia throttled gas supplies to Europe after the invasion."
+  },
+  {
+    "from": "russia-sanctions",
+    "to": "eu-gas-shock",
+    "type": "contributing",
+    "mechanism": "Gazprom pointed to a sanctions-held turbine when it cut Nord Stream 1 flows."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "ecb-first-hike",
+    "type": "contributing",
+    "mechanism": "War-driven energy prices pushed euro-area inflation higher."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "ecb-first-hike",
+    "type": "contributing",
+    "mechanism": "Faster Fed hikes widened the rate gap and weakened the euro, adding pressure on the ECB."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "terra-luna",
+    "type": "contributing",
+    "mechanism": "Rising rates drained speculative money from crypto, adding pressure as UST lost its peg."
+  },
+  {
+    "from": "terra-luna",
+    "to": "ftx-collapse",
+    "type": "contributing",
+    "mechanism": "Terra losses hit crypto lenders and funds, weakening the industry before FTX failed."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "ftx-collapse",
+    "type": "contributing",
+    "mechanism": "Tighter money cut crypto prices and liquidity."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "dollar-20yr-high",
+    "type": "direct",
+    "mechanism": "Rapid US rate rises drew capital into the dollar."
+  },
+  {
+    "from": "eu-gas-shock",
+    "to": "dollar-20yr-high",
+    "type": "contributing",
+    "mechanism": "Europe's energy shock weighed on the euro and sterling against the dollar."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "svb-failure",
+    "type": "direct",
+    "mechanism": "Higher rates caused large losses on banks' long-dated bond holdings."
+  },
+  {
+    "from": "fed-zero-qe",
+    "to": "svb-failure",
+    "type": "contributing",
+    "mechanism": "Near-zero rates and a deposit surge led banks to buy long bonds at low yields."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "boj-ycc-tweak",
+    "type": "contributing",
+    "mechanism": "Rising US yields pressured Japan's bond-yield cap and the yen."
+  },
+  {
+    "from": "eu-gas-shock",
+    "to": "uk-mini-budget",
+    "type": "contributing",
+    "mechanism": "Soaring energy bills led to a costly debt-funded energy price guarantee alongside the tax cuts."
+  },
+  {
+    "from": "ukraine-invasion",
+    "to": "nord-stream",
+    "type": "contributing",
+    "mechanism": "The pipelines were sabotaged amid the war-driven gas standoff with Russia."
+  },
+  {
+    "from": "chips-act",
+    "to": "us-chip-export-controls",
+    "type": "contributing",
+    "mechanism": "Part of the same US push to secure chip supply and limit China's access to advanced chips."
+  },
+  {
+    "from": "fed-hikes-begin",
+    "to": "first-republic",
+    "type": "contributing",
+    "mechanism": "Higher rates eroded the value of low-rate loans and pushed depositors toward higher-yielding alternatives."
+  },
+  {
+    "from": "arp",
+    "to": "us-fitch-downgrade",
+    "type": "contributing",
+    "mechanism": "Pandemic-era deficit spending added to the debt load behind Fitch's fiscal concerns."
+  },
+  {
+    "from": "uk-mini-budget",
+    "to": "boe-gilt-intervention",
+    "type": "direct",
+    "mechanism": "The gilt sell-off after the unfunded tax cuts triggered LDI collateral calls that forced the Bank to buy gilts."
+  },
+  {
+    "from": "uk-mini-budget",
+    "to": "dollar-20yr-high",
+    "type": "contributing",
+    "mechanism": "Sterling's slump to a record low added to the dollar index's rise."
+  },
+  {
+    "from": "dollar-20yr-high",
+    "to": "boj-ycc-tweak",
+    "type": "contributing",
+    "mechanism": "A weak yen against a surging dollar raised pressure on the BoJ to loosen its yield cap."
+  },
+  {
+    "from": "ftx-collapse",
+    "to": "svb-failure",
+    "type": "contributing",
+    "mechanism": "FTX losses led Silvergate to wind down days before SVB's run, rattling depositors at tech-focused banks."
+  },
+  {
+    "from": "svb-failure",
+    "to": "usdc-depeg",
+    "type": "direct",
+    "mechanism": "$3.3 billion of USDC reserves were trapped at SVB when it failed."
+  },
+  {
+    "from": "svb-failure",
+    "to": "credit-suisse-ubs",
+    "type": "contributing",
+    "mechanism": "US bank failures spread fear to already weak banks, accelerating the run on Credit Suisse."
+  },
+  {
+    "from": "svb-failure",
+    "to": "first-republic",
+    "type": "direct",
+    "mechanism": "SVB's collapse set off a flight of uninsured deposits from similar regional banks, draining First Republic."
+  },
+  {
+    "from": "chatgpt",
+    "to": "nvidia-ai-guidance",
+    "type": "direct",
+    "mechanism": "The race to build ChatGPT-style models drove demand for Nvidia's data-centre GPUs."
+  },
+  {
+    "from": "israel-hamas-war",
+    "to": "red-sea-attacks",
+    "type": "direct",
+    "mechanism": "The Houthis began attacking Israel-linked ships in response to the Gaza war."
+  },
+  {
+    "from": "boj-ycc-tweak",
+    "to": "boj-ends-negative",
+    "type": "contributing",
+    "mechanism": "Widening the yield band was the first step in the BoJ's exit from ultra-loose policy."
+  },
+  {
+    "from": "boj-ends-negative",
+    "to": "yen-carry-unwind",
+    "type": "contributing",
+    "mechanism": "The start of BoJ tightening set up the July 2024 hike that squeezed yen-funded carry trades."
+  },
+  {
+    "from": "yen-carry-unwind",
+    "to": "fed-first-cut",
+    "type": "contributing",
+    "mechanism": "The August sell-off and weak jobs data strengthened the case for a larger first cut."
+  },
+  {
+    "from": "fed-first-cut",
+    "to": "china-stimulus-2024",
+    "type": "contributing",
+    "mechanism": "The Fed's cut gave the PBOC room to ease without as much pressure on the yuan."
+  },
+  {
+    "from": "us-chip-export-controls",
+    "to": "deepseek",
+    "type": "contributing",
+    "mechanism": "Restricted access to top Nvidia chips pushed Chinese labs toward more compute-efficient models."
+  },
+  {
+    "from": "nvidia-ai-guidance",
+    "to": "deepseek",
+    "type": "contributing",
+    "mechanism": "High valuations built on AI-chip demand left Nvidia exposed to the January 2025 DeepSeek sell-off."
+  },
+  {
+    "from": "fed-first-cut",
+    "to": "fed-cuts-resume-2025",
+    "type": "contributing",
+    "mechanism": "The September 2024 cut opened the easing cycle that resumed in 2025 after a pause."
+  },
+  {
+    "from": "chatgpt",
+    "to": "deepseek",
+    "type": "contributing",
+    "mechanism": "The ChatGPT-led AI spending boom built the chip valuations that a cheaper Chinese model called into question."
+  },
+  {
+    "from": "nvidia-ai-guidance",
+    "to": "nvidia-5t",
+    "type": "contributing",
+    "mechanism": "Sustained AI data-centre demand carried Nvidia's market value from $1 trillion to $5 trillion."
+  },
+  {
+    "from": "chatgpt",
+    "to": "nvidia-5t",
+    "type": "contributing",
+    "mechanism": "Generative-AI adoption kept cloud and AI-lab spending on Nvidia chips rising."
+  },
+  {
+    "from": "us-tariffs-2025",
+    "to": "china-rare-earth-curbs",
+    "type": "direct",
+    "mechanism": "China answered the reciprocal tariffs with a matching tariff and rare-earth export licensing."
+  },
+  {
+    "from": "us-tariffs-2025",
+    "to": "us-china-truce",
+    "type": "direct",
+    "mechanism": "The Geneva deal suspended most of the tariff escalation that followed 2 April."
+  },
+  {
+    "from": "china-rare-earth-curbs",
+    "to": "us-china-truce",
+    "type": "contributing",
+    "mechanism": "Rare-earth shortages gave China leverage that helped bring the US to the table."
+  },
+  {
+    "from": "us-tariffs-2025",
+    "to": "fed-cuts-resume-2025",
+    "type": "contributing",
+    "mechanism": "Tariff-driven inflation risk kept the Fed on hold until labour-market weakness tipped it toward a cut."
+  },
+  {
+    "from": "us-fitch-downgrade",
+    "to": "moodys-downgrade",
+    "type": "contributing",
+    "mechanism": "Moody's followed Fitch (2023) in removing the US AAA rating over the same deficit and governance concerns."
+  },
+  {
+    "from": "china-rare-earth-curbs",
+    "to": "china-rare-earth-expansion",
+    "type": "direct",
+    "mechanism": "The October rules added five more elements and extraterritorial reach to the April licensing regime."
+  },
+  {
+    "from": "us-chip-export-controls",
+    "to": "china-rare-earth-expansion",
+    "type": "contributing",
+    "mechanism": "Expanding US chip and entity-list restrictions prompted China to target chip and defence users of rare earths."
+  },
+  {
+    "from": "china-rare-earth-expansion",
+    "to": "us-china-busan-deal",
+    "type": "direct",
+    "mechanism": "China agreed in Busan to suspend the October controls for one year."
+  },
+  {
+    "from": "us-china-truce",
+    "to": "us-china-busan-deal",
+    "type": "contributing",
+    "mechanism": "The Geneva framework and its extensions led to the broader Busan agreement."
+  },
+  {
+    "from": "obbba",
+    "to": "us-inflation-2026",
+    "type": "contributing",
+    "mechanism": "Deficit-financed tax cuts added to demand as energy prices pushed inflation up."
+  },
+  {
+    "from": "us-tariffs-2025",
+    "to": "us-inflation-2026",
+    "type": "contributing",
+    "mechanism": "Tariffs had already lifted goods prices before the 2026 energy shock."
+  },
+  {
+    "from": "israel-hamas-war",
+    "to": "iran-war-2026",
+    "type": "contributing",
+    "mechanism": "The Gaza war widened into direct Israel-Iran clashes that preceded the 2026 strikes."
+  },
+  {
+    "from": "red-sea-attacks",
+    "to": "hormuz-closure-2026",
+    "type": "contributing",
+    "mechanism": "Houthi threats to Red Sea routes limited alternatives for Gulf exports bypassing Hormuz."
+  },
+  {
+    "from": "iran-war-2026",
+    "to": "hormuz-closure-2026",
+    "type": "direct",
+    "mechanism": "Iran closed the strait in retaliation for the US and Israeli strikes."
+  },
+  {
+    "from": "hormuz-closure-2026",
+    "to": "us-inflation-2026",
+    "type": "direct",
+    "mechanism": "Higher crude prices drove a record monthly jump in US gasoline prices."
+  },
+  {
+    "from": "us-inflation-2026",
+    "to": "fed-hike-2026",
+    "type": "direct",
+    "mechanism": "Inflation well above target led the Fed to resume tightening."
+  },
+  {
+    "from": "hormuz-closure-2026",
+    "to": "fed-hike-2026",
+    "type": "contributing",
+    "mechanism": "Rising oil prices pushed expectations of rate hikes and bond yields higher."
+  },
+  {
+    "from": "warsh-fed-chair",
+    "to": "fed-hike-2026",
+    "type": "contributing",
+    "mechanism": "The hike was the first under Warsh, who stressed returning inflation to 2%."
+  },
+  {
+    "from": "fed-cuts-resume-2025",
+    "to": "warsh-fed-chair",
+    "type": "contributing",
+    "mechanism": "White House pressure for faster rate cuts shaped the choice of Powell's successor."
+  },
+  {
+    "from": "fed-hike-2026",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Higher rates and a 10-year yield above 5% weighed on richly valued tech stocks."
+  },
+  {
+    "from": "hormuz-closure-2026",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Elevated oil prices squeezed consumers and margins during the autumn slide."
+  },
+  {
+    "from": "nvidia-ceo-crisis",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Turmoil at the largest AI chipmaker accelerated selling across the sector."
+  },
+  {
+    "from": "us-chip-export-controls",
+    "to": "nvidia-ceo-crisis",
+    "type": "contributing",
+    "mechanism": "The scandal centred on suspected diversion of controlled AI chips to China."
+  },
+  {
+    "from": "us-chip-export-controls",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Tighter limits on chip sales to China added to the pressure on chip stocks."
+  },
+  {
+    "from": "anthropic-ipo",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "The record IPO failed to steady the market, and ANT's next-day fall led the decline."
+  },
+  {
+    "from": "chatgpt",
+    "to": "anthropic-ipo",
+    "type": "contributing",
+    "mechanism": "The generative-AI boom created the investor demand behind a record-sized listing."
+  },
+  {
+    "from": "nvidia-5t",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Heavy index concentration in AI names left the market exposed when sentiment turned."
+  },
+  {
+    "from": "deepseek",
+    "to": "ai-selloff-2026",
+    "type": "contributing",
+    "mechanism": "Doubts first raised by DeepSeek about the payoff from AI capital spending resurfaced."
+  }
+]

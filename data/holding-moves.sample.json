@@ -1,0 +1,85 @@
+{
+  "_note": "Sample numbers for the mockup: percentage moves of held tickers over each event's window. They are invented, not real returns, and the page labels them as sample.",
+  "moves": {
+    "oil-negative-price": {
+      "SHEL.L": -8.2
+    },
+    "chip-shortage": {
+      "NVDA": 6.4,
+      "AAPL": -3.1
+    },
+    "ukraine-invasion": {
+      "SHEL.L": 4.6
+    },
+    "russia-sanctions": {
+      "SHEL.L": -3.8
+    },
+    "oil-spike-2022": {
+      "SHEL.L": 5.2
+    },
+    "chips-act": {
+      "NVDA": 2.1
+    },
+    "eu-gas-shock": {
+      "SHEL.L": 2.4
+    },
+    "uk-mini-budget": {
+      "HSBA.L": -6.9
+    },
+    "nord-stream": {
+      "SHEL.L": 1.7
+    },
+    "us-chip-export-controls": {
+      "NVDA": -11.3
+    },
+    "chatgpt": {
+      "MSFT": 4.2,
+      "NVDA": 9.8
+    },
+    "svb-failure": {
+      "HSBA.L": -7.4
+    },
+    "nvidia-ai-guidance": {
+      "NVDA": 27.1
+    },
+    "yen-carry-unwind": {
+      "NVDA": -12.6
+    },
+    "china-stimulus-2024": {
+      "0700.HK": 9.3
+    },
+    "deepseek": {
+      "NVDA": -15.8,
+      "MSFT": -2.1
+    },
+    "us-tariffs-2025": {
+      "AAPL": -19.4
+    },
+    "us-china-truce": {
+      "AAPL": 6.3
+    },
+    "china-rare-earth-expansion": {
+      "NVDA": -4.9
+    },
+    "nvidia-5t": {
+      "NVDA": 8.6,
+      "MSFT": 1.9,
+      "AAPL": 2.4
+    },
+    "iran-war-2026": {
+      "SHEL.L": 6.1
+    },
+    "hormuz-closure-2026": {
+      "SHEL.L": 14.2
+    },
+    "nvidia-ceo-crisis": {
+      "NVDA": 24.9
+    },
+    "anthropic-ipo": {
+      "NVDA": -3.2
+    },
+    "ai-selloff-2026": {
+      "NVDA": -9.7
+    }
+  }
+}

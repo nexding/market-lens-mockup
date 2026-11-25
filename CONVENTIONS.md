@@ -6,7 +6,8 @@ Read this before adding a screen. The finished pages (`home.html` + `home.js`, `
 
 - Static files only. No build step, no modules (`<script src>` classic scripts, wrapped in an IIFE with `'use strict'`), no network requests, no CDN, no new dependencies, no images or brand logos (tickers use monogram tiles).
   - One agreed exception: the mind map's globe view (`mindmap-globe.js`) loads globe.gl, three.js, an Earth photograph and border data from a CDN at pinned versions, and falls back to the flat map without them. Do not copy this to other pages.
-- Every number, name of a story, forecast and filing excerpt is invented sample data. Keep it plausible and internally consistent, and derive it from the seeded helpers so it is the same on every load.
+  - A second agreed exception: the Event Map (`eventmap.html`, `eventmap/`) is written as ES modules, loads three.js 0.160.0 through an import map and D3 7.9.0 from jsDelivr at pinned versions with integrity hashes, and fetches its data from `data/`. It falls back to the timeline without WebGL or three.js. Do not copy this to other pages.
+- Every number, name of a story, forecast and filing excerpt is invented sample data. Keep it plausible and internally consistent, and derive it from the seeded helpers so it is the same on every load. The exception is the Event Map's `data/events.json` and `data/links.json`: real events, figures and institutions, each backed by quotes from its sources in `data/evidence.json` (see the README). Its holding moves are sample data and labelled so.
 - Use tokens from `tokens.css` for every colour, radius, shadow, duration and easing. No hard-coded hex colours in CSS or canvas code (canvas reads `ML.COL`).
 - Dark and light themes, Comfortable and Compact density, and reduced motion must all work. Spacing comes from `--gap`, `--card-pad`, `--row-h`, `--cell-px`, `--ctl-h`.
 - Numbers are tabular (inherited). Gains and losses always carry a sign and an arrow or word, never colour alone. Use the true minus sign (`ML.fmt`, `ML.fsign`, `ML.fpct` do this).
@@ -15,7 +16,7 @@ Read this before adding a screen. The finished pages (`home.html` + `home.js`, `
 - No point price predictions anywhere. Module outputs are probabilities with intervals, scenarios and ranked exposures. Analyst targets are labelled third-party.
 - Plain, specific copy. Sentence case. No marketing language.
 - Tickers are real, so do not attach invented facts to real people or firms: no real executives' names, no real fund managers, banks, brokers or news outlets. Use obvious placeholders ("Chief Financial Officer", "Index fund manager A", "Analyst, Firm B", "Wire service"). Company names come from `ML.I`.
-- Do not edit shared files: `tokens.css`, `app.css`, `mock.js`, `home.*`, `mindmap.*`, `stock.html`, `stock.js`, `CONVENTIONS.md`, `README.md`. Put page-specific CSS and JS in the files you own. If a shared file is wrong or missing something, work around it locally and say so in your report.
+- Do not edit shared files: `tokens.css`, `app.css`, `mock.js`, `home.*`, `mindmap.*`, `eventmap.*`, `eventmap/`, `data/`, `stock.html`, `stock.js`, `CONVENTIONS.md`, `README.md`. Put page-specific CSS and JS in the files you own. If a shared file is wrong or missing something, work around it locally and say so in your report.
 - Do not use browser automation tools (one browser is shared). Check syntax with `node --check <file>.js`.
 
 ## Page skeleton
@@ -33,7 +34,7 @@ Copy the `<head>` of `home.html` exactly (title changed), then:
 </body>
 ```
 
-and in the page script, first thing: `M.shell('Screener');` using the exact nav label (Home, Markets, Screener, Compare, Calendars, My Portfolio, Watchlists, My News, Mind Maps, Tools, or `Workspace`). The shell adds the top bar, nav row, footer disclaimer, search, palette, ticker menu, hover cards and settings. Add your own stylesheet with a `<link>` after `app.css`.
+and in the page script, first thing: `M.shell('Screener');` using the exact nav label (Home, Markets, Screener, Compare, Calendars, My Portfolio, Watchlists, My News, Event Map, Tools, or `Workspace`; `mindmap.html` still calls `M.shell('Mind Maps')`, which no longer matches a tab). The shell adds the top bar, nav row, footer disclaimer, search, palette, ticker menu, hover cards and settings. Add your own stylesheet with a `<link>` after `app.css`.
 
 ## Classes in `app.css`
 

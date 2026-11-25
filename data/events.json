@@ -1,0 +1,2058 @@
+[
+  {
+    "id": "covid-crash",
+    "title": "COVID-19 pandemic market crash",
+    "date": "2020-02",
+    "category": "Geopolitical",
+    "regions": [
+      "Global",
+      "United States"
+    ],
+    "summary": "As COVID-19 spread worldwide, the S&P 500 fell 34% from its 19 February 2020 record to its 23 March low, and the WHO declared a pandemic on 11 March.",
+    "market_reaction": {
+      "headline": "S&P 500 fell 34% from 19 Feb to 23 Mar 2020; the VIX closed at a record 82.69 on 16 Mar",
+      "assets": [
+        {
+          "asset": "S&P 500",
+          "move": "−34%",
+          "window": "19 Feb–23 Mar 2020"
+        },
+        {
+          "asset": "VIX",
+          "move": "82.69 record close",
+          "window": "16 Mar 2020"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "DJI",
+      "IXIC",
+      "VIX",
+      "US10Y",
+      "DAL",
+      "IAG.L",
+      "FTSE",
+      "HSI"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/List_of_stock_market_crashes_and_bear_markets",
+      "https://en.wikipedia.org/wiki/2020_stock_market_crash",
+      "https://www.who.int/news-room/speeches/item/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020"
+    ]
+  },
+  {
+    "id": "fed-zero-qe",
+    "title": "Fed cuts rates to zero and restarts QE",
+    "date": "2020-03",
+    "day": 15,
+    "category": "Monetary",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "The Federal Reserve cut its target range by half a point on 3 March 2020, then on Sunday 15 March cut it to 0–0.25% and committed to buy at least $500 billion of Treasuries and $200 billion of agency mortgage-backed securities.",
+    "market_reaction": {
+      "headline": "US stocks still fell 12–13% the next trading day (16 Mar 2020) and the 10-year yield dropped to 0.76%",
+      "assets": [
+        {
+          "asset": "S&P 500, Dow and Nasdaq",
+          "move": "−12% to −13%",
+          "window": "16 Mar 2020"
+        },
+        {
+          "asset": "US 10-year Treasury yield",
+          "move": "0.76%",
+          "window": "16 Mar 2020"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "DJI",
+      "IXIC",
+      "US10Y",
+      "VIX",
+      "DXY",
+      "JPM"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200315a.htm",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200303a.htm",
+      "https://en.wikipedia.org/wiki/2020_stock_market_crash"
+    ]
+  },
+  {
+    "id": "cares-act",
+    "title": "CARES Act stimulus signed",
+    "date": "2020-03",
+    "day": 27,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "Congress passed the $2.2 trillion CARES Act, signed on 27 March 2020. Stocks had already rallied hard on 24 March as lawmakers neared a deal.",
+    "market_reaction": {
+      "headline": "Dow gained 11% on 24 Mar 2020, its best day since 1933, as investors bet the stimulus bill would pass",
+      "assets": [
+        {
+          "asset": "Dow Jones",
+          "move": "+2,112.98 pts (+11%)",
+          "window": "24 Mar 2020"
+        },
+        {
+          "asset": "S&P 500",
+          "move": "+9.4%",
+          "window": "24 Mar 2020"
+        },
+        {
+          "asset": "Nasdaq Composite",
+          "move": "+8.1%",
+          "window": "24 Mar 2020"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "DJI",
+      "IXIC",
+      "DAL"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/CARES_Act",
+      "https://www.cnbc.com/2020/03/23/dow-futures-up-more-than-200-points-as-senate-debates-over-virus-bill.html"
+    ]
+  },
+  {
+    "id": "oil-negative-price",
+    "title": "US oil futures settle below zero",
+    "date": "2020-04",
+    "day": 20,
+    "category": "Energy & Supply",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "With lockdowns crushing demand and storage filling up, the expiring May 2020 WTI futures contract settled at −$37.63 a barrel on 20 April 2020, the first negative price since trading began in 1983. Brent stayed positive.",
+    "market_reaction": {
+      "headline": "WTI May contract settled at −$37.63/bbl on 20 Apr 2020 after trading as low as −$40.32",
+      "assets": [
+        {
+          "asset": "WTI crude (May 2020 contract)",
+          "move": "$−37.63/bbl settle",
+          "window": "20 Apr 2020"
+        },
+        {
+          "asset": "WTI crude (May 2020 contract)",
+          "move": "$−40.32/bbl intraday low",
+          "window": "20 Apr 2020"
+        },
+        {
+          "asset": "Brent crude (June 2020 contract)",
+          "move": "$19.33/bbl close",
+          "window": "21 Apr 2020"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "XOM",
+      "SHEL.L"
+    ],
+    "sources": [
+      "https://www.cftc.gov/PressRoom/PressReleases/8315-20",
+      "https://www.eia.gov/todayinenergy/detail.php?id=43495"
+    ]
+  },
+  {
+    "id": "chip-shortage",
+    "title": "Global chip shortage hits car production",
+    "date": "2021-01",
+    "category": "Energy & Supply",
+    "regions": [
+      "Global",
+      "Asia-Pacific",
+      "Europe",
+      "United States"
+    ],
+    "summary": "Carmakers had cancelled chip orders early in the pandemic while demand for electronics rose, so by January 2021 automakers such as Audi were cutting output. By September 2021 AlixPartners estimated the shortage would cost the auto industry $210 billion in 2021 revenue.",
+    "market_reaction": {
+      "headline": "Auto output losses forecast at 7.7 million vehicles and $210B of revenue in 2021",
+      "assets": [
+        {
+          "asset": "Global auto production (2021 forecast)",
+          "move": "−7.7M units",
+          "window": "2021, AlixPartners Sep 2021 estimate"
+        },
+        {
+          "asset": "Global auto revenue (2021 forecast)",
+          "move": "−$210B",
+          "window": "2021, AlixPartners Sep 2021 estimate"
+        },
+        {
+          "asset": "Toyota global production plan",
+          "move": "−40%",
+          "window": "Sep 2021"
+        }
+      ]
+    },
+    "tickers": [
+      "TSM",
+      "F",
+      "TSLA",
+      "INTC",
+      "NVDA",
+      "AAPL"
+    ],
+    "sources": [
+      "https://www.cnbc.com/2021/09/23/chip-shortage-expected-to-cost-auto-industry-210-billion-in-2021.html",
+      "https://www.bbc.com/news/technology-55704936",
+      "https://en.wikipedia.org/wiki/2020%E2%80%932023_global_chip_shortage"
+    ]
+  },
+  {
+    "id": "arp",
+    "title": "American Rescue Plan signed",
+    "date": "2021-03",
+    "day": 11,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "The $1.9 trillion American Rescue Plan was signed on 11 March 2021, following the CARES Act and a December 2020 relief bill. Treasury yields rose the next day on growth and inflation expectations.",
+    "market_reaction": {
+      "headline": "10-year Treasury yield rose 10bp to 1.626% on 12 Mar 2021, briefly hitting its highest since Feb 2020",
+      "assets": [
+        {
+          "asset": "US 10-year Treasury yield",
+          "move": "+10bp to 1.626%",
+          "window": "12 Mar 2021"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "SPX",
+      "IXIC"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/American_Rescue_Plan_Act_of_2021",
+      "https://www.cnbc.com/2021/03/12/us-bonds-treasury-yields-higher-following-stimulus-vaccine-news.html"
+    ]
+  },
+  {
+    "id": "us-inflation-surge",
+    "title": "US inflation surge begins",
+    "date": "2021-05",
+    "day": 12,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "On 12 May 2021 the CPI report showed prices up 4.2% from a year earlier, the fastest since 2008. Inflation kept climbing to 9.1% for June 2022, the highest since 1981, in data released on 13 July 2022.",
+    "market_reaction": {
+      "headline": "Hot April 2021 CPI sent the Dow down 681 points (2%) on 12 May 2021, its worst day since January",
+      "assets": [
+        {
+          "asset": "Dow Jones",
+          "move": "−2%",
+          "window": "12 May 2021"
+        },
+        {
+          "asset": "S&P 500",
+          "move": "−2.1%",
+          "window": "12 May 2021"
+        },
+        {
+          "asset": "Nasdaq Composite",
+          "move": "−2.7%",
+          "window": "12 May 2021"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "DJI",
+      "IXIC",
+      "US10Y"
+    ],
+    "sources": [
+      "https://www.bls.gov/news.release/archives/cpi_05122021.htm",
+      "https://www.bls.gov/news.release/archives/cpi_07132022.htm",
+      "https://www.cnbc.com/2021/05/11/stock-market-futures-open-to-close-news.html"
+    ]
+  },
+  {
+    "id": "ukraine-invasion",
+    "title": "Russia invades Ukraine",
+    "date": "2022-02",
+    "day": 24,
+    "category": "Geopolitical",
+    "regions": [
+      "Russia & Ukraine",
+      "Europe",
+      "Global"
+    ],
+    "summary": "Russia launched a full-scale invasion of Ukraine on 24 February 2022. Russian stocks crashed, and oil and gold jumped on fears for energy and commodity supplies.",
+    "market_reaction": {
+      "headline": "Brent topped $100 for the first time since 2014 and Russia's RTS index fell 39% on 24 Feb 2022",
+      "assets": [
+        {
+          "asset": "RTS Index (Russia)",
+          "move": "−39%",
+          "window": "24 Feb 2022"
+        },
+        {
+          "asset": "Brent crude",
+          "move": "+8% intraday to $105.79",
+          "window": "24 Feb 2022"
+        },
+        {
+          "asset": "WTI crude",
+          "move": "+9% intraday to $100.54",
+          "window": "24 Feb 2022"
+        },
+        {
+          "asset": "Gold",
+          "move": "+3.17% intraday to $1,968.01/oz",
+          "window": "24 Feb 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "GOLD",
+      "XOM",
+      "SHEL.L",
+      "LMT",
+      "SPX"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine",
+      "https://www.cnbc.com/2022/02/24/oil-prices-jump-as-russia-launches-attack-on-ukraine.html",
+      "https://www.cnbc.com/2022/02/24/russia-invades-ukraine-gold-jumps-to-highest-in-more-than-a-year.html"
+    ]
+  },
+  {
+    "id": "russia-sanctions",
+    "title": "West cuts Russian banks from SWIFT and freezes reserves",
+    "date": "2022-02",
+    "day": 26,
+    "category": "Geopolitical",
+    "regions": [
+      "Russia & Ukraine",
+      "Europe",
+      "United States",
+      "United Kingdom"
+    ],
+    "summary": "On 26 February 2022 the US, EU, UK and allies committed to remove selected Russian banks from SWIFT and to stop Russia's central bank using its foreign reserves. Seven banks were later named for removal.",
+    "market_reaction": {
+      "headline": "The ruble fell 30% to as low as ₽119 per dollar by 28 Feb 2022 and Russia's central bank raised rates to 20%",
+      "assets": [
+        {
+          "asset": "Russian ruble vs USD",
+          "move": "−30% (to ₽119/$)",
+          "window": "to 28 Feb 2022"
+        },
+        {
+          "asset": "Russian ruble vs USD",
+          "move": "₽142.46/$ low",
+          "window": "7 Mar 2022"
+        },
+        {
+          "asset": "Bank of Russia key rate",
+          "move": "raised to 20%",
+          "window": "28 Feb 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "SHEL.L",
+      "XOM",
+      "GOLD"
+    ],
+    "sources": [
+      "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/02/26/joint-statement-on-further-restrictive-economic-measures/",
+      "https://en.wikipedia.org/wiki/SWIFT_ban_against_Russian_banks",
+      "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine"
+    ]
+  },
+  {
+    "id": "oil-spike-2022",
+    "title": "Brent crude spikes to $139",
+    "date": "2022-03",
+    "day": 7,
+    "category": "Energy & Supply",
+    "regions": [
+      "Global",
+      "Russia & Ukraine",
+      "Europe"
+    ],
+    "summary": "On 7 March 2022, as the US and European allies weighed banning Russian oil imports, Brent hit $139.13 intraday, its highest since July 2008. European gas prices hit a record the same day.",
+    "market_reaction": {
+      "headline": "Brent touched $139.13 and WTI $130.50 in early trade on 7 Mar 2022, both the highest since July 2008",
+      "assets": [
+        {
+          "asset": "Brent crude",
+          "move": "$139.13/bbl intraday high",
+          "window": "7 Mar 2022"
+        },
+        {
+          "asset": "WTI crude",
+          "move": "$130.50/bbl intraday high",
+          "window": "7 Mar 2022"
+        },
+        {
+          "asset": "European natural gas (ICE)",
+          "move": "$3,700 per 1,000 m³ record",
+          "window": "7 Mar 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "XOM",
+      "SHEL.L",
+      "DAL",
+      "IAG.L"
+    ],
+    "sources": [
+      "https://marinelink.com/amp/news/brent-crude-soars-a-barrel-us-europe-mull-494800",
+      "https://en.wikipedia.org/wiki/Economic_impact_of_the_Russian_invasion_of_Ukraine"
+    ]
+  },
+  {
+    "id": "fed-hikes-begin",
+    "title": "Fed starts hiking, then moves 75bp",
+    "date": "2022-03",
+    "day": 16,
+    "category": "Monetary",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "On 16 March 2022 the Fed raised its target range to 0.25–0.5%, citing high inflation and the war in Ukraine. On 15 June it raised rates by 0.75 point to 1.5–1.75%, its largest hike since 1994.",
+    "market_reaction": {
+      "headline": "The S&P 500 fell 3.88% into a bear market on 13 Jun 2022, two days before the Fed's 75bp hike, after a report that the Fed would consider it",
+      "assets": [
+        {
+          "asset": "S&P 500",
+          "move": "−3.88% (bear market close)",
+          "window": "13 Jun 2022"
+        },
+        {
+          "asset": "Nasdaq Composite",
+          "move": "−4.68%",
+          "window": "13 Jun 2022"
+        },
+        {
+          "asset": "US 10-year Treasury yield",
+          "move": "+20bp+ to above 3.3%",
+          "window": "13 Jun 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "US10Y",
+      "DXY",
+      "JPM",
+      "BTC"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm",
+      "https://www.cnbc.com/2022/06/15/fed-hikes-its-benchmark-interest-rate-by-three-quarters-of-a-point-the-biggest-increase-since-1994.html",
+      "https://www.cnbc.com/2022/06/12/stock-market-news-open-to-close.html"
+    ]
+  },
+  {
+    "id": "terra-luna",
+    "title": "TerraUSD and Luna collapse",
+    "date": "2022-05",
+    "day": 9,
+    "category": "Credit & Crypto",
+    "regions": [
+      "Global"
+    ],
+    "summary": "The algorithmic stablecoin TerraUSD (UST) began losing its dollar peg on 9 May 2022 and fell to about 10 cents within a week, while its sister token LUNA went to near zero. About $45 billion of market value was wiped out and the sell-off spread across crypto.",
+    "market_reaction": {
+      "headline": "Terra lost almost $45B in a week; bitcoin fell more than 29% in seven days to below $26,000 on 12 May 2022",
+      "assets": [
+        {
+          "asset": "TerraUSD (UST)",
+          "move": "to $0.10",
+          "window": "week from 9 May 2022"
+        },
+        {
+          "asset": "Terra/LUNA market value",
+          "move": "−~$45B",
+          "window": "week from 9 May 2022"
+        },
+        {
+          "asset": "Bitcoin",
+          "move": "−29%+ (below $26,000)",
+          "window": "7 days to 12 May 2022"
+        },
+        {
+          "asset": "Total crypto market cap",
+          "move": "−$200B+",
+          "window": "12 May 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "BTC"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Terra_(blockchain)",
+      "https://www.cnbc.com/2022/05/12/cryptocurrency-luna-now-almost-worthless-after-ust-falls-below-peg.html",
+      "https://www.cnbc.com/2022/05/12/bitcoin-btc-price-falls-below-27000-as-crypto-sell-off-intensifies.html"
+    ]
+  },
+  {
+    "id": "ecb-first-hike",
+    "title": "ECB raises rates for first time in 11 years",
+    "date": "2022-07",
+    "day": 21,
+    "category": "Monetary",
+    "regions": [
+      "Europe"
+    ],
+    "summary": "On 21 July 2022 the ECB raised its three key rates by 50 basis points, more than the 25 points markets expected, lifting its deposit rate to 0%. It also approved a Transmission Protection Instrument to limit bond spreads in more indebted member states.",
+    "market_reaction": {
+      "headline": "The euro rose to a session high of $1.0257 and Italian 10-year yields jumped after the surprise 50bp hike",
+      "assets": [
+        {
+          "asset": "EUR/USD",
+          "move": "$1.0257 session high",
+          "window": "21 Jul 2022"
+        },
+        {
+          "asset": "Italy 10-year bond yield",
+          "window": "21 Jul 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "DXY"
+    ],
+    "sources": [
+      "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.mp220721~53e5bdd317.en.html",
+      "https://www.cnbc.com/2022/07/21/european-central-bank-raises-rates-by-50-basis-points-its-first-hike-in-11-years.html"
+    ]
+  },
+  {
+    "id": "chips-act",
+    "title": "CHIPS and Science Act signed",
+    "date": "2022-08",
+    "day": 9,
+    "category": "Tech",
+    "regions": [
+      "United States"
+    ],
+    "summary": "Signed on 9 August 2022, the CHIPS and Science Act provides $52.7 billion for US semiconductor research and manufacturing plus a 25% investment tax credit for chip plants. Micron announced a $40 billion US memory-chip investment the same week.",
+    "market_reaction": {
+      "headline": "Companies announced new US fab spending, including Micron's $40B memory-chip plan",
+      "assets": [
+        {
+          "asset": "Micron (MU) US investment plan",
+          "move": "$40B",
+          "window": "Aug 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "INTC",
+      "TSM",
+      "NVDA",
+      "MU"
+    ],
+    "sources": [
+      "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/08/09/fact-sheet-chips-and-science-act-will-lower-costs-create-jobs-strengthen-supply-chains-and-counter-china/",
+      "https://en.wikipedia.org/wiki/CHIPS_and_Science_Act"
+    ]
+  },
+  {
+    "id": "eu-gas-shock",
+    "title": "European gas price hits record",
+    "date": "2022-08",
+    "day": 26,
+    "category": "Energy & Supply",
+    "regions": [
+      "Europe",
+      "United Kingdom",
+      "Russia & Ukraine"
+    ],
+    "summary": "After Russia cut Nord Stream 1 flows to Germany during 2022, the Dutch TTF gas benchmark hit a record of nearly €340/MWh on 26 August 2022. The same day Britain's regulator raised the household energy price cap to £3,549 a year from October.",
+    "market_reaction": {
+      "headline": "TTF gas reached nearly €340/MWh on 26 Aug 2022, up more than 320% from the start of the year",
+      "assets": [
+        {
+          "asset": "Dutch TTF gas",
+          "move": "~€340/MWh record",
+          "window": "26 Aug 2022"
+        },
+        {
+          "asset": "Dutch TTF gas",
+          "move": "+320%+",
+          "window": "start of 2022 to 26 Aug 2022"
+        },
+        {
+          "asset": "UK household energy price cap",
+          "move": "to £3,549 a year",
+          "window": "from 1 Oct 2022, announced 26 Aug 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "SHEL.L",
+      "FTSE"
+    ],
+    "sources": [
+      "https://www.gisreportsonline.com/r/gas/",
+      "https://www.ofgem.gov.uk/press-release/ofgem-updates-price-cap-level-and-tightens-rules-suppliers",
+      "https://en.wikipedia.org/wiki/2022_Russia%E2%80%93European_Union_gas_dispute"
+    ]
+  },
+  {
+    "id": "uk-mini-budget",
+    "title": "UK mini-budget",
+    "date": "2022-09",
+    "day": 23,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United Kingdom"
+    ],
+    "summary": "On 23 September 2022 Chancellor Kwasi Kwarteng announced the \"Growth Plan\", large unfunded tax cuts on top of costly energy-bill support. Investors dumped sterling and gilts on doubts about how it would be paid for.",
+    "market_reaction": {
+      "headline": "Sterling fell to an all-time low of $1.0327 against the dollar on 26 September 2022",
+      "assets": [
+        {
+          "asset": "GBP/USD",
+          "move": "−3%",
+          "window": "23 Sep 2022"
+        },
+        {
+          "asset": "GBP/USD",
+          "move": "$1.0327 (record low)",
+          "window": "26 Sep 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "FTSE",
+      "HSBA.L"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget"
+    ]
+  },
+  {
+    "id": "nord-stream",
+    "title": "Nord Stream pipeline explosions",
+    "date": "2022-09",
+    "day": 26,
+    "category": "Energy & Supply",
+    "regions": [
+      "Europe",
+      "Russia & Ukraine"
+    ],
+    "summary": "Underwater explosions on 26 September 2022 damaged three of the four Nord Stream gas pipes between Russia and Germany, leaving them inoperable. Neither pipeline was delivering gas at the time, yet European gas prices still rose sharply.",
+    "market_reaction": {
+      "headline": "European gas prices jumped 12% the next day",
+      "assets": [
+        {
+          "asset": "European natural gas prices",
+          "move": "+12%",
+          "window": "27 Sep 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "SHEL.L"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Nord_Stream_pipelines_sabotage"
+    ]
+  },
+  {
+    "id": "boe-gilt-intervention",
+    "title": "Bank of England gilt market rescue",
+    "date": "2022-09",
+    "day": 28,
+    "category": "Monetary",
+    "regions": [
+      "United Kingdom"
+    ],
+    "summary": "After the mini-budget triggered a collapse in long-dated gilt prices, pension funds using liability-driven investment (LDI) strategies faced collateral calls they could not meet. On 28 September 2022 the Bank of England began temporary purchases of long-dated gilts to restore orderly markets.",
+    "market_reaction": {
+      "headline": "30-year gilt yields had risen 130bp in three trading days before the Bank stepped in",
+      "assets": [
+        {
+          "asset": "30-year gilt yield",
+          "move": "+130bp",
+          "window": "3 trading days to 28 Sep 2022"
+        },
+        {
+          "asset": "BoE gilt purchases",
+          "move": "£19.3bn bought",
+          "window": "28 Sep–14 Oct 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "FTSE"
+    ],
+    "sources": [
+      "https://www.bankofengland.co.uk/news/2022/september/bank-of-england-announces-gilt-market-operation",
+      "https://www.bankofengland.co.uk/quarterly-bulletin/2023/2023/financial-stability-buy-sell-tools-a-gilt-market-case-study",
+      "https://en.wikipedia.org/wiki/September_2022_United_Kingdom_mini-budget"
+    ]
+  },
+  {
+    "id": "dollar-20yr-high",
+    "title": "US dollar index hits 20-year high",
+    "date": "2022-09",
+    "day": 28,
+    "category": "Monetary",
+    "regions": [
+      "Global",
+      "United States"
+    ],
+    "summary": "Rapid Federal Reserve rate rises drew money into the dollar, and in late September 2022 the dollar index reached its highest level in about two decades. A strong dollar tightened conditions for importers and dollar borrowers outside the US.",
+    "market_reaction": {
+      "headline": "The dollar index hit 114.78 on 28 September 2022, a two-decade high",
+      "assets": [
+        {
+          "asset": "US dollar index (DXY)",
+          "move": "114.78 (20-year high)",
+          "window": "28 Sep 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "DXY"
+    ],
+    "sources": [
+      "https://www.theglobeandmail.com/investing/markets/inside-the-market/article-before-the-bell-what-every-canadian-investor-needs-to-know-today-905/",
+      "https://www.ofx.com/en-us/forex-news/daily-and-weekly-market-news/2022/09/26/the-us-dollar-index-hit-a-new-20-and-a-half-year-high-trading-at-114-53/"
+    ]
+  },
+  {
+    "id": "us-chip-export-controls",
+    "title": "US chip export controls on China",
+    "date": "2022-10",
+    "day": 7,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "China"
+    ],
+    "summary": "On 7 October 2022 the US Commerce Department restricted China's access to advanced computing chips and chipmaking equipment. An October 2023 update closed loopholes and caught Nvidia chips designed for the Chinese market, such as the A800 and H800.",
+    "market_reaction": {
+      "headline": "Chip stocks slid; the Nasdaq closed at its lowest since July 2020 on the next trading day",
+      "assets": [
+        {
+          "asset": "Nasdaq Composite",
+          "move": "−1.04%",
+          "window": "10 Oct 2022"
+        },
+        {
+          "asset": "Nvidia (NVDA)",
+          "move": "−4.7%",
+          "window": "17 Oct 2023 (rule update)"
+        },
+        {
+          "asset": "Intel (INTC)",
+          "move": "−1.4%",
+          "window": "17 Oct 2023 (rule update)"
+        }
+      ]
+    },
+    "tickers": [
+      "NVDA",
+      "INTC",
+      "IXIC"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/United_States_New_Export_Controls_on_Advanced_Computing_and_Semiconductors_to_China",
+      "https://www.cnbc.com/2022/10/09/stock-futures-are-down-as-market-exits-rollercoaster-week.html",
+      "https://www.cnn.com/2023/10/18/tech/us-china-chip-export-curbs-intl-hnk/index.html"
+    ]
+  },
+  {
+    "id": "ftx-collapse",
+    "title": "FTX collapse",
+    "date": "2022-11",
+    "day": 11,
+    "category": "Credit & Crypto",
+    "regions": [
+      "Global",
+      "United States"
+    ],
+    "summary": "Crypto exchange FTX, its trading affiliate Alameda Research and more than 100 related entities filed for bankruptcy on 11 November 2022 after a run on customer withdrawals. The failure knocked crypto prices to two-year lows and spread to crypto lenders and Silvergate Bank.",
+    "market_reaction": {
+      "headline": "Bitcoin fell 12% to just under $16,000, its lowest since November 2020",
+      "assets": [
+        {
+          "asset": "Bitcoin",
+          "move": "−12%",
+          "window": "9 Nov 2022"
+        },
+        {
+          "asset": "Ether",
+          "move": "−14%",
+          "window": "9 Nov 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "BTC"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bankruptcy_of_FTX",
+      "https://www.cnbc.com/2022/11/09/cryptocurrencies-pressured-as-investors-digest-ftx-fallout-solana-loses-another-20percent.html"
+    ]
+  },
+  {
+    "id": "chatgpt",
+    "title": "ChatGPT launch",
+    "date": "2022-11",
+    "day": 30,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "OpenAI released ChatGPT on 30 November 2022, and it reached 100 million monthly users within two months. Its success set off a wave of corporate AI investment, starting with Microsoft's multibillion-dollar expansion of its OpenAI partnership in January 2023.",
+    "market_reaction": {
+      "headline": "No single-day move; it turned AI into Wall Street's theme of 2023",
+      "assets": [
+        {
+          "asset": "Microsoft (MSFT)",
+          "window": "Jan 2023"
+        },
+        {
+          "asset": "Nvidia (NVDA)",
+          "window": "2023"
+        }
+      ]
+    },
+    "tickers": [
+      "MSFT",
+      "NVDA"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/ChatGPT",
+      "https://blogs.microsoft.com/blog/2023/01/23/microsoftandopenaiextendpartnership/"
+    ]
+  },
+  {
+    "id": "boj-ycc-tweak",
+    "title": "Bank of Japan widens yield band",
+    "date": "2022-12",
+    "day": 20,
+    "category": "Monetary",
+    "regions": [
+      "Japan"
+    ],
+    "summary": "On 20 December 2022 the Bank of Japan unexpectedly widened the band around its 10-year government bond yield target from ±0.25 to ±0.5 percentage points. Markets read it as a first step away from ultra-loose policy.",
+    "market_reaction": {
+      "headline": "The yen jumped: the dollar fell 3.78% to 131.71 yen and the 10-year JGB yield rose to 0.46%",
+      "assets": [
+        {
+          "asset": "USD/JPY",
+          "move": "−3.78%",
+          "window": "20 Dec 2022"
+        },
+        {
+          "asset": "10-year JGB yield",
+          "move": "0.25% → 0.46%",
+          "window": "20 Dec 2022"
+        },
+        {
+          "asset": "US 10-year Treasury yield",
+          "move": "3.711% (December high)",
+          "window": "20 Dec 2022"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y"
+    ],
+    "sources": [
+      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2022/k221220a.pdf",
+      "https://www.cnbc.com/2022/12/20/yen-soars-to-4-month-peak-after-surprise-boj-policy-tweak.html"
+    ]
+  },
+  {
+    "id": "svb-failure",
+    "title": "Silicon Valley Bank fails",
+    "date": "2023-03",
+    "day": 10,
+    "category": "Credit & Crypto",
+    "regions": [
+      "United States",
+      "United Kingdom"
+    ],
+    "summary": "Silicon Valley Bank failed on 10 March 2023 after customers tried to withdraw $42 billion in a day, having been weakened by losses on long-dated bonds bought before the Fed's rate rises. Over the weekend the Fed created the Bank Term Funding Program, and HSBC bought SVB's UK arm for £1.",
+    "market_reaction": {
+      "headline": "Bank stocks slumped; the KBW Bank Index fell by about a quarter in March 2023",
+      "assets": [
+        {
+          "asset": "KBW Bank Index",
+          "move": "−25%",
+          "window": "Mar 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "JPM",
+      "HSBA.L",
+      "SPX"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20230312a.htm",
+      "https://www.aeaweb.org/conference/2025/program/paper/dTEHy2GH"
+    ]
+  },
+  {
+    "id": "usdc-depeg",
+    "title": "USDC stablecoin breaks its peg",
+    "date": "2023-03",
+    "day": 11,
+    "category": "Credit & Crypto",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "Circle said $3.3 billion of the reserves behind its USDC stablecoin were stuck at the failed Silicon Valley Bank. USDC, designed to trade at $1, broke its peg on 11 March 2023 and recovered it four days later after US authorities guaranteed SVB deposits.",
+    "market_reaction": {
+      "headline": "USDC fell below 87 cents on 11 March 2023",
+      "assets": [
+        {
+          "asset": "USDC",
+          "move": "below $0.87",
+          "window": "11 Mar 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "BTC"
+    ],
+    "sources": [
+      "https://www.cnbc.com/2023/03/11/stablecoin-usdc-breaks-dollar-peg-after-firm-reveals-it-has-3point3-billion-in-svb-exposure.html",
+      "https://en.wikipedia.org/wiki/USDC_(cryptocurrency)"
+    ]
+  },
+  {
+    "id": "credit-suisse-ubs",
+    "title": "UBS takes over Credit Suisse",
+    "date": "2023-03",
+    "day": 19,
+    "category": "Credit & Crypto",
+    "regions": [
+      "Switzerland",
+      "Europe"
+    ],
+    "summary": "After its largest shareholder ruled out more support and its shares collapsed, Credit Suisse was taken over by UBS on 19 March 2023 for CHF 3 billion in a deal brokered by the Swiss authorities. Regulator FINMA wrote down about CHF 16 billion of Credit Suisse's AT1 bonds to zero.",
+    "market_reaction": {
+      "headline": "Credit Suisse shares fell 24% on 15 March 2023; its AT1 bonds were wiped out",
+      "assets": [
+        {
+          "asset": "Credit Suisse shares",
+          "move": "−24%",
+          "window": "15 Mar 2023"
+        },
+        {
+          "asset": "Credit Suisse AT1 bonds",
+          "move": "written down to zero (~CHF 16bn)",
+          "window": "19 Mar 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "UBS"
+    ],
+    "sources": [
+      "https://www.finma.ch/en/news/2023/03/20230319-mm-cs-ubs/",
+      "https://en.wikipedia.org/wiki/Acquisition_of_Credit_Suisse_by_UBS",
+      "https://www.cnbc.com/2023/03/15/credit-suisse-shares-slide-after-saudi-backer-rules-out-further-assistance.html"
+    ]
+  },
+  {
+    "id": "first-republic",
+    "title": "First Republic seized and sold to JPMorgan",
+    "date": "2023-05",
+    "day": 1,
+    "category": "Credit & Crypto",
+    "regions": [
+      "United States"
+    ],
+    "summary": "After losing about 40% of its deposits in the first quarter of 2023, First Republic Bank was closed by California regulators on 1 May 2023 and sold to JPMorgan Chase. The FDIC estimated the cost to its insurance fund at about $13 billion.",
+    "market_reaction": {
+      "headline": "First Republic shares fell more than 49% on 25 April 2023 after it disclosed the deposit flight",
+      "assets": [
+        {
+          "asset": "First Republic (FRC)",
+          "move": "−49%",
+          "window": "25 Apr 2023"
+        },
+        {
+          "asset": "First Republic (FRC)",
+          "move": "−90%+",
+          "window": "2023 to 25 Apr"
+        }
+      ]
+    },
+    "tickers": [
+      "JPM"
+    ],
+    "sources": [
+      "https://www.fdic.gov/news/press-releases/2023/pr23034.html",
+      "https://www.cnbc.com/2023/04/25/first-republic-falls-more-than-40percent-to-record-low-after-reporting-massive-deposit-drop.html"
+    ]
+  },
+  {
+    "id": "nvidia-ai-guidance",
+    "title": "Nvidia's AI-driven sales forecast",
+    "date": "2023-05",
+    "day": 24,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "On 24 May 2023 Nvidia forecast second-quarter revenue of about $11 billion, far above the $7.19 billion it had just reported, as demand for its data-centre chips used in AI surged.",
+    "market_reaction": {
+      "headline": "Nvidia shares rose 24% the next day and it briefly reached a $1 trillion market value on 30 May 2023",
+      "assets": [
+        {
+          "asset": "Nvidia (NVDA)",
+          "move": "+24%",
+          "window": "25 May 2023"
+        },
+        {
+          "asset": "Nvidia market value",
+          "move": "$1 trillion (intraday)",
+          "window": "30 May 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "NVDA",
+      "IXIC",
+      "TSM"
+    ],
+    "sources": [
+      "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2024",
+      "https://www.cnbc.com/2023/05/25/nvidia-on-track-for-record-high-driven-by-ai-chip-demand.html",
+      "https://www.cnbc.com/2023/05/30/nvidia-on-track-to-hit-1-trillion-market-cap-when-market-opens.html"
+    ]
+  },
+  {
+    "id": "us-fitch-downgrade",
+    "title": "Fitch downgrades US to AA+",
+    "date": "2023-08",
+    "day": 1,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "Fitch Ratings cut the United States' long-term rating from AAA to AA+ on 1 August 2023, citing expected fiscal deterioration over the following three years. Treasury Secretary Janet Yellen called the decision arbitrary and based on outdated data.",
+    "market_reaction": {
+      "headline": "The Nasdaq fell 2.17% and the S&P 500 1.38% the next day",
+      "assets": [
+        {
+          "asset": "Nasdaq Composite",
+          "move": "−2.17%",
+          "window": "2 Aug 2023"
+        },
+        {
+          "asset": "S&P 500",
+          "move": "−1.38%",
+          "window": "2 Aug 2023"
+        },
+        {
+          "asset": "Nikkei 225",
+          "move": "−2.3%",
+          "window": "2 Aug 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "US10Y"
+    ],
+    "sources": [
+      "https://home.treasury.gov/news/press-releases/jy1665",
+      "https://www.cnbc.com/2023/08/01/stock-market-today-live-updates.html",
+      "https://www.cnbc.com/2023/08/02/asia-markets-poised-to-fall-as-fitch-lowered-us-credit-ratings.html"
+    ]
+  },
+  {
+    "id": "israel-hamas-war",
+    "title": "Hamas attack on Israel and Gaza war",
+    "date": "2023-10",
+    "day": 7,
+    "category": "Geopolitical",
+    "regions": [
+      "Middle East"
+    ],
+    "summary": "Hamas attacked Israel on 7 October 2023, killing 1,195 people and taking 251 hostages, and Israel responded with a war in Gaza. Markets priced the risk of a wider regional conflict involving oil producers.",
+    "market_reaction": {
+      "headline": "Brent rose 4.2% to $88.15 a barrel on the first trading day after the attack",
+      "assets": [
+        {
+          "asset": "Brent crude",
+          "move": "+4.2%",
+          "window": "9 Oct 2023"
+        },
+        {
+          "asset": "WTI crude",
+          "move": "+4.3%",
+          "window": "9 Oct 2023"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "XOM",
+      "LMT"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Gaza_war",
+      "https://www.cnbc.com/2023/10/09/brent-wti-prices-jump-after-hamas-attack-on-israel.html"
+    ]
+  },
+  {
+    "id": "red-sea-attacks",
+    "title": "Houthi attacks on Red Sea shipping",
+    "date": "2023-11",
+    "day": 19,
+    "category": "Energy & Supply",
+    "regions": [
+      "Middle East",
+      "Global",
+      "Europe"
+    ],
+    "summary": "From 19 November 2023 Yemen's Houthi movement attacked commercial ships in the Red Sea, and major shipping lines rerouted around the Cape of Good Hope. Longer voyages pushed up freight rates and disrupted supply chains; Tesla paused most output at its German plant for two weeks in early 2024.",
+    "market_reaction": {
+      "headline": "Spot container rates from Shanghai to Europe rose 256% on average between December 2023 and February 2024",
+      "assets": [
+        {
+          "asset": "Shanghai–Europe spot container rates",
+          "move": "+256%",
+          "window": "Dec 2023–Feb 2024"
+        },
+        {
+          "asset": "SE Asia–US East Coast spot rate (Platts)",
+          "move": "+195%",
+          "window": "1 Dec 2023–25 Jan 2024"
+        }
+      ]
+    },
+    "tickers": [
+      "TSLA",
+      "WTI"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Houthi_attacks_on_commercial_vessels",
+      "https://en.wikipedia.org/wiki/Red_Sea_crisis",
+      "https://www.freightwaves.com/news/red-sea-driven-surge-in-container-shipping-rates-loses-momentum"
+    ]
+  },
+  {
+    "id": "boj-ends-negative",
+    "title": "Bank of Japan ends negative rates",
+    "date": "2024-03",
+    "day": 19,
+    "category": "Monetary",
+    "regions": [
+      "Japan"
+    ],
+    "summary": "On 19 March 2024 the Bank of Japan raised its short-term policy rate from −0.1% to a range of 0 to 0.1%, its first hike in 17 years, and ended yield curve control. The move was widely expected, so the yen weakened rather than rallied.",
+    "market_reaction": {
+      "headline": "The yen fell 1.19% to 150.91 per dollar on the day",
+      "assets": [
+        {
+          "asset": "Yen vs US dollar",
+          "move": "−1.19%",
+          "window": "19 Mar 2024"
+        }
+      ]
+    },
+    "tickers": [],
+    "sources": [
+      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240319a.pdf",
+      "https://www.aljazeera.com/economy/2024/3/19/bank-of-japan-scraps-negative-interest-rate-in-first-hike-in-17-years",
+      "https://www.cnbc.com/2024/03/19/yen-holds-nerve-as-boj-decision-looms-dollar-resurgent.html"
+    ]
+  },
+  {
+    "id": "yen-carry-unwind",
+    "title": "Yen carry-trade unwind",
+    "date": "2024-08",
+    "day": 5,
+    "category": "Monetary",
+    "regions": [
+      "Japan",
+      "Global",
+      "United States"
+    ],
+    "summary": "The Bank of Japan raised its policy rate to around 0.25% on 31 July 2024, and days later a weak US jobs report raised recession fears. The yen surged, investors unwound trades funded in cheap yen, and on 5 August the Nikkei 225 had its worst day since 1987.",
+    "market_reaction": {
+      "headline": "The Nikkei 225 fell 12.4% on 5 August 2024 and the VIX briefly topped 65",
+      "assets": [
+        {
+          "asset": "Nikkei 225",
+          "move": "−12.4%",
+          "window": "5 Aug 2024"
+        },
+        {
+          "asset": "Topix",
+          "move": "−12.23%",
+          "window": "5 Aug 2024"
+        },
+        {
+          "asset": "VIX",
+          "move": "above 65 intraday",
+          "window": "5 Aug 2024"
+        },
+        {
+          "asset": "USD/JPY",
+          "move": "142.09 (yen strongest since January)",
+          "window": "5 Aug 2024"
+        }
+      ]
+    },
+    "tickers": [
+      "VIX",
+      "SPX",
+      "NVDA"
+    ],
+    "sources": [
+      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2024/k240731a.pdf",
+      "https://www.cnbc.com/2024/08/05/asia-markets.html",
+      "https://www.cnbc.com/2024/08/21/volatility-spike-was-a-huge-overreaction-but-more-could-be-ahead-strategist-says.html"
+    ]
+  },
+  {
+    "id": "fed-first-cut",
+    "title": "Fed's first rate cut since 2020",
+    "date": "2024-09",
+    "day": 18,
+    "category": "Monetary",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "On 18 September 2024 the Federal Reserve cut its target range by half a percentage point to 4.75%–5.00%, its first cut since the early days of the Covid pandemic. It cited progress on inflation and the balance of risks.",
+    "market_reaction": {
+      "headline": "The S&P 500 rose 1.7% the next day to close above 5,700 for the first time",
+      "assets": [
+        {
+          "asset": "Fed funds target range",
+          "move": "−0.50pp to 4.75–5.00%",
+          "window": "18 Sep 2024"
+        },
+        {
+          "asset": "S&P 500",
+          "move": "+1.7%",
+          "window": "19 Sep 2024"
+        },
+        {
+          "asset": "Nasdaq Composite",
+          "move": "+2.51%",
+          "window": "19 Sep 2024"
+        },
+        {
+          "asset": "Dow Jones Industrial Average",
+          "move": "+1.26%",
+          "window": "19 Sep 2024"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "DJI",
+      "US10Y"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+      "https://www.cnbc.com/2024/09/18/fed-cuts-rates-september-2024-.html",
+      "https://www.cnbc.com/2024/09/18/stock-market-today-live-updates.html"
+    ]
+  },
+  {
+    "id": "china-stimulus-2024",
+    "title": "China's September 2024 stimulus",
+    "date": "2024-09",
+    "day": 24,
+    "category": "Monetary",
+    "regions": [
+      "China",
+      "Asia-Pacific"
+    ],
+    "summary": "On 24 September 2024 People's Bank of China governor Pan Gongsheng announced a package of easing measures, including a 50-basis-point cut to banks' reserve requirement ratio and a 0.2-point cut to the 7-day repo rate. The Fed's cut the week before gave Beijing more room to ease.",
+    "market_reaction": {
+      "headline": "The CSI 300 rose 4.33%, its best day since July 2020, and the Hang Seng gained nearly 4%",
+      "assets": [
+        {
+          "asset": "CSI 300",
+          "move": "+4.33%",
+          "window": "24 Sep 2024"
+        },
+        {
+          "asset": "Hang Seng Index",
+          "move": "+~4%",
+          "window": "24 Sep 2024"
+        }
+      ]
+    },
+    "tickers": [
+      "HSI",
+      "0700.HK",
+      "9988.HK"
+    ],
+    "sources": [
+      "https://www.cnbc.com/2024/09/24/asia-markets.html",
+      "https://www.cnbc.com/2024/09/24/chinas-central-bank-chief-set-to-hold-press-conference-days-after-fed-rate-cut.html",
+      "https://www.cepweb.org/chinas-monetary-stimulus-aggregate-and-structural-implications/"
+    ]
+  },
+  {
+    "id": "deepseek",
+    "title": "DeepSeek R1 triggers AI chip sell-off",
+    "date": "2025-01",
+    "day": 27,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "China",
+      "Global"
+    ],
+    "summary": "Chinese start-up DeepSeek's low-cost R1 model raised doubts about how much AI computing hardware the industry would need. Investors sold chipmakers and other AI-linked stocks.",
+    "market_reaction": {
+      "headline": "Nvidia fell 17% on 27 Jan 2025, a record one-day loss of $589 billion in market value; the Nasdaq fell 3.1%.",
+      "assets": [
+        {
+          "asset": "NVDA",
+          "move": "−17%",
+          "window": "27 Jan 2025"
+        },
+        {
+          "asset": "IXIC",
+          "move": "−3.1%",
+          "window": "27 Jan 2025"
+        }
+      ]
+    },
+    "tickers": [
+      "NVDA",
+      "TSM",
+      "MSFT",
+      "IXIC",
+      "SPX"
+    ],
+    "sources": [
+      "https://www.nbcnewyork.com/news/business/money-report/nvidia-sheds-almost-600-billion-in-market-cap-biggest-one-day-loss-in-u-s-history/6123481/",
+      "https://finance.yahoo.com/news/nvidia-stock-plummets-loses-record-589-billion-as-deepseek-prompts-questions-over-ai-spending-135105824.html"
+    ]
+  },
+  {
+    "id": "us-tariffs-2025",
+    "title": "\"Liberation Day\" reciprocal tariffs",
+    "date": "2025-04",
+    "day": 2,
+    "category": "Geopolitical",
+    "regions": [
+      "United States",
+      "China",
+      "Global"
+    ],
+    "summary": "The US announced sweeping reciprocal tariffs on 2 April 2025, setting off a two-day global stock rout. On 9 April a 90-day pause cut most rates to 10% (excluding China) and stocks rallied sharply.",
+    "market_reaction": {
+      "headline": "The S&P 500 lost 4.84% on 3 Apr and 5.97% on 4 Apr, then rose 9.52% on 9 Apr after the 90-day pause, its biggest gain since 2008.",
+      "assets": [
+        {
+          "asset": "SPX",
+          "move": "−4.84%",
+          "window": "3 Apr 2025"
+        },
+        {
+          "asset": "SPX",
+          "move": "−5.97%",
+          "window": "4 Apr 2025"
+        },
+        {
+          "asset": "DJI",
+          "move": "−5.5%",
+          "window": "4 Apr 2025"
+        },
+        {
+          "asset": "SPX",
+          "move": "+9.52%",
+          "window": "9 Apr 2025"
+        },
+        {
+          "asset": "IXIC",
+          "move": "+12.16%",
+          "window": "9 Apr 2025"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "DJI",
+      "AAPL",
+      "VIX",
+      "US10Y"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/2025_stock_market_crash"
+    ]
+  },
+  {
+    "id": "china-rare-earth-curbs",
+    "title": "China restricts exports of seven rare earths",
+    "date": "2025-04",
+    "day": 4,
+    "category": "Energy & Supply",
+    "regions": [
+      "China",
+      "United States",
+      "Global"
+    ],
+    "summary": "In retaliation for US tariffs, China required export licences for seven medium and heavy rare earths and related magnets. The licensing slowed shipments to manufacturers abroad.",
+    "market_reaction": {
+      "headline": "Announced on 4 Apr 2025 together with a 34% retaliatory tariff, in the middle of the post-tariff sell-off; no separate index move is attributed to the curbs.",
+      "assets": [
+        {
+          "asset": "TSLA"
+        },
+        {
+          "asset": "F"
+        },
+        {
+          "asset": "LMT"
+        }
+      ]
+    },
+    "tickers": [
+      "TSLA",
+      "F",
+      "LMT"
+    ],
+    "sources": [
+      "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "https://en.wikipedia.org/wiki/2025_stock_market_crash"
+    ]
+  },
+  {
+    "id": "us-china-truce",
+    "title": "US–China Geneva tariff truce",
+    "date": "2025-05",
+    "day": 12,
+    "category": "Geopolitical",
+    "regions": [
+      "United States",
+      "China",
+      "Switzerland"
+    ],
+    "summary": "After talks in Geneva, the US and China each suspended 24 percentage points of their reciprocal tariffs for 90 days and dropped the extra escalation tariffs added in April. Markets read it as a de-escalation of the trade war.",
+    "market_reaction": {
+      "headline": "On 12 May 2025 the S&P 500 rose about 3.3%, the Dow 2.8% and the Nasdaq 4.3%.",
+      "assets": [
+        {
+          "asset": "SPX",
+          "move": "+3.3%",
+          "window": "12 May 2025"
+        },
+        {
+          "asset": "DJI",
+          "move": "+2.8%",
+          "window": "12 May 2025"
+        },
+        {
+          "asset": "IXIC",
+          "move": "+4.3%",
+          "window": "12 May 2025"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "DJI",
+      "HSI",
+      "AAPL"
+    ],
+    "sources": [
+      "https://www.whitehouse.gov/briefings-statements/2025/05/joint-statement-on-u-s-china-economic-and-trade-meeting-in-geneva/",
+      "https://finance.yahoo.com/news/live/stock-market-today-dow-jumps-1100-points-sp-500-and-nasdaq-surge-after-us-china-tariff-rollback-triggers-buying-spree-200036073.html",
+      "https://en.wikipedia.org/wiki/2025_China%E2%80%93United_States_trade_war"
+    ]
+  },
+  {
+    "id": "moodys-downgrade",
+    "title": "Moody's cuts US credit rating to Aa1",
+    "date": "2025-05",
+    "day": 16,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "Moody's cut the US government's rating one notch from Aaa to Aa1, citing the growing cost of financing budget deficits. Long-dated Treasury yields rose when markets reopened.",
+    "market_reaction": {
+      "headline": "On 19 May 2025 the 30-year Treasury yield briefly hit about 5.03%, its highest since November 2023, before settling 2 bp higher.",
+      "assets": [
+        {
+          "asset": "US30Y",
+          "move": "+2 bp",
+          "window": "19 May 2025 (intraday high about 5.03%)"
+        },
+        {
+          "asset": "US10Y",
+          "move": "+2 bp",
+          "window": "19 May 2025"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "DXY",
+      "GOLD"
+    ],
+    "sources": [
+      "https://www.moodys.com/web/en/us/about-us/usrating.html",
+      "https://www.cnbc.com/2025/05/19/us-treasury-yields-moodys-downgrades-us-credit-rating.html"
+    ]
+  },
+  {
+    "id": "obbba",
+    "title": "\"One Big Beautiful Bill Act\" signed",
+    "date": "2025-07",
+    "day": 4,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "The tax-and-spending reconciliation law (Public Law 119-21) extended and added tax cuts while trimming some spending. The CBO estimated it would add $3.4 trillion to deficits over ten years.",
+    "market_reaction": {
+      "headline": "CBO: a $3.4 trillion increase in deficits over 2025–2034; no single-day market move is attributed to the signing.",
+      "assets": [
+        {
+          "asset": "US10Y"
+        },
+        {
+          "asset": "DXY"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "DXY"
+    ],
+    "sources": [
+      "https://www.cbo.gov/publication/61570",
+      "https://en.wikipedia.org/wiki/One_Big_Beautiful_Bill_Act"
+    ]
+  },
+  {
+    "id": "fed-cuts-resume-2025",
+    "title": "Fed resumes rate cuts",
+    "date": "2025-09",
+    "day": 17,
+    "category": "Monetary",
+    "regions": [
+      "United States"
+    ],
+    "summary": "After holding at 4.25%–4.50% since December 2024, the Fed cut by a quarter point to 4.00%–4.25%, citing rising downside risks to employment. It was the Fed's first cut of 2025.",
+    "market_reaction": {
+      "headline": "The federal funds target range was lowered 0.25 percentage point to 4.00%–4.25%.",
+      "assets": [
+        {
+          "asset": "Fed funds target range",
+          "move": "−0.25 pt",
+          "window": "17 Sep 2025"
+        },
+        {
+          "asset": "US10Y"
+        },
+        {
+          "asset": "SPX"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "SPX",
+      "DXY"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250730a.htm",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm"
+    ]
+  },
+  {
+    "id": "china-rare-earth-expansion",
+    "title": "China expands rare-earth export controls",
+    "date": "2025-10",
+    "day": 9,
+    "category": "Energy & Supply",
+    "regions": [
+      "China",
+      "United States",
+      "Global"
+    ],
+    "summary": "China added five more rare earths and claimed jurisdiction over some foreign-made products containing Chinese rare earths or technology. Trump answered with a threat of an extra 100% tariff on Chinese goods.",
+    "market_reaction": {
+      "headline": "On 10 Oct 2025, after the 100% tariff threat, the S&P 500 fell 2.7% in its worst day since April and the Nasdaq fell 3.6%.",
+      "assets": [
+        {
+          "asset": "SPX",
+          "move": "−2.7%",
+          "window": "10 Oct 2025"
+        },
+        {
+          "asset": "IXIC",
+          "move": "−3.6%",
+          "window": "10 Oct 2025"
+        },
+        {
+          "asset": "DJI",
+          "move": "−1.9%",
+          "window": "10 Oct 2025"
+        }
+      ]
+    },
+    "tickers": [
+      "SPX",
+      "IXIC",
+      "NVDA",
+      "TSM",
+      "LMT"
+    ],
+    "sources": [
+      "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/",
+      "https://www.pbs.org/newshour/economy/wall-street-tumbles-in-its-worst-day-since-april-after-trump-threatens-more-tariffs-on-china"
+    ]
+  },
+  {
+    "id": "nvidia-5t",
+    "title": "Nvidia becomes first $5 trillion company",
+    "date": "2025-10",
+    "day": 29,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "Nvidia became the first listed company valued at $5 trillion, after saying it expected $500 billion in AI chip orders. The milestone came amid growing warnings about an AI valuation bubble.",
+    "market_reaction": {
+      "headline": "Nvidia rose more than 3% on 29 Oct 2025, taking its market value past $5 trillion.",
+      "assets": [
+        {
+          "asset": "NVDA",
+          "move": "+3%",
+          "window": "29 Oct 2025 (intraday, 'more than 3%')"
+        }
+      ]
+    },
+    "tickers": [
+      "NVDA",
+      "IXIC",
+      "SPX",
+      "TSM",
+      "MSFT",
+      "AAPL"
+    ],
+    "sources": [
+      "https://www.cnbc.com/2025/10/29/nvidia-on-track-to-hit-historic-5-trillion-valuation-amid-ai-rally.html",
+      "https://www.bbc.com/news/articles/cp8e970vn5vo"
+    ]
+  },
+  {
+    "id": "us-china-busan-deal",
+    "title": "Trump–Xi Busan deal pauses rare-earth curbs",
+    "date": "2025-10",
+    "day": 30,
+    "category": "Geopolitical",
+    "regions": [
+      "United States",
+      "China",
+      "Asia-Pacific"
+    ],
+    "summary": "At their meeting in Busan, South Korea, China agreed to suspend its October rare-earth controls for a year and the US cut its fentanyl-related tariffs on Chinese goods by 10 points. The April 2025 licensing regime stayed in place.",
+    "market_reaction": {
+      "headline": "No major index move is attributed to the deal; the US fentanyl tariff cut took effect on 10 Nov 2025 and China's suspension ran to 10 Nov 2026.",
+      "assets": [
+        {
+          "asset": "HSI"
+        },
+        {
+          "asset": "SPX"
+        }
+      ]
+    },
+    "tickers": [
+      "HSI",
+      "SPX",
+      "F",
+      "TSLA"
+    ],
+    "sources": [
+      "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/",
+      "https://en.wikipedia.org/wiki/2025_China%E2%80%93United_States_trade_war",
+      "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/"
+    ]
+  },
+  {
+    "id": "iran-war-2026",
+    "title": "US and Israel go to war with Iran",
+    "date": "2026-02",
+    "day": 28,
+    "category": "Geopolitical",
+    "regions": [
+      "Middle East",
+      "United States",
+      "Global"
+    ],
+    "summary": "US and Israeli strikes on Iran began on 28 February 2026 and killed Supreme Leader Ali Khamenei; Iran retaliated against Israel and Gulf states. A ceasefire in April and a June memorandum later broke down, and fighting resumed.",
+    "market_reaction": {
+      "headline": "On 2 Mar 2026 the S&P 500 fell 0.7% and Brent rose 10–13% to about $80–82 a barrel; United Airlines fell 6%.",
+      "assets": [
+        {
+          "asset": "SPX",
+          "move": "−0.7%",
+          "window": "2 Mar 2026"
+        },
+        {
+          "asset": "Brent crude",
+          "move": "+10–13%",
+          "window": "to 2 Mar 2026"
+        },
+        {
+          "asset": "UAL",
+          "move": "−6%",
+          "window": "2 Mar 2026"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "SPX",
+      "GOLD",
+      "XOM",
+      "SHEL.L",
+      "DAL",
+      "LMT"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/2026_Iran_war",
+      "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war"
+    ]
+  },
+  {
+    "id": "hormuz-closure-2026",
+    "title": "Iran closes the Strait of Hormuz",
+    "date": "2026-03",
+    "day": 4,
+    "category": "Energy & Supply",
+    "regions": [
+      "Middle East",
+      "Global",
+      "Asia-Pacific",
+      "Europe"
+    ],
+    "summary": "Iran declared the Strait of Hormuz closed and threatened ships trying to pass, cutting Gulf oil and LNG exports. The IEA called it the largest supply disruption in the history of the oil market.",
+    "market_reaction": {
+      "headline": "Brent passed $100 a barrel on 8 Mar 2026 for the first time in four years and rose 55% between 28 Feb and 27 Mar; the 10-year Treasury yield reached 4.46% on 27 Mar.",
+      "assets": [
+        {
+          "asset": "Brent crude",
+          "move": "+55.32%",
+          "window": "28 Feb–27 Mar 2026 ($72.48 to $112.57)"
+        },
+        {
+          "asset": "US10Y"
+        },
+        {
+          "asset": "XOM"
+        },
+        {
+          "asset": "DAL"
+        }
+      ]
+    },
+    "tickers": [
+      "WTI",
+      "XOM",
+      "SHEL.L",
+      "DAL",
+      "IAG.L",
+      "US10Y"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis",
+      "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war",
+      "https://www.aljazeera.com/economy/2026/3/13/oil-stays-above-100-a-barrel-amid-irans-stranglehold-on-strait-of-hormuz"
+    ]
+  },
+  {
+    "id": "us-inflation-2026",
+    "title": "US inflation re-accelerates on fuel prices",
+    "date": "2026-04",
+    "day": 10,
+    "category": "Fiscal & Inflation",
+    "regions": [
+      "United States"
+    ],
+    "summary": "The March 2026 CPI report showed annual inflation jumping to 3.3% from 2.4% as gasoline prices posted a record monthly rise. Headline inflation kept climbing to 3.7% by September while core inflation stayed near 2.6%.",
+    "market_reaction": {
+      "headline": "CPI rose 3.3% over the year to March 2026 (up from 2.4% in February), with gasoline up 21.2% in the month; by September the annual rate was 3.7%.",
+      "assets": [
+        {
+          "asset": "US CPI, all items",
+          "move": "+3.3%",
+          "window": "12 months to Mar 2026"
+        },
+        {
+          "asset": "US CPI, gasoline",
+          "move": "+21.2%",
+          "window": "Mar 2026 (one month)"
+        },
+        {
+          "asset": "US CPI, all items",
+          "move": "+3.7%",
+          "window": "12 months to Sep 2026"
+        },
+        {
+          "asset": "US10Y"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "SPX",
+      "DXY"
+    ],
+    "sources": [
+      "https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm",
+      "https://www.cnbc.com/2026/04/10/cpi-inflation-report-march-2026.html",
+      "https://www.cnbc.com/2026/10/14/cpi-inflation-report-september-2026.html"
+    ]
+  },
+  {
+    "id": "warsh-fed-chair",
+    "title": "Kevin Warsh becomes Fed chair",
+    "date": "2026-05",
+    "day": 22,
+    "category": "Monetary",
+    "regions": [
+      "United States"
+    ],
+    "summary": "Kevin Warsh, nominated by President Trump, succeeded Jerome Powell as Federal Reserve chair after Senate confirmation in May 2026. He took over as energy-driven inflation was rising.",
+    "market_reaction": {
+      "headline": "No single-day market move is attributed to the handover.",
+      "assets": [
+        {
+          "asset": "US10Y"
+        },
+        {
+          "asset": "DXY"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "DXY",
+      "SPX"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/other20260522a.htm",
+      "https://www.federalreserve.gov/aboutthefed/bios/board/warsh.htm",
+      "https://en.wikipedia.org/wiki/Kevin_Warsh"
+    ]
+  },
+  {
+    "id": "fed-hike-2026",
+    "title": "Fed raises rates for first time since 2023",
+    "date": "2026-09",
+    "day": 16,
+    "category": "Monetary",
+    "regions": [
+      "United States"
+    ],
+    "summary": "With inflation elevated by the energy shock, the FOMC voted 12–0 to raise the federal funds range by a quarter point to 3.75%–4.00%. It held at that level on 28 October, with two members preferring another hike.",
+    "market_reaction": {
+      "headline": "The 10-year Treasury yield rose to 5.02% and the 2-year to 4.74% on 16 Sep 2026.",
+      "assets": [
+        {
+          "asset": "Fed funds target range",
+          "move": "+0.25 pt",
+          "window": "16 Sep 2026"
+        },
+        {
+          "asset": "US10Y",
+          "move": "+0.02 pt",
+          "window": "16 Sep 2026 (to 5.02%)"
+        },
+        {
+          "asset": "US 2-year Treasury",
+          "move": "+0.08 pt",
+          "window": "16 Sep 2026 (to 4.74%)"
+        },
+        {
+          "asset": "SPX"
+        }
+      ]
+    },
+    "tickers": [
+      "US10Y",
+      "SPX",
+      "DXY",
+      "JPM"
+    ],
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "https://www.usbank.com/content/dam/usbank/en/documents/pdfs/wealth-management/situation-analysis-9-16-2026.pdf",
+      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+    ]
+  },
+  {
+    "id": "nvidia-ceo-crisis",
+    "title": "Nvidia CEO Jensen Huang resigns, then returns",
+    "date": "2026-11",
+    "day": 12,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "China",
+      "Asia-Pacific"
+    ],
+    "summary": "Jensen Huang resigned as Nvidia's chief executive on 12 November 2026, and US authorities said they had looked into a linked firm for potential export-control violations involving high-end AI chips. Nvidia's board reinstated him on 23 November.",
+    "market_reaction": {
+      "headline": "Nvidia closed down 4.3% on the day Huang resigned and rose 31.5% when he was reinstated on 23 Nov.",
+      "assets": [
+        {
+          "asset": "NVDA",
+          "move": "−4.3%",
+          "window": "12 Nov 2026"
+        },
+        {
+          "asset": "NVDA",
+          "move": "+31.5%",
+          "window": "23 Nov 2026"
+        }
+      ]
+    },
+    "tickers": [
+      "NVDA",
+      "TSM",
+      "IXIC",
+      "INTC"
+    ],
+    "sources": [
+      "https://www.bbc.com/news/live/crd61y5dwqgpt",
+      "https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html"
+    ]
+  },
+  {
+    "id": "anthropic-ipo",
+    "title": "Anthropic lists on Nasdaq in record IPO",
+    "date": "2026-11",
+    "day": 19,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "Anthropic, maker of the Claude AI models, priced its IPO at $83 a share and began trading on the Nasdaq under the ticker ANT. The $81.3 billion raise was the largest IPO on record, but it came during a broad sell-off in AI stocks.",
+    "market_reaction": {
+      "headline": "ANT opened at $111.50, 34% above the $83 IPO price, and closed its first day at $97.17, up 17%.",
+      "assets": [
+        {
+          "asset": "ANT",
+          "move": "+34%",
+          "window": "19 Nov 2026, open vs IPO price"
+        },
+        {
+          "asset": "ANT",
+          "move": "+17%",
+          "window": "19 Nov 2026, close vs IPO price"
+        }
+      ]
+    },
+    "tickers": [
+      "ANT",
+      "AMZN",
+      "NVDA",
+      "IXIC"
+    ],
+    "sources": [
+      "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+      "https://www.businessinsider.com/anthropic-ipo-ant-stock-market-nasdaq-2026-11",
+      "https://www.euronews.com/2026/11/19/anthropic-shares-open-34-above-ipo-price-in-nasdaq-debut-after-record-listing"
+    ]
+  },
+  {
+    "id": "ai-selloff-2026",
+    "title": "AI stock rout sends S&P 500 into correction",
+    "date": "2026-11",
+    "day": 20,
+    "category": "Tech",
+    "regions": [
+      "United States",
+      "Global"
+    ],
+    "summary": "A weeks-long slide in AI-linked shares, fed by higher rates, oil prices, the Nvidia leadership crisis, tighter chip-export rules and fears of slower data-centre spending, culminated in a sharp drop on 20 November 2026. The Nasdaq erased its gains for the year and the S&P 500 and Dow fell into correction.",
+    "market_reaction": {
+      "headline": "The Nasdaq fell 5.3% to 22,618 on 20 Nov 2026; the S&P 500 fell 3.7% and the Dow 1.9%, both now more than 10% below their highs.",
+      "assets": [
+        {
+          "asset": "IXIC",
+          "move": "−5.3%",
+          "window": "20 Nov 2026"
+        },
+        {
+          "asset": "SPX",
+          "move": "−3.7%",
+          "window": "20 Nov 2026"
+        },
+        {
+          "asset": "DJI",
+          "move": "−1.9%",
+          "window": "20 Nov 2026"
+        },
+        {
+          "asset": "NVDA"
+        },
+        {
+          "asset": "ANT"
+        }
+      ]
+    },
+    "tickers": [
+      "IXIC",
+      "SPX",
+      "DJI",
+      "NVDA",
+      "INTC",
+      "VIX"
+    ],
+    "sources": [
+      "https://www.cbsnews.com/news/stocks-enter-correction-territory-ai-fears/",
+      "https://www.nbcnews.com/business/markets/anthropic-shares-markets-selloff-nasdaq-rcna610394",
+      "https://www.cbc.ca/news/business/anthropic-ipo-markets-today-9.7429534"
+    ]
+  }
+]

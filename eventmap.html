@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Map · Market Lens (mockup)</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%23111316'/%3E%3Cpath d='M5 16l5-6 4 3 5-6' fill='none' stroke='%23F2F3F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="eventmap.css">
+<script>try{var d=document.documentElement,t=localStorage.getItem('ml-theme');if(t)d.dataset.theme=t;var n=localStorage.getItem('ml-density');if(n)d.dataset.density=n;var a=localStorage.getItem('ml-accent');if(a)d.dataset.accent=a;}catch(e){}</script>
+<!-- three.js 0.160.0 as ES modules from jsDelivr, pinned exactly; the integrity hashes are checked by browsers that
+     support them in import maps and ignored by the rest -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  },
+  "integrity": {
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js": "sha384-61S/Nu32S3E5+n+KpCOTb2eRYps6fVKm+9Gz1QBvSePFthb46f063Aa/qe/lykFZ",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js": "sha384-qlO/ZugKPxAQUAvTlQoo0QECzxJIJySZmCF/DHdb2Xn/hHndFwX/vfUAC9Hbk6LP",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/renderers/CSS2DRenderer.js": "sha384-oxPlnJSeUCYU9W3RMQswb4S/vFd4Bhxuy1Ffx0V2KJakWeb6n1gaqUtSE9Ic/F72",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineSegments2.js": "sha384-epB9Xs4LhC0LT3tq/nQusGJE1Gxn2aaDSW3t/VKDoeZBvl9/tPqn2Hm0GQgXN0Fw",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineSegmentsGeometry.js": "sha384-HoyMSjfTC9HwQuRWVnmRh6XaXt8ZedLc03GaOyFmHtZNZd56Npb28nD2Km2fbibP",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lines/LineMaterial.js": "sha384-pnL8jGtvPyBMlYz7fiKoo6kShhYl3fVGbcaK9nwF3h1fcLjWMpiPC1/y7jcn2ysZ"
+  }
+}
+</script>
+</head>
+<body>
+
+<main class="em-stage" id="em-stage" data-view="sphere">
+  <!-- toolbar: title and counts, search, category chips, region, view switch, reset -->
+  <div class="em-toolbar" id="em-toolbar">
+    <div class="em-ttl">
+      <h1 class="em-h1">Event Map</h1>
+      <span class="em-count" id="em-count"></span>
+    </div>
+    <div class="em-search">
+      <input class="field" id="em-q" type="search" placeholder="Search events" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="em-q-list" aria-label="Search events">
+      <ul class="em-q-list" id="em-q-list" role="listbox" aria-label="Matching events" hidden></ul>
+    </div>
+    <div class="seg em-view" id="em-view" role="group" aria-label="View">
+      <button type="button" data-v="sphere" aria-pressed="true">Sphere</button>
+      <button type="button" data-v="timeline" aria-pressed="false">Timeline</button>
+    </div>
+    <div class="em-filters">
+      <div class="chips em-cats" id="em-cats" role="group" aria-label="Categories shown"></div>
+      <select class="select em-region" id="em-region" aria-label="Region"></select>
+      <button class="btn btn-sm em-reset" id="em-reset" type="button">Reset view</button>
+    </div>
+  </div>
+
+  <div class="em-body">
+    <div class="em-area">
+      <div class="em-map" id="em-map" role="img" aria-label="Event Map: real market events from 2020 on a sphere. Earliest events are near the top, latest near the bottom, and each wedge of longitude is one category. Lines run from cause to effect. The list of events and the details panel give the same information as text."></div>
+      <div class="em-loading" id="em-loading">Loading events…</div>
+      <div class="band warn em-note" id="em-note" role="status" hidden></div>
+      <section class="em-key" aria-label="Key">
+        <ul>
+          <li><svg viewBox="0 0 28 10" aria-hidden="true"><path d="M1 5h26" stroke="var(--em-up)" stroke-width="2.5" stroke-linecap="round"/></svg>What led here</li>
+          <li><svg viewBox="0 0 28 10" aria-hidden="true"><path d="M1 5h26" stroke="var(--em-down)" stroke-width="2.5" stroke-linecap="round"/></svg>What it set off</li>
+          <li><svg viewBox="0 0 28 10" aria-hidden="true"><path d="M1 5h26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Direct cause</li>
+          <li><svg viewBox="0 0 28 10" aria-hidden="true"><path d="M1 5h26" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round"/></svg>Contributing</li>
+        </ul>
+        <p class="em-key-axis em-sphere-only">Top of the sphere: 2020. Bottom: now.</p>
+      </section>
+      <span class="em-quality" id="em-quality" hidden></span>
+      <span class="em-fps" id="em-fps" aria-hidden="true" hidden></span>
+    </div>
+
+    <!-- details: a side panel, or a sheet that drags up from the bottom on phones -->
+    <aside class="em-panel" id="em-panel" aria-labelledby="em-panel-h" data-state="overview">
+      <button class="em-grab" id="em-grab" type="button" aria-controls="em-panel" aria-expanded="false" aria-label="Expand the event details"><span aria-hidden="true"></span></button>
+      <div class="em-p-bar">
+        <span class="micro" id="em-panel-h">Event details</span>
+        <button class="iconbtn em-p-x" type="button" aria-label="Clear the selection" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="em-p-body"></div>
+    </aside>
+  </div>
+
+  <!-- every event as a list, for keyboards and screen readers: hidden until it holds focus -->
+  <nav class="em-list" id="em-list" aria-label="Events in time order">
+    <p class="em-list-h">Events in time order. Arrow keys move, Enter selects, Escape clears.</p>
+    <ol></ol>
+  </nav>
+  <div class="sr" id="em-live" aria-live="polite"></div>
+</main>
+<div class="em-tip" id="em-tip" role="tooltip" hidden></div>
+
+<script src="mock.js"></script>
+<script type="module" src="eventmap/main.js"></script>
+</body>
+</html>
